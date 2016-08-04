@@ -1,0 +1,27 @@
+import logging
+import select
+import psycopg2
+import psycopg2.extensions
+
+import bubbles
+
+from multiprocessing import Process, Queue
+
+class PlugIn (Process):
+    def __init__(self, q):
+        Process.__init__(self)
+        self.subscribe = q['alertcontext']
+        self.conn = psycopg2.connect("dbname=idrs user=postgres password=ansii host=localhost")
+        self.cur = self.conn.cursor()
+
+    def stop(self):
+        logging.info( 'Stopped "{0}"'.format(self.__module__) )
+
+    def run(self):
+
+        logging.info( 'Start "{0}"'.format(self.__module__) )
+
+        while (True):
+            while not self.subscribe.empty():
+                changed = self.subscribe.get()
+                logging.info( '"{0}" got incomming change "{1}"'.format(self.__module__, changed) )

@@ -1,0 +1,193 @@
+TRUNCATE TABLE alert RESTART IDENTITY CASCADE;
+TRUNCATE TABLE alertContext RESTART IDENTITY CASCADE;
+
+CREATE OR REPLACE FUNCTION table_update_notify() RETURNS trigger AS $$
+DECLARE
+  id int;
+BEGIN
+  IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
+    id = NEW.id;
+  ELSE
+    id = OLD.id;
+  END IF;
+  PERFORM pg_notify('table_update', json_build_object('table', TG_TABLE_NAME, 'id', id, 'type', TG_OP)::text);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TABLE server(
+id SERIAL PRIMARY KEY NOT null,
+name TEXT UNIQUE NOT null,
+uri TEXT NOT null
+);
+
+CREATE TRIGGER server_notify_update AFTER UPDATE ON server FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER server_notify_insert AFTER INSERT ON server FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER server_notify_delete AFTER DELETE ON server FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE template(
+id SERIAL PRIMARY KEY NOT null,
+name TEXT UNIQUE NOT null
+);
+
+CREATE TRIGGER template_notify_update AFTER UPDATE ON template FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER template_notify_insert AFTER INSERT ON template FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER template_notify_delete AFTER DELETE ON template FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE network(
+id SERIAL PRIMARY KEY NOT null,
+name TEXT UNIQUE NOT null,
+prefix INT NOT null
+);
+
+CREATE TRIGGER network_notify_update AFTER UPDATE ON network FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER network_notify_insert AFTER INSERT ON network FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER network_notify_delete AFTER DELETE ON network FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE switched_network(
+id SERIAL PRIMARY KEY NOT null,
+name TEXT UNIQUE NOT null
+);
+
+CREATE TRIGGER switched_network_notify_update AFTER UPDATE ON switched_network FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER switched_network_notify_insert AFTER INSERT ON switched_network FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER switched_network_notify_delete AFTER DELETE ON switched_network FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE host(
+id SERIAL PRIMARY KEY NOT null,
+name TEXT UNIQUE NOT null,
+cpus INT,
+memoryMax INT,
+memoryMin INT
+);
+
+CREATE TABLE runsOn(
+host INT REFERENCES host(id) ON UPDATE CASCADE ON DELETE CASCADE,
+server INT REFERENCES server(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(host, server)
+);
+
+CREATE TABLE uses(
+host INT REFERENCES host(id) ON UPDATE CASCADE ON DELETE CASCADE,
+template INT REFERENCES template(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(host, template)
+);
+
+CREATE TRIGGER host_notify_update AFTER UPDATE ON host FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER host_notify_insert AFTER INSERT ON host FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER host_notify_delete AFTER DELETE ON host FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE interface(
+id SERIAL PRIMARY KEY NOT null,
+mac macaddr UNIQUE NOT null,
+order_ INT NOT null,
+rate INT
+);
+
+CREATE TABLE hostHasInterface(
+host INT REFERENCES host(id) ON UPDATE CASCADE ON DELETE CASCADE,
+interface INT REFERENCES interface(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(host, interface)
+);
+
+CREATE TABLE interfaceIsIn(
+interface INT REFERENCES interface(id) ON UPDATE CASCADE ON DELETE CASCADE,
+network INT REFERENCES switched_network(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(interface, network)
+);
+
+CREATE TRIGGER interface_notify_update AFTER UPDATE ON interface FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER interface_notify_insert AFTER INSERT ON interface FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER interface_notify_delete AFTER DELETE ON interface FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+
+CREATE TABLE ip(
+id SERIAL PRIMARY KEY NOT null,
+ip inet NOT null
+);
+
+CREATE TABLE ipIsIn(
+ip INT REFERENCES ip(id) ON UPDATE CASCADE ON DELETE CASCADE,
+network INT REFERENCES network(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(ip, network)
+);
+
+CREATE TRIGGER ip_notify_update AFTER UPDATE ON ip FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER ip_notify_insert AFTER INSERT ON ip FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER ip_notify_delete AFTER DELETE ON ip FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE ipToMac(
+ip INT NOT NULL,
+mac INT not NULL,
+PRIMARY KEY (ip, mac)
+);
+
+CREATE TABLE attacks(
+id SERIAL PRIMARY KEY NOT null,
+type TEXT NOT NULL
+);
+
+CREATE TABLE alertContext(
+id SERIAL PRIMARY KEY NOT null,
+type INT REFERENCES attacks(id) ON UPDATE CASCADE ON DELETE CASCADE,
+solved BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TRIGGER alertContext_notify_update AFTER UPDATE ON alertContext FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER alertContext_notify_insert AFTER INSERT ON alertContext FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER alertContext_notify_delete AFTER DELETE ON alertContext FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE hasSource(
+alertContext INT REFERENCES alertContext(id) ON UPDATE CASCADE ON DELETE CASCADE,
+source INT REFERENCES ip(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(alertContext, source)
+);
+
+CREATE TABLE hasTarget(
+alertContext INT REFERENCES alertContext(id) ON UPDATE CASCADE ON DELETE CASCADE,
+target INT REFERENCES ip(id) ON UPDATE CASCADE ON DELETE CASCADE,
+PRIMARY KEY(alertContext, target)
+);
+
+CREATE TABLE alert(
+id SERIAL PRIMARY KEY NOT null,
+detectionDate date,
+detectionTime time with time zone
+);
+
+CREATE TRIGGER alert_notify_update AFTER UPDATE ON alert FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER alert_notify_insert AFTER INSERT ON alert FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER alert_notify_delete AFTER DELETE ON alert FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TABLE alertToContext(
+id SERIAL PRIMARY KEY NOT null,
+alert INT REFERENCES alert(id) ON UPDATE CASCADE ON DELETE CASCADE,
+alertContext INT REFERENCES alertContext(id) ON UPDATE CASCADE ON DELETE CASCADE,
+CONSTRAINT u_constraintAlert UNIQUE (alert, alertContext)
+);
+
+
+CREATE TABLE contextToContext(
+id SERIAL PRIMARY KEY NOT null,
+subset INT REFERENCES alertContext(id) ON UPDATE CASCADE ON DELETE CASCADE,
+superset INT REFERENCES alertContext(id) ON UPDATE CASCADE ON DELETE CASCADE,
+CONSTRAINT u_constraintAlerContext UNIQUE (subset, superset)
+);

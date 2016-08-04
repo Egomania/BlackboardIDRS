@@ -1,0 +1,76 @@
+import logging
+import ast
+import select
+import time
+
+import psycopg2
+import psycopg2.extensions
+
+from multiprocessing import Process, Queue
+
+logger = logging.getLogger('idrs')
+EVAL = True
+
+def transform(request):
+
+    payload = ast.literal_eval(notify.payload)
+    self.q[payload['table']].put(payload['id'])
+
+    
+    original = {}
+    new = {}
+    ret = {}
+    for key in request.form.keys():
+        if key == 'operation':
+            ret['operation'] = request.form[key]
+        elif key == 'table':
+            ret['table'] = request.form[key].lower()
+        elif key == 'rid':
+            ret['ident'] = request.form[key]
+        else:
+            if 'original' in key:
+                oldKey = key
+                original[key.replace("_original","")] = request.form[oldKey]
+            else:
+                new[key] = request.form[key]
+
+    ret['original'] = original
+    ret['new'] = new
+
+    logger.info('New incomming request - %s in %s was %s ', ret['ident'], ret['table'], ret['operation'])
+
+    return (ret)
+    
+
+class Listener (Process):
+    def __init__(self, q):
+        Process.__init__(self)
+        self.q = q
+        self.conn = psycopg2.connect("dbname=idrs user=postgres password=ansii host=localhost")
+        self.conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+        self.curs = self.conn.cursor()
+        self.curs.execute("LISTEN table_update;")
+
+    def stop(self, timeout=None):
+        logger.info( 'Stopping "{0}"'.format(self.__module__) )
+
+    def putInQ(self, ret):
+        for elem in self.q[ret['table'].lower()]:
+            elem.put(ret)
+        if EVAL:
+            for elem in self.q['eval']:
+                elem.put(ret)
+
+    def run(self):
+        logger.info( 'Start "{0}"'.format(self.__module__) )
+        logging.info('Waiting for notifications on channel "table_update"')
+        while (True):   
+            if select.select([self.conn],[],[],5) == ([],[],[]):
+                pass
+            else:
+                self.conn.poll()
+                while self.conn.notifies:
+                    notify = self.conn.notifies.pop(0)
+                    ret = transform(notify)
+                    self.putInQ(ret)
+

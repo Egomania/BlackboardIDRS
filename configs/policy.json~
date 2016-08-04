@@ -1,0 +1,208 @@
+{
+
+	"templates": [
+		{"template": {"name" : "router"}},
+		{"template": {"name" : "host"}},
+		{"template": {"name" : "service"}},
+		{"template": {"name" : "vm"}},
+		{"template": {"name" : "ids"}},
+
+	],
+
+	"servers":[
+		{"server": {"name" : "asgard", "uri" : "asgard@net.in.tum.de"}},
+		{"server": {"name" : "yggdrasil", "uri" : "yggdrasil@net.in.tum.de"}}
+	],
+
+	"networks": [
+		{"network":
+			{"name": "productive", "prefix": 64}
+		},
+		{"network":
+			{"name": "backbone", "prefix": 64}
+		}
+	],		
+
+	"devices": [
+		{"device":
+			{
+				"name": "r1", "description": "Router 1",
+				"template" : "router",
+				"interfaces": [{
+					"interface":
+						{"order": 1, "l2": "r1_eth0", "mac": "1E.00.00.00.00.01", 
+						"l3": "productive", "ip": "192.10.0.1"}},{
+					"interface":
+						{"order": 2, "l2": "r1_eth1", "mac": "2E.00.00.00.00.01", 
+						"l3": "backbone", "ip": "192.20.0.1"}}
+				]
+			}
+		},
+		{"device":
+			{
+				"name": "h1", "description": "Host 1", 
+				"template" : "host",
+				"interfaces": [{
+					"interface":
+						{"order": 1, "l2": "h1_eth0", "mac": "1E.00.00.00.00.02", 
+						"l3": "productive", "ip": "192.20.0.2"}}
+				]
+			}
+		},
+		{"device":
+			{
+				"name": "h2", "description": "Host 2" ,
+				"template" : "host",
+				"interfaces": [{
+					"interface":
+						{"order": 1, "l2": "h2_eth0", "mac": "1E.00.00.00.00.02", 
+						"l3": "productive", "ip": "192.20.0.3"}}
+				]
+			}
+		},
+		{"device":
+			{
+				"name": "s1", "description": "Service Provider 1", 
+				"template" : "host",
+				"interfaces": [{
+					"interface":
+						{"order": 1, "l2": "s1_eth0", "mac": "2E.00.00.00.00.02", 
+						"l3": "backbone", "ip": "192.20.0.2", "service": ["db", "kerberos"]}}
+				]
+			}
+		},
+		{"device":
+			{
+				"name": "s2",	"description": "Service Provider 2",
+				"template" : "service",
+				"interfaces": [{
+					"interface":
+						{"order": 1, "l2": "s2_eth0", "mac": "2E.00.00.00.00.03", 
+						"l3": "backbone", "ip": "192.20.0.3", "service": ["web"]}}
+				]
+			}
+		},
+		{"device":
+			{
+				"name": "nids", "description": "Network Intrusion Detection System", 
+				"template" : "ids",
+				"interfaces": [{
+					"interface":
+						{"order": 1, "l2": "nids1_eth0", "mac": "1E.00.00.00.00.10", 
+						"l3": "productive", "ip": "192.10.0.10"}},{
+					"interface":
+						{"order": 2, "l2": "nids1_eth1", "mac": "2E.00.00.00.00.10", 
+						"l3": "backbone", "ip": "192.20.0.10"}}
+				]
+			}
+		}
+
+	],
+
+	"services": [
+		{"service":
+			{
+				"name": "db", "description" : "Database Backend", 
+				"port": 5432
+			}
+		},
+		{"service":
+			{
+				"name": "web", "description": "Web Service",
+				"port": 443,
+				"servicedependsonservice": ["kerberos"]
+			}
+		},
+		{"service":
+			{
+				"name": "kerberos", "description": "Authentication Service",
+				"port": 88,
+				"servicedependsonservice": ["db"]
+			}
+		}
+	],
+
+	"consequences": [
+		{"consequence":
+			{
+				"name": "ad", "description": "avilability decreased" 
+			}
+		},
+		{"consequence":
+			{
+				"name": "cl", "description": "information leakage, confidentiality loss" 
+			}
+		},
+		{"consequence":
+			{
+				"name": "ra", "description": "priviliedge escalation, gained root access" 
+			}
+		}
+	],
+
+	"attacks": [
+		{"attack":
+			{
+				"name": "dos", "description": "Denial of Service Attack",
+				"attackhasconsequences": ["ad"]
+			}
+		},
+		{"attack":
+			{
+				"name": "portscan", "description": "Port Scan Attack",
+				"attackhasconsequences": ["cl"]
+			}
+		},
+		{"attack":
+			{
+				"name": "bo", "description": "Buffer Overflow Attack",
+				"attackhasconsequences": ["ra"]
+			}
+		}
+	],
+
+	"responses": [
+		{"response":
+			{
+				"name": "rl", "description": "Rate Limit",
+				"target": ["host", "service"],
+				"responsemitigatesconsequences": ["ad"],
+				"implementations":[{
+					"implementation": {"name": "simpleRateLimiter", "deployedOn": ["r1"]}}
+					]
+			}
+		},
+		{"response":
+			{
+				"name": "notify", "description": "Send Notification",
+				"target": [],
+				"responsemitigatesconsequences": ["cl"],
+				"implementations":[{
+					"implementation": {"name": "simpleNotifier", "deployedOn": ["nids"]}}
+					]
+			}
+		},
+		{"response":
+			{
+				"name": "isolateEntity", "description": "Isolate Compromised Component (Target)",
+				"target": ["service", "host"],
+				"responsemitigatesconsequences": ["ra"],
+				"implementations":[{
+					"implementation": {"name": "simpleIsolater", "deployedOn": ["r1"]}}
+					]
+			}
+		},
+		{"response":
+			{
+				"name": "isolateNetwork", "description": "Isolate Compromised Component (Target)",
+				"target": ["network"],
+				"responsemitigatesconsequences": ["ra"],
+				"implementations":[{
+					"implementation": {"name": "simpleNetIsolater", "deployedOn": ["r1"]}},{
+					"implementation": {"name": "advancedNetIsolater", "deployedOn": ["r1"]}}
+					]
+			}
+		}
+	]
+
+}

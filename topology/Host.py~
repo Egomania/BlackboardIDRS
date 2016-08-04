@@ -1,0 +1,11 @@
+class Host:
+    def __init__(self, name, server, template, cpus=0, memoryMax=0, memoryMin=0):
+        self.id = name
+        self.server = server
+        self.template = template
+        self.cpus = cpus
+        self.memoryMax = memoryMax
+        self.memoryMin = memoryMin
+
+
+

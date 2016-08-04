@@ -1,0 +1,85 @@
+{
+	"consequences": [
+		{"consequence":
+			{
+				"name": "ad", "description": "avilability decreased" 
+			}
+		},
+		{"consequence":
+			{
+				"name": "cl", "description": "information leakage, confidentiality loss" 
+			}
+		},
+		{"consequence":
+			{
+				"name": "ra", "description": "priviliedge escalation, gained root access" 
+			}
+		}
+	],
+
+	"attacks": [
+		{"attack":
+			{
+				"name": "dos", "description": "Denial of Service Attack",
+				"attackhasconsequences": ["ad"]
+			}
+		},
+		{"attack":
+			{
+				"name": "portscan", "description": "Port Scan Attack",
+				"attackhasconsequences": ["cl"]
+			}
+		},
+		{"attack":
+			{
+				"name": "bo", "description": "Buffer Overflow Attack",
+				"attackhasconsequences": ["ra"]
+			}
+		}
+	],
+
+	"responses": [
+		{"response":
+			{
+				"name": "rl", "description": "Rate Limit",
+				"target": ["host", "service"],
+				"responsemitigatesconsequences": ["ad"],
+				"implementations":[{
+					"implementation": {"name": "simpleRateLimiter", "deployedOn": ["r1"]}}
+					]
+			}
+		},
+		{"response":
+			{
+				"name": "notify", "description": "Send Notification",
+				"target": [],
+				"responsemitigatesconsequences": ["cl"],
+				"implementations":[{
+					"implementation": {"name": "simpleNotifier", "deployedOn": ["nids"]}}
+					]
+			}
+		},
+		{"response":
+			{
+				"name": "isolateEntity", "description": "Isolate Compromised Component (Target)",
+				"target": ["service", "host"],
+				"responsemitigatesconsequences": ["ra"],
+				"implementations":[{
+					"implementation": {"name": "simpleIsolater", "deployedOn": ["r1"]}}
+					]
+			}
+		},
+		{"response":
+			{
+				"name": "isolateNetwork", "description": "Isolate Compromised Component (Target)",
+				"target": ["network"],
+				"responsemitigatesconsequences": ["ra"],
+				"implementations":[{
+					"implementation": {"name": "simpleNetIsolater", "deployedOn": ["r1"]}},{
+					"implementation": {"name": "advancedNetIsolater", "deployedOn": ["r1"]}}
+					]
+			}
+		}
+	]
+
+}

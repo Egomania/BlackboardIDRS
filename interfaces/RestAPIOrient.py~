@@ -1,0 +1,124 @@
+import select
+import logging
+import sys
+import pyorient
+
+import xmltodict
+import datetime
+import time
+
+from flask import Flask, request
+from flask_restful import Resource, Api
+from psycopg2.extensions import AsIs
+from multiprocessing import Process, Queue
+
+from topology import edges, nodes
+
+logger = logging.getLogger("idrs")
+listenTo = []
+name = 'RestAPIOrient'
+
+class IDMEF(Resource):
+    def __init__ (self, client, session_id):
+        self.client = client
+        self.session_id = session_id
+
+    def put(self):
+        data = request.form['data']
+        dataDict = xmltodict.parse(data)
+        if type(dataDict['IDMEF-Message']['Alert']) is list:
+            elem = dataDict['IDMEF-Message']['Alert']
+        else:
+            elem = []
+            elem.append(dataDict['IDMEF-Message']['Alert'])
+        for alert in elem:
+            alertID = alert['@messageid']
+            target = alert['Target']['Node']['Address']['address']
+            source = alert['Source']['Node']['Address']['address']
+            classification = alert['Classification']['@text']
+            creation = alert['CreateTime']
+            formattedTime = time.strptime(creation, "%Y-%m-%dT%H:%M:%S.%fZ")
+            dt = datetime.datetime.fromtimestamp(time.mktime(formattedTime))
+            creationDate = datetime.datetime.date(dt)
+            creationTime = datetime.datetime.time(dt)
+            sourceIP = nodes.ip(source, client=self.client)
+            targetIP = nodes.ip(target, client=self.client)
+            attackType = nodes.attack(classification, client=self.client)
+            
+            result = self.client.query("select EXPAND($inter2) LET $a = (select EXPAND(IN('alertcontexthastarget')) from ip where @RID = " + targetIP.rid + "), $b = (select EXPAND(IN('alertcontexthassource')) from ip where @RID = " + sourceIP.rid + "), $c = (select EXPAND(IN('alertcontextisoftype')) from attack where @RID = " + attackType.rid + "), $inter1 = INTERSECT($a, $b), $inter2 = INTERSECT($inter1, $c)",-1)
+
+            if len(result) == 0:
+                nodeTMP = nodes.alert(alertID, dt, client=self.client, batch=True)
+                newAlertSTR = "let $f = " + str(nodeTMP.query)  + "; "
+                newAlert = nodes.node()
+                newAlert.rid = "(select from alert where name = '" + alertID + "' and detectiontime = DATE('" + str(dt) + "'))"
+                contextName = targetIP.name + sourceIP.name + attackType.name 
+                alertcontextSTR = "let $a = " + str(nodes.alertcontext(contextName, client=self.client, batch=True).query) + "; "
+                alertcontext = nodes.node()
+                alertcontext.rid = "(select from alertcontext where name = '" + contextName + "')"
+                trgSTR = targetIP.rid + "_"
+                acHasTargetSTR = "let $b = " + str(edges.alertcontexthastarget(alertcontext, targetIP, client=self.client, batch=True).query) + " ; "
+                srcSTR = sourceIP.rid + "_"
+                acHasSourceSTR = "let $c = " + str(edges.alertcontexthassource(alertcontext, sourceIP, client=self.client, batch=True).query) + " ; "
+                typeSTR = attackType.rid + "_"
+                acIsOfTypeSTR = "let $d = " + str(edges.alertcontextisoftype(alertcontext, attackType, client=self.client, batch=True).query) + " ; "
+                alertToContextSTR = "let $e = " + str(edges.alerttocontext(newAlert, alertcontext, client=self.client, batch=True).query) + " ; "
+                cmd = ("begin;" +
+                        newAlertSTR +
+                        alertcontextSTR +
+                        acHasSourceSTR +
+                        acHasTargetSTR +
+                        acIsOfTypeSTR +
+                        alertToContextSTR +
+                        "commit;")
+
+            else:
+                newAlertSTR = "let $f = " + str(nodes.alert(alertID, dt, client=self.client, batch=True).query)  + "; "
+                newAlert = nodes.node()
+                newAlert.rid = "(select from alert where name = '" + alertID + "' and detectiontime = DATE('" + str(dt) + "'))"
+
+                alertcontext = nodes.node()
+                alertcontext.rid = result[0]._rid
+
+                alertToContextSTR = "let $e = " + str(edges.alerttocontext(newAlert, alertcontext, client=self.client, batch=True).query) + " ; "
+
+                cmd = ("begin;" +
+                        newAlertSTR +
+                        alertToContextSTR +
+                        "commit;")
+
+            for i in range(10):
+                try:
+                    cluster_id = self.client.batch(cmd)
+                    break
+                except:
+                    pass
+
+
+            logger.info( '"{0}" committed incomming Alerts with AlertID "{1}" and ContextID "{2}"'.format(self.__module__, newAlert.rid, alertcontext.rid) )
+
+        return {'status': 'success'}
+
+class PlugIn (Process):
+
+    def __init__(self, dbs, q):
+        Process.__init__(self)
+        self.client = pyorient.OrientDB(dbs.server, dbs.port)
+        self.session_id = self.client.connect(dbs.user, dbs.pwd)
+        self.client.db_open(dbs.database, dbs.user, dbs.pwd)
+        self.app = Flask(__name__)
+        self.api = Api(self.app)
+
+    def stop(self):
+        logger.info( 'Stopped "{0}"'.format(self.__module__) )
+        self.client.db_close()
+
+    def run(self):
+
+        logger.info( 'Start "{0}"'.format(self.__module__) )
+
+        self.api.add_resource(IDMEF, '/alert', resource_class_kwargs={'client': self.client, 'session_id': self.session_id})
+
+        self.app.run(debug=True, port=7873, use_reloader=False)
+            
+

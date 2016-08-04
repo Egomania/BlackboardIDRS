@@ -1,0 +1,5476 @@
+{
+  "devices": [
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.3",
+              "l2": "h_0_eth0",
+              "l3": "n1",
+              "mac": "1e:00:13:0b:96:06",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_0",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.4",
+              "l2": "h_1_eth0",
+              "l3": "n1",
+              "mac": "1e:00:35:55:a8:43",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_1",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.5",
+              "l2": "h_2_eth0",
+              "l3": "n1",
+              "mac": "1e:00:7e:2a:c7:6b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_2",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.6",
+              "l2": "h_3_eth0",
+              "l3": "n1",
+              "mac": "1e:00:01:26:f5:f7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_3",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.7",
+              "l2": "h_4_eth0",
+              "l3": "n1",
+              "mac": "1e:00:13:5b:78:7a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_4",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.8",
+              "l2": "h_5_eth0",
+              "l3": "n1",
+              "mac": "1e:00:10:6b:4a:f1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_5",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.9",
+              "l2": "h_6_eth0",
+              "l3": "n1",
+              "mac": "1e:00:5c:58:fd:3f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_6",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.10",
+              "l2": "h_7_eth0",
+              "l3": "n1",
+              "mac": "1e:00:40:40:b4:4d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_7",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.11",
+              "l2": "h_8_eth0",
+              "l3": "n1",
+              "mac": "1e:00:23:4d:b3:2e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_8",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.12",
+              "l2": "h_9_eth0",
+              "l3": "n1",
+              "mac": "1e:00:18:46:b4:a6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_9",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.13",
+              "l2": "h_10_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1c:02:aa:fb",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_10",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.14",
+              "l2": "h_11_eth0",
+              "l3": "n1",
+              "mac": "1e:00:19:43:b5:3b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_11",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.15",
+              "l2": "h_12_eth0",
+              "l3": "n1",
+              "mac": "1e:00:3e:2e:51:e8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_12",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.16",
+              "l2": "h_13_eth0",
+              "l3": "n1",
+              "mac": "1e:00:60:2e:5f:b7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_13",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.17",
+              "l2": "h_14_eth0",
+              "l3": "n1",
+              "mac": "1e:00:73:0e:17:38",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_14",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.18",
+              "l2": "h_15_eth0",
+              "l3": "n1",
+              "mac": "1e:00:5b:4f:7b:c1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_15",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.19",
+              "l2": "h_16_eth0",
+              "l3": "n1",
+              "mac": "1e:00:14:10:1e:b0",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_16",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.20",
+              "l2": "h_17_eth0",
+              "l3": "n1",
+              "mac": "1e:00:7d:18:94:f7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_17",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.21",
+              "l2": "h_18_eth0",
+              "l3": "n1",
+              "mac": "1e:00:47:12:e5:41",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_18",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.22",
+              "l2": "h_19_eth0",
+              "l3": "n1",
+              "mac": "1e:00:45:44:3b:26",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_19",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.23",
+              "l2": "h_20_eth0",
+              "l3": "n1",
+              "mac": "1e:00:2b:54:ca:0f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_20",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.24",
+              "l2": "h_21_eth0",
+              "l3": "n1",
+              "mac": "1e:00:7c:79:b7:6a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_21",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.25",
+              "l2": "h_22_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1d:53:e3:6b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_22",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.26",
+              "l2": "h_23_eth0",
+              "l3": "n1",
+              "mac": "1e:00:4b:19:47:72",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_23",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.27",
+              "l2": "h_24_eth0",
+              "l3": "n1",
+              "mac": "1e:00:29:71:79:b4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_24",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.28",
+              "l2": "h_25_eth0",
+              "l3": "n1",
+              "mac": "1e:00:29:62:15:08",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_25",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.29",
+              "l2": "h_26_eth0",
+              "l3": "n1",
+              "mac": "1e:00:31:6f:55:d1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_26",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.30",
+              "l2": "h_27_eth0",
+              "l3": "n1",
+              "mac": "1e:00:63:3f:cb:8f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_27",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.31",
+              "l2": "h_28_eth0",
+              "l3": "n1",
+              "mac": "1e:00:3a:1d:e1:2f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_28",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.32",
+              "l2": "h_29_eth0",
+              "l3": "n1",
+              "mac": "1e:00:24:70:bc:c7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_29",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.33",
+              "l2": "h_30_eth0",
+              "l3": "n1",
+              "mac": "1e:00:59:2d:44:8f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_30",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.34",
+              "l2": "h_31_eth0",
+              "l3": "n1",
+              "mac": "1e:00:4e:62:30:9f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_31",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.35",
+              "l2": "h_32_eth0",
+              "l3": "n1",
+              "mac": "1e:00:25:7c:cd:0f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_32",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.36",
+              "l2": "h_33_eth0",
+              "l3": "n1",
+              "mac": "1e:00:48:3c:d0:82",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_33",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.37",
+              "l2": "h_34_eth0",
+              "l3": "n1",
+              "mac": "1e:00:02:69:7a:b8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_34",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.38",
+              "l2": "h_35_eth0",
+              "l3": "n1",
+              "mac": "1e:00:30:08:30:1f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_35",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.39",
+              "l2": "h_36_eth0",
+              "l3": "n1",
+              "mac": "1e:00:60:34:21:6b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_36",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.40",
+              "l2": "h_37_eth0",
+              "l3": "n1",
+              "mac": "1e:00:48:5e:70:47",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_37",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.41",
+              "l2": "h_38_eth0",
+              "l3": "n1",
+              "mac": "1e:00:33:1c:bd:09",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_38",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.42",
+              "l2": "h_39_eth0",
+              "l3": "n1",
+              "mac": "1e:00:44:43:12:cc",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_39",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.43",
+              "l2": "h_40_eth0",
+              "l3": "n1",
+              "mac": "1e:00:10:3e:ad:da",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_40",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.44",
+              "l2": "h_41_eth0",
+              "l3": "n1",
+              "mac": "1e:00:71:0d:cc:0e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_41",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.45",
+              "l2": "h_42_eth0",
+              "l3": "n1",
+              "mac": "1e:00:0a:17:0f:e0",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_42",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.46",
+              "l2": "h_43_eth0",
+              "l3": "n1",
+              "mac": "1e:00:6f:67:73:23",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_43",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.47",
+              "l2": "h_44_eth0",
+              "l3": "n1",
+              "mac": "1e:00:62:0a:b3:93",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_44",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.48",
+              "l2": "h_45_eth0",
+              "l3": "n1",
+              "mac": "1e:00:2e:02:18:4e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_45",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.49",
+              "l2": "h_46_eth0",
+              "l3": "n1",
+              "mac": "1e:00:59:29:91:1c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_46",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.50",
+              "l2": "h_47_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1d:78:56:52",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_47",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.51",
+              "l2": "h_48_eth0",
+              "l3": "n1",
+              "mac": "1e:00:3f:3c:9f:0a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_48",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.52",
+              "l2": "h_49_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1d:33:5b:ba",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_49",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.53",
+              "l2": "h_50_eth0",
+              "l3": "n1",
+              "mac": "1e:00:3f:28:2b:66",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_50",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.54",
+              "l2": "h_51_eth0",
+              "l3": "n1",
+              "mac": "1e:00:76:60:6e:2a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_51",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.55",
+              "l2": "h_52_eth0",
+              "l3": "n1",
+              "mac": "1e:00:43:6c:16:39",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_52",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.56",
+              "l2": "h_53_eth0",
+              "l3": "n1",
+              "mac": "1e:00:19:41:75:d7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_53",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.57",
+              "l2": "h_54_eth0",
+              "l3": "n1",
+              "mac": "1e:00:16:66:bf:7d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_54",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.58",
+              "l2": "h_55_eth0",
+              "l3": "n1",
+              "mac": "1e:00:6c:5e:ee:26",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_55",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.59",
+              "l2": "h_56_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1c:0c:7a:31",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_56",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.60",
+              "l2": "h_57_eth0",
+              "l3": "n1",
+              "mac": "1e:00:65:2f:ed:3c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_57",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.61",
+              "l2": "h_58_eth0",
+              "l3": "n1",
+              "mac": "1e:00:55:2a:44:20",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_58",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.62",
+              "l2": "h_59_eth0",
+              "l3": "n1",
+              "mac": "1e:00:33:27:7c:29",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_59",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.63",
+              "l2": "h_60_eth0",
+              "l3": "n1",
+              "mac": "1e:00:3f:76:df:ca",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_60",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.64",
+              "l2": "h_61_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1e:39:3c:79",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_61",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.65",
+              "l2": "h_62_eth0",
+              "l3": "n1",
+              "mac": "1e:00:7f:05:f8:df",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_62",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.66",
+              "l2": "h_63_eth0",
+              "l3": "n1",
+              "mac": "1e:00:78:56:42:62",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_63",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.67",
+              "l2": "h_64_eth0",
+              "l3": "n1",
+              "mac": "1e:00:7d:3b:c5:9c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_64",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.68",
+              "l2": "h_65_eth0",
+              "l3": "n1",
+              "mac": "1e:00:78:05:e8:6e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_65",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.69",
+              "l2": "h_66_eth0",
+              "l3": "n1",
+              "mac": "1e:00:24:18:45:40",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_66",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.70",
+              "l2": "h_67_eth0",
+              "l3": "n1",
+              "mac": "1e:00:67:54:44:d1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_67",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.71",
+              "l2": "h_68_eth0",
+              "l3": "n1",
+              "mac": "1e:00:00:21:6f:68",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_68",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.72",
+              "l2": "h_69_eth0",
+              "l3": "n1",
+              "mac": "1e:00:49:1f:2f:e4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_69",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.73",
+              "l2": "h_70_eth0",
+              "l3": "n1",
+              "mac": "1e:00:4d:45:c2:54",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_70",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.74",
+              "l2": "h_71_eth0",
+              "l3": "n1",
+              "mac": "1e:00:0f:2d:08:3d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_71",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.75",
+              "l2": "h_72_eth0",
+              "l3": "n1",
+              "mac": "1e:00:0a:20:09:89",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_72",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.76",
+              "l2": "h_73_eth0",
+              "l3": "n1",
+              "mac": "1e:00:52:0e:c1:6a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_73",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.77",
+              "l2": "h_74_eth0",
+              "l3": "n1",
+              "mac": "1e:00:06:27:38:d4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_74",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.78",
+              "l2": "h_75_eth0",
+              "l3": "n1",
+              "mac": "1e:00:78:68:ef:1f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_75",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.79",
+              "l2": "h_76_eth0",
+              "l3": "n1",
+              "mac": "1e:00:31:6f:78:fb",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_76",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.80",
+              "l2": "h_77_eth0",
+              "l3": "n1",
+              "mac": "1e:00:26:22:83:bf",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_77",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.81",
+              "l2": "h_78_eth0",
+              "l3": "n1",
+              "mac": "1e:00:4f:24:a5:69",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_78",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.82",
+              "l2": "h_79_eth0",
+              "l3": "n1",
+              "mac": "1e:00:1f:00:45:fe",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_79",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.83",
+              "l2": "h_80_eth0",
+              "l3": "n1",
+              "mac": "1e:00:13:4a:b9:6e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_80",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.84",
+              "l2": "h_81_eth0",
+              "l3": "n1",
+              "mac": "1e:00:18:0d:fc:e0",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_81",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.85",
+              "l2": "h_82_eth0",
+              "l3": "n1",
+              "mac": "1e:00:04:1b:be:b4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_82",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.86",
+              "l2": "h_83_eth0",
+              "l3": "n1",
+              "mac": "1e:00:60:53:03:6a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_83",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.87",
+              "l2": "h_84_eth0",
+              "l3": "n1",
+              "mac": "1e:00:32:7e:30:ad",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_84",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.88",
+              "l2": "h_85_eth0",
+              "l3": "n1",
+              "mac": "1e:00:15:09:ba:32",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_85",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.89",
+              "l2": "h_86_eth0",
+              "l3": "n1",
+              "mac": "1e:00:19:4e:b6:50",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_86",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.90",
+              "l2": "h_87_eth0",
+              "l3": "n1",
+              "mac": "1e:00:3a:14:75:6e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_87",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.91",
+              "l2": "h_88_eth0",
+              "l3": "n1",
+              "mac": "1e:00:58:51:94:9c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_88",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.92",
+              "l2": "h_89_eth0",
+              "l3": "n1",
+              "mac": "1e:00:69:3f:74:ea",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_89",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.93",
+              "l2": "h_90_eth0",
+              "l3": "n1",
+              "mac": "1e:00:09:5b:6d:0c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_90",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.94",
+              "l2": "h_91_eth0",
+              "l3": "n1",
+              "mac": "1e:00:57:1c:9c:b6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_91",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.95",
+              "l2": "h_92_eth0",
+              "l3": "n1",
+              "mac": "1e:00:5d:0b:71:73",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_92",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.96",
+              "l2": "h_93_eth0",
+              "l3": "n1",
+              "mac": "1e:00:7d:56:db:fc",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_93",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.97",
+              "l2": "h_94_eth0",
+              "l3": "n1",
+              "mac": "1e:00:5f:2f:34:57",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_94",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.98",
+              "l2": "h_95_eth0",
+              "l3": "n1",
+              "mac": "1e:00:11:60:95:58",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_95",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.99",
+              "l2": "h_96_eth0",
+              "l3": "n1",
+              "mac": "1e:00:55:02:05:f4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_96",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.100",
+              "l2": "h_97_eth0",
+              "l3": "n1",
+              "mac": "1e:00:71:52:a0:62",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_97",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.101",
+              "l2": "h_98_eth0",
+              "l3": "n1",
+              "mac": "1e:00:10:35:24:ee",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_98",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.102",
+              "l2": "h_99_eth0",
+              "l3": "n1",
+              "mac": "1e:00:5d:33:f4:2e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_99",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.3",
+              "l2": "h_100_eth0",
+              "l3": "n2",
+              "mac": "1e:00:3d:0c:3d:85",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_100",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.4",
+              "l2": "h_101_eth0",
+              "l3": "n2",
+              "mac": "1e:00:34:16:bf:3c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_101",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.5",
+              "l2": "h_102_eth0",
+              "l3": "n2",
+              "mac": "1e:00:66:50:de:0d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_102",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.6",
+              "l2": "h_103_eth0",
+              "l3": "n2",
+              "mac": "1e:00:4e:0e:54:75",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_103",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.7",
+              "l2": "h_104_eth0",
+              "l3": "n2",
+              "mac": "1e:00:0d:37:17:45",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_104",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.8",
+              "l2": "h_105_eth0",
+              "l3": "n2",
+              "mac": "1e:00:00:60:c6:8a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_105",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.9",
+              "l2": "h_106_eth0",
+              "l3": "n2",
+              "mac": "1e:00:29:29:1a:30",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_106",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.10",
+              "l2": "h_107_eth0",
+              "l3": "n2",
+              "mac": "1e:00:7b:25:5d:4a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_107",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.11",
+              "l2": "h_108_eth0",
+              "l3": "n2",
+              "mac": "1e:00:55:74:07:11",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_108",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.12",
+              "l2": "h_109_eth0",
+              "l3": "n2",
+              "mac": "1e:00:01:52:a7:de",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_109",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.13",
+              "l2": "h_110_eth0",
+              "l3": "n2",
+              "mac": "1e:00:29:6e:52:c2",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_110",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.14",
+              "l2": "h_111_eth0",
+              "l3": "n2",
+              "mac": "1e:00:24:25:47:a4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_111",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.15",
+              "l2": "h_112_eth0",
+              "l3": "n2",
+              "mac": "1e:00:40:76:8c:80",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_112",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.16",
+              "l2": "h_113_eth0",
+              "l3": "n2",
+              "mac": "1e:00:33:5c:35:2d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_113",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.17",
+              "l2": "h_114_eth0",
+              "l3": "n2",
+              "mac": "1e:00:67:51:d7:f0",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_114",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.18",
+              "l2": "h_115_eth0",
+              "l3": "n2",
+              "mac": "1e:00:41:75:e2:1a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_115",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.19",
+              "l2": "h_116_eth0",
+              "l3": "n2",
+              "mac": "1e:00:3d:24:d3:1e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_116",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.20",
+              "l2": "h_117_eth0",
+              "l3": "n2",
+              "mac": "1e:00:71:7d:58:30",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_117",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.21",
+              "l2": "h_118_eth0",
+              "l3": "n2",
+              "mac": "1e:00:78:38:69:a1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_118",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.22",
+              "l2": "h_119_eth0",
+              "l3": "n2",
+              "mac": "1e:00:3f:35:17:31",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_119",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.23",
+              "l2": "h_120_eth0",
+              "l3": "n2",
+              "mac": "1e:00:2d:3a:ed:82",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_120",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.24",
+              "l2": "h_121_eth0",
+              "l3": "n2",
+              "mac": "1e:00:58:4d:60:41",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_121",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.25",
+              "l2": "h_122_eth0",
+              "l3": "n2",
+              "mac": "1e:00:5b:42:28:77",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_122",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.26",
+              "l2": "h_123_eth0",
+              "l3": "n2",
+              "mac": "1e:00:10:35:63:b7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_123",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.27",
+              "l2": "h_124_eth0",
+              "l3": "n2",
+              "mac": "1e:00:79:41:47:4d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_124",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.28",
+              "l2": "h_125_eth0",
+              "l3": "n2",
+              "mac": "1e:00:56:72:ac:d7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_125",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.29",
+              "l2": "h_126_eth0",
+              "l3": "n2",
+              "mac": "1e:00:64:14:7e:a3",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_126",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.30",
+              "l2": "h_127_eth0",
+              "l3": "n2",
+              "mac": "1e:00:31:0d:50:61",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_127",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.31",
+              "l2": "h_128_eth0",
+              "l3": "n2",
+              "mac": "1e:00:69:72:56:48",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_128",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.32",
+              "l2": "h_129_eth0",
+              "l3": "n2",
+              "mac": "1e:00:50:3d:c9:3d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_129",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.33",
+              "l2": "h_130_eth0",
+              "l3": "n2",
+              "mac": "1e:00:2d:72:71:f0",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_130",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.34",
+              "l2": "h_131_eth0",
+              "l3": "n2",
+              "mac": "1e:00:0a:60:a5:0f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_131",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.35",
+              "l2": "h_132_eth0",
+              "l3": "n2",
+              "mac": "1e:00:5d:6b:e0:12",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_132",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.36",
+              "l2": "h_133_eth0",
+              "l3": "n2",
+              "mac": "1e:00:64:41:1c:37",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_133",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.37",
+              "l2": "h_134_eth0",
+              "l3": "n2",
+              "mac": "1e:00:58:70:b7:92",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_134",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.38",
+              "l2": "h_135_eth0",
+              "l3": "n2",
+              "mac": "1e:00:5b:1d:fc:81",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_135",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.39",
+              "l2": "h_136_eth0",
+              "l3": "n2",
+              "mac": "1e:00:57:60:56:d1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_136",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.40",
+              "l2": "h_137_eth0",
+              "l3": "n2",
+              "mac": "1e:00:5e:35:bf:49",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_137",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.41",
+              "l2": "h_138_eth0",
+              "l3": "n2",
+              "mac": "1e:00:3c:0f:93:46",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_138",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.42",
+              "l2": "h_139_eth0",
+              "l3": "n2",
+              "mac": "1e:00:58:41:49:bb",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_139",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.43",
+              "l2": "h_140_eth0",
+              "l3": "n2",
+              "mac": "1e:00:30:2b:75:48",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_140",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.44",
+              "l2": "h_141_eth0",
+              "l3": "n2",
+              "mac": "1e:00:62:76:b3:45",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_141",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.45",
+              "l2": "h_142_eth0",
+              "l3": "n2",
+              "mac": "1e:00:23:48:2c:ef",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_142",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.46",
+              "l2": "h_143_eth0",
+              "l3": "n2",
+              "mac": "1e:00:51:72:44:39",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_143",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.47",
+              "l2": "h_144_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1d:76:5a:93",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_144",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.48",
+              "l2": "h_145_eth0",
+              "l3": "n2",
+              "mac": "1e:00:79:7c:15:50",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_145",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.49",
+              "l2": "h_146_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1a:03:16:d5",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_146",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.50",
+              "l2": "h_147_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1b:4b:93:88",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_147",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.51",
+              "l2": "h_148_eth0",
+              "l3": "n2",
+              "mac": "1e:00:61:3a:5f:30",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_148",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.52",
+              "l2": "h_149_eth0",
+              "l3": "n2",
+              "mac": "1e:00:20:66:1e:c4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_149",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.53",
+              "l2": "h_150_eth0",
+              "l3": "n2",
+              "mac": "1e:00:03:62:d2:31",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_150",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.54",
+              "l2": "h_151_eth0",
+              "l3": "n2",
+              "mac": "1e:00:72:24:a1:9b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_151",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.55",
+              "l2": "h_152_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1a:69:94:ba",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_152",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.56",
+              "l2": "h_153_eth0",
+              "l3": "n2",
+              "mac": "1e:00:58:5c:be:2c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_153",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.57",
+              "l2": "h_154_eth0",
+              "l3": "n2",
+              "mac": "1e:00:3a:60:9d:93",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_154",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.58",
+              "l2": "h_155_eth0",
+              "l3": "n2",
+              "mac": "1e:00:71:51:60:6b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_155",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.59",
+              "l2": "h_156_eth0",
+              "l3": "n2",
+              "mac": "1e:00:59:1b:81:c7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_156",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.60",
+              "l2": "h_157_eth0",
+              "l3": "n2",
+              "mac": "1e:00:10:44:47:f4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_157",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.61",
+              "l2": "h_158_eth0",
+              "l3": "n2",
+              "mac": "1e:00:6e:40:ea:1b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_158",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.62",
+              "l2": "h_159_eth0",
+              "l3": "n2",
+              "mac": "1e:00:6f:48:f1:d2",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_159",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.63",
+              "l2": "h_160_eth0",
+              "l3": "n2",
+              "mac": "1e:00:5c:2d:5b:8b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_160",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.64",
+              "l2": "h_161_eth0",
+              "l3": "n2",
+              "mac": "1e:00:66:3a:01:76",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_161",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.65",
+              "l2": "h_162_eth0",
+              "l3": "n2",
+              "mac": "1e:00:73:11:a7:ee",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_162",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.66",
+              "l2": "h_163_eth0",
+              "l3": "n2",
+              "mac": "1e:00:59:4e:88:43",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_163",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.67",
+              "l2": "h_164_eth0",
+              "l3": "n2",
+              "mac": "1e:00:5d:32:03:88",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_164",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.68",
+              "l2": "h_165_eth0",
+              "l3": "n2",
+              "mac": "1e:00:62:19:73:4a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_165",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.69",
+              "l2": "h_166_eth0",
+              "l3": "n2",
+              "mac": "1e:00:21:70:f6:5d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_166",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.70",
+              "l2": "h_167_eth0",
+              "l3": "n2",
+              "mac": "1e:00:39:39:34:8d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_167",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.71",
+              "l2": "h_168_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1b:17:65:c6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_168",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.72",
+              "l2": "h_169_eth0",
+              "l3": "n2",
+              "mac": "1e:00:6f:09:bd:cb",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_169",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.73",
+              "l2": "h_170_eth0",
+              "l3": "n2",
+              "mac": "1e:00:27:43:10:68",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_170",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.74",
+              "l2": "h_171_eth0",
+              "l3": "n2",
+              "mac": "1e:00:78:1b:b1:2f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_171",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.75",
+              "l2": "h_172_eth0",
+              "l3": "n2",
+              "mac": "1e:00:21:4b:f6:15",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_172",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.76",
+              "l2": "h_173_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1d:62:b5:b2",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_173",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.77",
+              "l2": "h_174_eth0",
+              "l3": "n2",
+              "mac": "1e:00:16:5a:1b:60",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_174",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.78",
+              "l2": "h_175_eth0",
+              "l3": "n2",
+              "mac": "1e:00:02:78:2c:cf",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_175",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.79",
+              "l2": "h_176_eth0",
+              "l3": "n2",
+              "mac": "1e:00:60:07:35:1b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_176",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.80",
+              "l2": "h_177_eth0",
+              "l3": "n2",
+              "mac": "1e:00:13:65:64:5c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_177",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.81",
+              "l2": "h_178_eth0",
+              "l3": "n2",
+              "mac": "1e:00:2e:29:38:d2",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_178",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.82",
+              "l2": "h_179_eth0",
+              "l3": "n2",
+              "mac": "1e:00:71:4c:97:27",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_179",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.83",
+              "l2": "h_180_eth0",
+              "l3": "n2",
+              "mac": "1e:00:06:01:7d:c6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_180",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.84",
+              "l2": "h_181_eth0",
+              "l3": "n2",
+              "mac": "1e:00:04:3c:02:5e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_181",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.85",
+              "l2": "h_182_eth0",
+              "l3": "n2",
+              "mac": "1e:00:37:12:a0:e0",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_182",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.86",
+              "l2": "h_183_eth0",
+              "l3": "n2",
+              "mac": "1e:00:12:28:ee:e6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_183",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.87",
+              "l2": "h_184_eth0",
+              "l3": "n2",
+              "mac": "1e:00:33:5b:49:d7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_184",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.88",
+              "l2": "h_185_eth0",
+              "l3": "n2",
+              "mac": "1e:00:51:1a:5c:a8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_185",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.89",
+              "l2": "h_186_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1c:11:fe:ca",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_186",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.90",
+              "l2": "h_187_eth0",
+              "l3": "n2",
+              "mac": "1e:00:4a:04:4c:f3",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_187",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.91",
+              "l2": "h_188_eth0",
+              "l3": "n2",
+              "mac": "1e:00:6e:4b:ee:de",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_188",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.92",
+              "l2": "h_189_eth0",
+              "l3": "n2",
+              "mac": "1e:00:56:15:ac:c9",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_189",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.93",
+              "l2": "h_190_eth0",
+              "l3": "n2",
+              "mac": "1e:00:20:71:55:ad",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_190",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.94",
+              "l2": "h_191_eth0",
+              "l3": "n2",
+              "mac": "1e:00:6d:7c:7b:67",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_191",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.95",
+              "l2": "h_192_eth0",
+              "l3": "n2",
+              "mac": "1e:00:45:00:04:dc",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_192",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.96",
+              "l2": "h_193_eth0",
+              "l3": "n2",
+              "mac": "1e:00:78:0d:47:5d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_193",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.97",
+              "l2": "h_194_eth0",
+              "l3": "n2",
+              "mac": "1e:00:1e:01:ae:87",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_194",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.98",
+              "l2": "h_195_eth0",
+              "l3": "n2",
+              "mac": "1e:00:74:03:1d:47",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_195",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.99",
+              "l2": "h_196_eth0",
+              "l3": "n2",
+              "mac": "1e:00:72:3e:cc:2c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_196",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.100",
+              "l2": "h_197_eth0",
+              "l3": "n2",
+              "mac": "1e:00:7d:01:85:b3",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_197",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.101",
+              "l2": "h_198_eth0",
+              "l3": "n2",
+              "mac": "1e:00:57:0d:7f:67",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_198",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.102",
+              "l2": "h_199_eth0",
+              "l3": "n2",
+              "mac": "1e:00:13:54:f4:69",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_199",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.3",
+              "l2": "h_200_eth0",
+              "l3": "n3",
+              "mac": "1e:00:38:59:d8:94",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_200",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.4",
+              "l2": "h_201_eth0",
+              "l3": "n3",
+              "mac": "1e:00:18:41:47:8b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_201",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.5",
+              "l2": "h_202_eth0",
+              "l3": "n3",
+              "mac": "1e:00:2c:5d:e9:9a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_202",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.6",
+              "l2": "h_203_eth0",
+              "l3": "n3",
+              "mac": "1e:00:60:79:a8:e1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_203",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.7",
+              "l2": "h_204_eth0",
+              "l3": "n3",
+              "mac": "1e:00:62:08:ab:54",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_204",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.8",
+              "l2": "h_205_eth0",
+              "l3": "n3",
+              "mac": "1e:00:3c:6c:59:f3",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_205",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.9",
+              "l2": "h_206_eth0",
+              "l3": "n3",
+              "mac": "1e:00:19:77:22:e6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_206",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.10",
+              "l2": "h_207_eth0",
+              "l3": "n3",
+              "mac": "1e:00:6b:7c:3d:a1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_207",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.11",
+              "l2": "h_208_eth0",
+              "l3": "n3",
+              "mac": "1e:00:21:10:b8:bf",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_208",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.12",
+              "l2": "h_209_eth0",
+              "l3": "n3",
+              "mac": "1e:00:61:7b:f6:a3",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_209",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.13",
+              "l2": "h_210_eth0",
+              "l3": "n3",
+              "mac": "1e:00:05:2d:db:ab",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_210",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.14",
+              "l2": "h_211_eth0",
+              "l3": "n3",
+              "mac": "1e:00:2a:16:95:1c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_211",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.15",
+              "l2": "h_212_eth0",
+              "l3": "n3",
+              "mac": "1e:00:5f:42:68:90",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_212",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.16",
+              "l2": "h_213_eth0",
+              "l3": "n3",
+              "mac": "1e:00:44:6c:b0:df",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_213",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.17",
+              "l2": "h_214_eth0",
+              "l3": "n3",
+              "mac": "1e:00:71:00:c9:93",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_214",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.18",
+              "l2": "h_215_eth0",
+              "l3": "n3",
+              "mac": "1e:00:03:7c:d0:dd",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_215",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.19",
+              "l2": "h_216_eth0",
+              "l3": "n3",
+              "mac": "1e:00:2e:2a:f8:4f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_216",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.20",
+              "l2": "h_217_eth0",
+              "l3": "n3",
+              "mac": "1e:00:53:61:08:63",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_217",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.21",
+              "l2": "h_218_eth0",
+              "l3": "n3",
+              "mac": "1e:00:3e:58:35:9d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_218",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.22",
+              "l2": "h_219_eth0",
+              "l3": "n3",
+              "mac": "1e:00:4b:4d:14:2c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_219",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.23",
+              "l2": "h_220_eth0",
+              "l3": "n3",
+              "mac": "1e:00:1d:61:16:2b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_220",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.24",
+              "l2": "h_221_eth0",
+              "l3": "n3",
+              "mac": "1e:00:79:68:42:b2",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_221",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.25",
+              "l2": "h_222_eth0",
+              "l3": "n3",
+              "mac": "1e:00:25:56:5d:3e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_222",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.26",
+              "l2": "h_223_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7f:43:db:a8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_223",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.27",
+              "l2": "h_224_eth0",
+              "l3": "n3",
+              "mac": "1e:00:6d:6b:52:74",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_224",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.28",
+              "l2": "h_225_eth0",
+              "l3": "n3",
+              "mac": "1e:00:45:03:7b:32",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_225",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.29",
+              "l2": "h_226_eth0",
+              "l3": "n3",
+              "mac": "1e:00:5e:23:23:6d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_226",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.30",
+              "l2": "h_227_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7a:2e:4b:b9",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_227",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.31",
+              "l2": "h_228_eth0",
+              "l3": "n3",
+              "mac": "1e:00:39:39:53:50",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_228",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.32",
+              "l2": "h_229_eth0",
+              "l3": "n3",
+              "mac": "1e:00:43:35:b6:3f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_229",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.33",
+              "l2": "h_230_eth0",
+              "l3": "n3",
+              "mac": "1e:00:2b:4b:94:8a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_230",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.34",
+              "l2": "h_231_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7f:11:3c:ab",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_231",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.35",
+              "l2": "h_232_eth0",
+              "l3": "n3",
+              "mac": "1e:00:52:6c:de:6d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_232",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.36",
+              "l2": "h_233_eth0",
+              "l3": "n3",
+              "mac": "1e:00:58:34:01:a7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_233",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.37",
+              "l2": "h_234_eth0",
+              "l3": "n3",
+              "mac": "1e:00:68:5e:b2:d5",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_234",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.38",
+              "l2": "h_235_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7e:0f:e1:c8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_235",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.39",
+              "l2": "h_236_eth0",
+              "l3": "n3",
+              "mac": "1e:00:46:75:13:01",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_236",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.40",
+              "l2": "h_237_eth0",
+              "l3": "n3",
+              "mac": "1e:00:19:11:84:fa",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_237",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.41",
+              "l2": "h_238_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7d:04:87:11",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_238",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.42",
+              "l2": "h_239_eth0",
+              "l3": "n3",
+              "mac": "1e:00:77:12:6e:b7",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_239",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.43",
+              "l2": "h_240_eth0",
+              "l3": "n3",
+              "mac": "1e:00:72:03:b2:52",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_240",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.44",
+              "l2": "h_241_eth0",
+              "l3": "n3",
+              "mac": "1e:00:1c:3c:80:83",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_241",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.45",
+              "l2": "h_242_eth0",
+              "l3": "n3",
+              "mac": "1e:00:27:00:81:67",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_242",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.46",
+              "l2": "h_243_eth0",
+              "l3": "n3",
+              "mac": "1e:00:2d:56:35:16",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_243",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.47",
+              "l2": "h_244_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7a:30:19:df",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_244",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.48",
+              "l2": "h_245_eth0",
+              "l3": "n3",
+              "mac": "1e:00:61:6a:a5:df",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_245",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.49",
+              "l2": "h_246_eth0",
+              "l3": "n3",
+              "mac": "1e:00:65:1e:47:45",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_246",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.50",
+              "l2": "h_247_eth0",
+              "l3": "n3",
+              "mac": "1e:00:33:69:67:f1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_247",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.51",
+              "l2": "h_248_eth0",
+              "l3": "n3",
+              "mac": "1e:00:35:77:f0:fc",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_248",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.52",
+              "l2": "h_249_eth0",
+              "l3": "n3",
+              "mac": "1e:00:42:67:6d:22",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_249",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.53",
+              "l2": "h_250_eth0",
+              "l3": "n3",
+              "mac": "1e:00:45:1d:86:a8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_250",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.54",
+              "l2": "h_251_eth0",
+              "l3": "n3",
+              "mac": "1e:00:63:50:4d:2b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_251",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.55",
+              "l2": "h_252_eth0",
+              "l3": "n3",
+              "mac": "1e:00:22:0c:4d:3d",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_252",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.56",
+              "l2": "h_253_eth0",
+              "l3": "n3",
+              "mac": "1e:00:2d:0e:b3:66",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_253",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.57",
+              "l2": "h_254_eth0",
+              "l3": "n3",
+              "mac": "1e:00:28:5d:8d:36",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_254",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.58",
+              "l2": "h_255_eth0",
+              "l3": "n3",
+              "mac": "1e:00:57:7d:32:e4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_255",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.59",
+              "l2": "h_256_eth0",
+              "l3": "n3",
+              "mac": "1e:00:46:54:43:30",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_256",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.60",
+              "l2": "h_257_eth0",
+              "l3": "n3",
+              "mac": "1e:00:58:10:9f:90",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_257",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.61",
+              "l2": "h_258_eth0",
+              "l3": "n3",
+              "mac": "1e:00:62:2d:e0:a8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_258",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.62",
+              "l2": "h_259_eth0",
+              "l3": "n3",
+              "mac": "1e:00:53:77:e5:6f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_259",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.63",
+              "l2": "h_260_eth0",
+              "l3": "n3",
+              "mac": "1e:00:73:36:33:0e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_260",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.64",
+              "l2": "h_261_eth0",
+              "l3": "n3",
+              "mac": "1e:00:79:1e:83:77",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_261",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.65",
+              "l2": "h_262_eth0",
+              "l3": "n3",
+              "mac": "1e:00:62:57:6d:81",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_262",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.66",
+              "l2": "h_263_eth0",
+              "l3": "n3",
+              "mac": "1e:00:78:7c:34:46",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_263",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.67",
+              "l2": "h_264_eth0",
+              "l3": "n3",
+              "mac": "1e:00:21:5c:76:a6",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_264",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.68",
+              "l2": "h_265_eth0",
+              "l3": "n3",
+              "mac": "1e:00:10:41:20:04",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_265",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.69",
+              "l2": "h_266_eth0",
+              "l3": "n3",
+              "mac": "1e:00:41:62:41:85",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_266",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.70",
+              "l2": "h_267_eth0",
+              "l3": "n3",
+              "mac": "1e:00:74:0f:cd:b4",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_267",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.71",
+              "l2": "h_268_eth0",
+              "l3": "n3",
+              "mac": "1e:00:08:2a:f4:45",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_268",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.72",
+              "l2": "h_269_eth0",
+              "l3": "n3",
+              "mac": "1e:00:64:67:86:18",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_269",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.73",
+              "l2": "h_270_eth0",
+              "l3": "n3",
+              "mac": "1e:00:3a:2c:e8:ef",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_270",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.74",
+              "l2": "h_271_eth0",
+              "l3": "n3",
+              "mac": "1e:00:64:70:d7:4b",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_271",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.75",
+              "l2": "h_272_eth0",
+              "l3": "n3",
+              "mac": "1e:00:10:32:6e:8f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_272",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.76",
+              "l2": "h_273_eth0",
+              "l3": "n3",
+              "mac": "1e:00:10:23:3f:28",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_273",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.77",
+              "l2": "h_274_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7a:37:09:11",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_274",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.78",
+              "l2": "h_275_eth0",
+              "l3": "n3",
+              "mac": "1e:00:3b:4f:66:b9",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_275",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.79",
+              "l2": "h_276_eth0",
+              "l3": "n3",
+              "mac": "1e:00:74:37:a4:2f",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_276",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.80",
+              "l2": "h_277_eth0",
+              "l3": "n3",
+              "mac": "1e:00:4b:33:de:cd",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_277",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.81",
+              "l2": "h_278_eth0",
+              "l3": "n3",
+              "mac": "1e:00:7f:2e:f7:3c",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_278",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.82",
+              "l2": "h_279_eth0",
+              "l3": "n3",
+              "mac": "1e:00:5b:7f:14:68",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_279",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.83",
+              "l2": "h_280_eth0",
+              "l3": "n3",
+              "mac": "1e:00:21:2c:21:a1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_280",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.84",
+              "l2": "h_281_eth0",
+              "l3": "n3",
+              "mac": "1e:00:18:2b:ad:23",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_281",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.85",
+              "l2": "h_282_eth0",
+              "l3": "n3",
+              "mac": "1e:00:75:34:d8:45",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_282",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.86",
+              "l2": "h_283_eth0",
+              "l3": "n3",
+              "mac": "1e:00:32:58:3d:f1",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_283",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.87",
+              "l2": "h_284_eth0",
+              "l3": "n3",
+              "mac": "1e:00:1d:46:5a:71",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_284",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.88",
+              "l2": "h_285_eth0",
+              "l3": "n3",
+              "mac": "1e:00:31:3e:22:fc",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_285",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.89",
+              "l2": "h_286_eth0",
+              "l3": "n3",
+              "mac": "1e:00:48:1b:cd:8a",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_286",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.90",
+              "l2": "h_287_eth0",
+              "l3": "n3",
+              "mac": "1e:00:44:19:00:28",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_287",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.91",
+              "l2": "h_288_eth0",
+              "l3": "n3",
+              "mac": "1e:00:02:0d:34:37",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_288",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.92",
+              "l2": "h_289_eth0",
+              "l3": "n3",
+              "mac": "1e:00:5b:1f:7e:64",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_289",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.93",
+              "l2": "h_290_eth0",
+              "l3": "n3",
+              "mac": "1e:00:19:05:d4:0e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_290",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.94",
+              "l2": "h_291_eth0",
+              "l3": "n3",
+              "mac": "1e:00:3e:0c:94:04",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_291",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.95",
+              "l2": "h_292_eth0",
+              "l3": "n3",
+              "mac": "1e:00:75:4c:53:d8",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_292",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.96",
+              "l2": "h_293_eth0",
+              "l3": "n3",
+              "mac": "1e:00:17:3c:ea:34",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_293",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.97",
+              "l2": "h_294_eth0",
+              "l3": "n3",
+              "mac": "1e:00:4f:5b:70:d5",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_294",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.98",
+              "l2": "h_295_eth0",
+              "l3": "n3",
+              "mac": "1e:00:21:01:79:13",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_295",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.99",
+              "l2": "h_296_eth0",
+              "l3": "n3",
+              "mac": "1e:00:76:08:af:bd",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_296",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.100",
+              "l2": "h_297_eth0",
+              "l3": "n3",
+              "mac": "1e:00:5f:6b:40:88",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_297",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.101",
+              "l2": "h_298_eth0",
+              "l3": "n3",
+              "mac": "1e:00:42:15:f9:2e",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_298",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.102",
+              "l2": "h_299_eth0",
+              "l3": "n3",
+              "mac": "1e:00:39:22:28:ad",
+              "order": 1
+            }
+          }
+        ],
+        "name": "h_299",
+        "template": "host"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.1",
+              "l2": "r1_eth0",
+              "l3": "n1",
+              "mac": "1e:00:41:16:d2:0a",
+              "order": 1
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.20.0.1",
+              "l2": "r1_eth2",
+              "l3": "b",
+              "mac": "1e:00:11:15:b0:24",
+              "order": 2
+            }
+          }
+        ],
+        "name": "r1",
+        "template": "router"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.1.1",
+              "l2": "r2_eth0",
+              "l3": "n2",
+              "mac": "1e:00:55:47:95:e7",
+              "order": 1
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.20.0.2",
+              "l2": "r2_eth2",
+              "l3": "b",
+              "mac": "1e:00:7c:43:49:e2",
+              "order": 2
+            }
+          }
+        ],
+        "name": "r2",
+        "template": "router"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.2.1",
+              "l2": "r3_eth0",
+              "l3": "n3",
+              "mac": "1e:00:19:3f:7d:da",
+              "order": 1
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.20.0.3",
+              "l2": "r3_eth2",
+              "l3": "b",
+              "mac": "1e:00:78:46:57:25",
+              "order": 2
+            }
+          }
+        ],
+        "name": "r3",
+        "template": "router"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.17.0.1",
+              "l2": "rs_eth0",
+              "l3": "s",
+              "mac": "1e:00:15:02:d9:39",
+              "order": 1
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.20.0.4",
+              "l2": "rs_eth2",
+              "l3": "b",
+              "mac": "1e:00:5c:4f:d8:34",
+              "order": 2
+            }
+          }
+        ],
+        "name": "rs",
+        "template": "router"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.16.0.2",
+              "l2": "nids_eth0",
+              "l3": "n1",
+              "mac": "1e:00:2a:7c:3d:16",
+              "order": 1
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.16.1.2",
+              "l2": "nids_eth2",
+              "l3": "n2",
+              "mac": "1e:00:40:1c:64:d0",
+              "order": 2
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.16.2.2",
+              "l2": "nids_eth3",
+              "l3": "n3",
+              "mac": "1e:00:25:63:b0:da",
+              "order": 3
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.17.0.2",
+              "l2": "nids_eth4",
+              "l3": "s",
+              "mac": "1e:00:64:72:c3:f1",
+              "order": 4
+            }
+          },
+          {
+            "interface": {
+              "ip": "172.20.0.5",
+              "l2": "nids_eth5",
+              "l3": "b",
+              "mac": "1e:00:46:63:4d:12",
+              "order": 5
+            }
+          }
+        ],
+        "name": "nids",
+        "template": "ids"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.17.0.254",
+              "l2": "sh1_eth0",
+              "l3": "s",
+              "mac": "1e:00:59:00:60:6b",
+              "order": 1,
+              "service": [
+                "s1"
+              ]
+            }
+          }
+        ],
+        "name": "sh1",
+        "template": "service"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.17.0.253",
+              "l2": "sh2_eth0",
+              "l3": "s",
+              "mac": "1e:00:12:0b:3b:eb",
+              "order": 1,
+              "service": [
+                "s3"
+              ]
+            }
+          }
+        ],
+        "name": "sh2",
+        "template": "service"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.17.0.252",
+              "l2": "sh3_eth0",
+              "l3": "s",
+              "mac": "1e:00:77:30:f6:2b",
+              "order": 1,
+              "service": [
+                "s2"
+              ]
+            }
+          }
+        ],
+        "name": "sh3",
+        "template": "service"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.17.0.251",
+              "l2": "sh4_eth0",
+              "l3": "s",
+              "mac": "1e:00:53:48:bf:6e",
+              "order": 1,
+              "service": [
+                "s4",
+                "s5"
+              ]
+            }
+          }
+        ],
+        "name": "sh4",
+        "template": "service"
+      }
+    },
+    {
+      "device": {
+        "interfaces": [
+          {
+            "interface": {
+              "ip": "172.17.0.250",
+              "l2": "evil_eth0",
+              "l3": "s",
+              "mac": "1e:00:3d:02:e4:37",
+              "order": 1,
+              "service": [
+                "s6"
+              ]
+            }
+          }
+        ],
+        "name": "evil",
+        "template": "service"
+      }
+    }
+  ],
+  "networks": [
+    {
+      "network": {
+        "name": "n1",
+        "prefix": 64
+      }
+    },
+    {
+      "network": {
+        "name": "n2",
+        "prefix": 64
+      }
+    },
+    {
+      "network": {
+        "name": "n3",
+        "prefix": 64
+      }
+    },
+    {
+      "network": {
+        "name": "s",
+        "prefix": 64
+      }
+    },
+    {
+      "network": {
+        "name": "b",
+        "prefix": 64
+      }
+    }
+  ],
+  "services": [
+    {
+      "service": {
+        "name": "s1",
+        "port": 443,
+        "servicedependsonservice": [
+          "s2",
+          "s3"
+        ]
+      }
+    },
+    {
+      "service": {
+        "name": "s3",
+        "port": 88,
+        "servicedependsonservice": [
+          "s4"
+        ]
+      }
+    },
+    {
+      "service": {
+        "name": "s2",
+        "port": 587,
+        "servicedependsonservice": [
+          "s5"
+        ]
+      }
+    },
+    {
+      "service": {
+        "name": "s4",
+        "port": 2424,
+        "servicedependsonservice": [
+          "s6"
+        ]
+      }
+    },
+    {
+      "service": {
+        "name": "s5",
+        "port": 5432,
+        "servicedependsonservice": [
+          "s6"
+        ]
+      }
+    },
+    {
+      "service": {
+        "name": "s6",
+        "port": 666,
+        "servicedependsonservice": []
+      }
+    }
+  ],
+  "templates": [
+    {
+      "template": {
+        "name": "router"
+      }
+    },
+    {
+      "template": {
+        "name": "host"
+      }
+    },
+    {
+      "template": {
+        "name": "service"
+      }
+    },
+    {
+      "template": {
+        "name": "vm"
+      }
+    },
+    {
+      "template": {
+        "name": "ids"
+      }
+    }
+  ]
+}

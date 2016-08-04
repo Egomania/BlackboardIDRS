@@ -1,0 +1,110 @@
+INSERT INTO template VALUES (1, 'attacker');
+INSERT INTO template VALUES (2, 'victim');
+INSERT INTO template VALUES (3, 'router');
+INSERT INTO template VALUES (4, 'vitsi');
+
+INSERT INTO server VALUES (1, 'asgard', 'asgard.net.in.tum.de');
+INSERT INTO server VALUES (2, 'yggdrasil', 'yggdrasil.net.in.tum.de');
+
+INSERT INTO network VALUES (1, 'local1', 24);
+INSERT INTO network VALUES (2, 'local2', 24);
+INSERT INTO network VALUES (3, 'backbone', 24);
+
+INSERT INTO switched_network VALUES (1, 'bragi_eth0');
+INSERT INTO switched_network VALUES (2, 'bragi_eth1');
+INSERT INTO switched_network VALUES (3, 'hermod_eth0');
+INSERT INTO switched_network VALUES (4, 'hermod_eth1');
+INSERT INTO switched_network VALUES (5, 'bilskinir_eth0');
+INSERT INTO switched_network VALUES (6, 'folkwang_eth0');
+INSERT INTO switched_network VALUES (7, 'victim_eth0');
+INSERT INTO switched_network VALUES (8, 'attacker1_eth0');
+INSERT INTO switched_network VALUES (9, 'attacker2_eth0');
+INSERT INTO switched_network VALUES (10, 'attacker3_eth0');
+
+INSERT INTO host VALUES (1, 'bragi', 1, 512, 1024);
+INSERT INTO host VALUES (2, 'hermod', 1, 512, 1024);
+INSERT INTO host VALUES (3, 'bilskinir', 1, 512, 1024);
+INSERT INTO host VALUES (4, 'folkwang', 1, 512, 1024);
+INSERT INTO host VALUES (5, 'victim', 1, 512, 1024);
+INSERT INTO host VALUES (6, 'attacker1', 1, 512, 1024);
+INSERT INTO host VALUES (7, 'attacker2', 1, 512, 1024);
+INSERT INTO host VALUES (8, 'attacker3', 1, 512, 1024);
+
+INSERT INTO runsOn VALUES(1,1);
+INSERT INTO runsOn VALUES(2,2);
+INSERT INTO runsOn VALUES(3,1);
+INSERT INTO runsOn VALUES(4,2);
+INSERT INTO runsOn VALUES(5,1);
+INSERT INTO runsOn VALUES(6,1);
+INSERT INTO runsOn VALUES(7,1);
+INSERT INTO runsOn VALUES(8,2);
+
+INSERT INTO uses VALUES(1,3);
+INSERT INTO uses VALUES(2,3);
+INSERT INTO uses VALUES(3,4);
+INSERT INTO uses VALUES(4,4);
+INSERT INTO uses VALUES(5,2);
+INSERT INTO uses VALUES(6,1);
+INSERT INTO uses VALUES(7,1);
+INSERT INTO uses VALUES(8,1);
+
+INSERT INTO interface VALUES(1, '00:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(2, '01:11:22:33:44:55', 2, 100);
+INSERT INTO interface VALUES(3, '11:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(4, '10:11:22:33:44:55', 2, 100);
+INSERT INTO interface VALUES(5, '31:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(6, '32:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(7, '88:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(8, '91:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(9, '92:11:22:33:44:55', 1, 100);
+INSERT INTO interface VALUES(10, '93:11:22:33:44:55', 1, 100);
+
+INSERT INTO interfaceIsIn VALUES(1,1);
+INSERT INTO interfaceIsIn VALUES(2,2);
+INSERT INTO interfaceIsIn VALUES(3,3);
+INSERT INTO interfaceIsIn VALUES(4,4);
+INSERT INTO interfaceIsIn VALUES(5,5);
+INSERT INTO interfaceIsIn VALUES(6,6);
+INSERT INTO interfaceIsIn VALUES(7,7);
+INSERT INTO interfaceIsIn VALUES(8,8);
+INSERT INTO interfaceIsIn VALUES(9,9);
+INSERT INTO interfaceIsIn VALUES(10,10);
+
+INSERT INTO hostHasInterface VALUES(1,1);
+INSERT INTO hostHasInterface VALUES(1,2);
+INSERT INTO hostHasInterface VALUES(2,3);
+INSERT INTO hostHasInterface VALUES(2,4);
+INSERT INTO hostHasInterface VALUES(3,5);
+INSERT INTO hostHasInterface VALUES(4,6);
+INSERT INTO hostHasInterface VALUES(5,7);
+INSERT INTO hostHasInterface VALUES(6,8);
+INSERT INTO hostHasInterface VALUES(7,9);
+INSERT INTO hostHasInterface VALUES(8,10);
+
+INSERT INTO ip VALUES (1, '172.16.0.1', 1);
+INSERT INTO ip VALUES (2, '172.16.0.2', 1);
+INSERT INTO ip VALUES (3, '172.16.0.3', 1);
+INSERT INTO ip VALUES (4, '172.16.0.4', 1);
+
+INSERT INTO ip VALUES (5, '172.17.0.1', 2);
+INSERT INTO ip VALUES (6, '172.17.0.2', 2);
+INSERT INTO ip VALUES (7, '172.17.0.3', 2);
+INSERT INTO ip VALUES (8, '172.17.0.4', 1);
+
+INSERT INTO ip VALUES (9, '172.20.0.1', 3);
+INSERT INTO ip VALUES (10, '172.20.0.2', 3);
+
+INSERT INTO ipToMac VALUES (9, 2);
+INSERT INTO ipToMac VALUES (10, 4);
+INSERT INTO ipToMac VALUES (1, 1);
+INSERT INTO ipToMac VALUES (2, 5);
+INSERT INTO ipToMac VALUES (3, 7);
+INSERT INTO ipToMac VALUES (4, 8);
+INSERT INTO ipToMac VALUES (5, 3);
+INSERT INTO ipToMac VALUES (6, 6);
+INSERT INTO ipToMac VALUES (7, 9);
+INSERT INTO ipToMac VALUES (8, 10);
+
+INSERT INTO attacks VALUES (1, 'denial of service');
+INSERT INTO attacks VALUES (2, 'port scan');
+

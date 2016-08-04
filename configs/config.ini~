@@ -1,0 +1,30 @@
+[Modules]
+interfaces=simulator
+#interfaces=RestAPI
+#interfaces=simulator
+#modules=
+#modules=PrioSimAlertOrient,PrioSimAlertContextOrient,AggregatorOrient,CorrelatorOrient
+modules=PrioSimAlertPsql,PrioSimAlertContextPsql,AggregatorPsql,CorrelatorPsql,ResponseIdentification
+#modules=CorrelatorPsql
+#modules=PrioSimAlertPsql,PrioSimAlertContextPsql
+#modules=PrioSimAlertOrient,PrioSimAlertContextOrient
+
+[Database]
+# orient or psql
+# orient = 2424 psql = 5432
+#backend=orient
+#port=2424
+backend=psql
+port=5432
+server=localhost
+user=surf
+pwd=ansii
+# path flooding dos
+database=responsetest
+index=False
+policyFile=
+infrastructureFile=
+#infrastructureFile=configs/infGen.json
+#policyFile=configs/policyGen.json
+deletePolicy=False
+deleteInfrastructure=False

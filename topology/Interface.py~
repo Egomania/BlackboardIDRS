@@ -1,0 +1,9 @@
+class Interface:
+    def __init__(self, mac, ip, host, order=0, rate=None):
+        self.order = order
+        self.mac = mac
+        self.rate = rate
+	self.ip = ip
+	self.order_ = order
+	self.host = host
+

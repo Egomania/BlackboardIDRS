@@ -1,0 +1,80 @@
+import logging
+import select
+import psycopg2
+import psycopg2.extensions
+
+from multiprocessing import Process, Queue
+
+class PlugIn (Process):
+    def __init__(self, q):
+        Process.__init__(self)
+        self.rules = ['sameSource', 'sameTarget']
+        self.subscribe = q['alertcontext']
+        self.conn = psycopg2.connect("dbname=idrs user=postgres password=ansii host=localhost")
+        self.cur = self.conn.cursor()
+        self.rulesToId = {}
+        for elem in self.rules:
+            searchStatement = 'SELECT id FROM attacks WHERE type like %s'
+            searchStatement = self.cur.mogrify(searchStatement, (elem, ))
+            self.cur.execute(searchStatement)
+            ident = self.cur.fetchone()
+            if ident == None:
+                statement = 'insert into attacks (type) VALUES(%s) RETURNING id'
+                statement = self.cur.mogrify(statement, (elem, ))
+                self.cur.execute(statement)
+                self.rulesToId[elem] = self.cur.fetchone()[0]
+            else:
+                self.rulesToId[elem] = ident[0]
+        self.conn.commit()
+
+    def stop(self):
+	logging.info( 'Stopped "{0}"'.format(self.__module__) )
+
+    def run(self):
+
+        logging.info( 'Start "{0}"'.format(self.__module__) )
+
+        while (True):
+            while not self.subscribe.empty():
+                changed = self.subscribe.get()
+                logging.info( '"{0}" got incomming change "{1}"'.format(self.__module__, changed) )
+                searchStatement = 'SELECT * FROM alertContext WHERE id = %s'
+                searchStatement = self.cur.mogrify(searchStatement, (changed, ))
+                self.cur.execute(searchStatement)
+                alertContext = self.cur.fetchone()
+                if alertContext == None:
+                    pass
+                else:
+                    same(self, alertContext, 'source', 'hasSource', 'sameSource')
+                    same(self, alertContext, 'target', 'hasTarget', 'sameTarget')
+            
+def same(self, alertContext, field, table, attacktype):
+    statement = 'select t.' + field + ' from ' + table + ' t where t.alertContext = %s'
+    statement = self.cur.mogrify(statement, (alertContext[0], ))
+    self.cur.execute(statement)
+    elem = self.cur.fetchone()
+    statement = 'select a.id from alertContext a, ' + table + ' t where t.' + field + ' = %s and a.type = %s and t.alertContext = a.id;'
+    statement = self.cur.mogrify(statement, (elem, alertContext[1], ))
+    self.cur.execute(statement)
+    result = self.cur.fetchall()
+    if len(result) > 1:
+        statement = 'select super.id from alertContext super, contextToContext has, alertContext sub where has.subset in %s and sub.type = %s and super.id = has.superset and sub.id = has.subset and super.type = %s'
+        statement = self.cur.mogrify(statement, (tuple(result), alertContext[1],  self.rulesToId[attacktype], ))
+        self.cur.execute(statement)
+        superset = self.cur.fetchall()
+        if not superset:
+            statement = 'INSERT INTO alertContext (type) VALUES (%s) RETURNING id;'
+            statement = self.cur.mogrify(statement, (self.rulesToId[attacktype], ))
+            self.cur.execute(statement)
+            superset = self.cur.fetchone()
+                
+        superset = superset[0]
+        for elem in result:
+            try:
+                self.cur.execute('INSERT INTO contextToContext (superset, subset) VALUES (%s, %s)', (superset, elem[0]))
+            except Exception as e:
+                logging.info( 'Error in "{0}": "{1}"'.format(self.__module__, e) ) 
+                self.conn.rollback()   
+
+        self.conn.commit()
+

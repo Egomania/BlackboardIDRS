@@ -1,0 +1,25 @@
+UPDATE alert set name=name.append((select @rid.asString() from ip where name='172.16.0.1' LIMIT 1))
+
+
+select name from (select EXPAND(IN('hostRunsOnServer')) from host where name = 'bragi')
+
+select name from (select EXPAND(IN('hostUsesTemplate')) from template where name = 'router')
+
+select name from (select expand(intersect($a,$b)) LET $a = (select EXPAND(IN('hostUsesTemplate')) from template where name = 'router'), $b = (select EXPAND(OUT('hostRunsOnServer')) from server where name = 'asgard'))
+
+select EXPAND($c) LET $a = (select  from template where name = 'router'), $b = (select from server where name = 'asgard'), $c = intersect($a, $b) 
+
+select from (select EXPAND(IN('hostUsesTemplate')) from template where name = 'router') a, (select EXPAND(OUT('hostRunsOnServer')) from server where name = 'asgard') b WHERE a.name = b.name
+
+SELECT FROM (TRAVERSE BOTH('hostUsesTemplate') from template WHILE $depth <= 2) WHERE name = 'router'
+
+select from (select EXPAND(IN('hostUsesTemplate')) from template where name = 'router')
+
+SELECT EXPAND( $c ) LET $a = ( SELECT FROM E ), $b = ( SELECT FROM V ), $c = UNIONALL( $a, $b )
+
+CONNECT remote:localhost/bla surf ansii
+
+select EXPAND($inter2) LET $a = (select EXPAND(IN('alertContextHasTarget')) from ip where @RID = #16:2), $b = (select EXPAND(IN('alertContextHasSource')) from ip where @RID = #16:3), $c = (select EXPAND(IN('alertContextIsOfType')) from attack where @RID = #13:1), $inter1 = INTERSECT($a, $b), $inter2 = INTERSECT($inter1, $c)
+
+select EXPAND($d) LET $a = (select EXPAND(IN('alertContextIsOfType')) from attack where name = 'sameSource'), $b = (select DISTINCT(@RID) from (select EXPAND(IN('alertContextHasSource')) from ip where @RID = #16:3)), $c = (select EXPAND(OUT('ContextToContext')) from alertcontext where @RID IN $b), $d = intersect($a, $c) 
+

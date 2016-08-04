@@ -1,0 +1,256 @@
+import select
+import logging
+import sys
+import psycopg2
+import psycopg2.extensions
+import pyorient
+import os
+
+import xmltodict
+import datetime
+import time
+
+import timeout_decorator
+
+from multiprocessing import Process, Queue
+import xml.etree.ElementTree as ET
+
+from topology import edges, nodes
+
+logger = logging.getLogger("idrs")
+
+cleanDBFromAlert = True
+siMFolder = "./producer/sim/"
+EVAL = True
+if EVAL:
+    listenTo = ['alert']
+    name = 'simulator'
+
+
+class Alert():
+
+    def __init__(self, alertID):
+        self.msgID = alertID
+        self.source = None
+        self.target = None
+        self.classification = None
+        self.dt = None
+
+    def printAlert(self):
+        return ("Message ID = " + self.msgID + " Source = " + self.source + " Target = " + self.target + " Classification = " + self.classification)
+
+class PlugIn (Process):
+
+    alertList = {}
+    sourceIP = {}
+    targetIP = {}
+    classification = {}
+    timeList = {}
+
+    def __init__(self, dbs, q):
+        Process.__init__(self)
+        self.backend = dbs.backend
+
+        if self.backend == 'orient':
+            self.client = pyorient.OrientDB(dbs.server, dbs.port)
+            self.session_id = self.client.connect(dbs.user, dbs.pwd)
+            self.client.db_open(dbs.database, dbs.user, dbs.pwd)
+        elif self.backend == 'psql':
+            self.conn = psycopg2.connect(database=dbs.database, user=dbs.user, password=dbs.pwd, port=dbs.port, host=dbs.server)
+            self.cur = self.conn.cursor()
+        else:
+            logger.error("Wrong Database Backend %s", self.backend)
+            sys.exit()
+        
+        if EVAL:
+            self.subscribe = q[listenTo[0] + '_' + name]
+
+    def stop(self):
+        logger.info( 'Stopped "{0}"'.format(self.__module__) )
+        if self.backend == 'orient':
+            self.client.db_close()
+        elif self.backend == 'psql':
+            self.cur.close()
+            self.conn.close()
+        else:
+            logger.error("Wrong Database Backend %s", self.backend)
+
+    def createData(self):
+        for ip in self.sourceIP.keys():
+            ipNode = nodes.ip(ip, client = self.client)
+            self.sourceIP[ip] = ipNode.rid
+        for ip in self.targetIP.keys():
+            ipNode = nodes.ip(ip, client = self.client)
+            self.targetIP[ip] = ipNode.rid
+        for classification in self.classification.keys():
+            typeNode = nodes.attack(classification, client = self.client)
+            self.classification[classification] = typeNode.rid
+
+    def cleanDB(self):
+        
+        if self.backend == 'orient':
+            for i in range(10):
+                try:
+                    self.client.command("delete vertex alert")
+                    self.client.command("delete vertex alertcontext")
+                    self.client.command("truncate class alert")
+                    self.client.command("truncate class alertcontext")
+                    break
+                except:
+                    pass
+
+        elif self.backend == 'psql':
+            self.cur.execute("TRUNCATE TABLE alert RESTART IDENTITY CASCADE;")
+            self.cur.execute("TRUNCATE TABLE alertcontext RESTART IDENTITY CASCADE;")
+            self.conn.commit()
+
+        else:
+            logger.error("Wrong Database Backend %s", self.backend)
+    
+
+    def insertAlertOrient(alert):
+
+        query = (
+            "select EXPAND($inter2) "
+            "LET $a = (select EXPAND(IN('alertContextHasTarget')) from ip where @RID = " + self.targetIP[alert.target] + "), "
+            "$b = (select EXPAND(IN('alertContextHasSource')) from ip where @RID = " + self.sourceIP[alert.source] + "), "
+            "$c = (select EXPAND(IN('alertContextIsOfType')) from attack where @RID = " + self.classification[alert.classification] + "), "
+            "$inter1 = INTERSECT($a, $b), $inter2 = INTERSECT($inter1, $c)"
+        )
+
+        result = self.client.query(query,-1)
+
+        contextName = str(alert.source) + "_" + str(alert.target) + "_" + str(alert.classification) 
+        contextRID = "(select from alertcontext where name = '" + contextName + "')"
+        alertRID = "(select from alert where name = '" + alert.msgID + "' and detectiontime = DATE('" + str(alert.dt) + " '))"
+
+        if len(result) == 0:
+        
+            cmd = ("begin;"
+            "let $a = create vertex alert set name = '" + alert.msgID + "', detectiontime = DATE('" + str(alert.dt) + "');"
+            "let $b = create vertex alertcontext set name = '" + contextName + "', _solved = 'False' ;"
+            "let $c = create edge alertContextIsOfType from " + contextRID + " to "  + self.classification[alert.classification] + " set name = 'alertContextIsOfType';"
+            "let $d = create edge alertContextHasSource from " + contextRID + " to "  + self.sourceIP[alert.source] + " set name = 'alertContextHasSource';"
+            "let $e = create edge alertContextHasTarget from " + contextRID + " to "  + self.targetIP[alert.target] + "set name = 'alertContextHasTarget';"
+            "let $f = create edge alertToContext from " + alertRID + " to "  + contextRID + "set name = 'alertToContext';"
+            "commit;")
+
+        else:
+            
+            cmd = ("begin;" +
+            "let $a = create vertex alert set name = '" + alert.msgID + "', detectiontime = DATE('" + str(alert.dt) + "');"
+            "let $f = create edge alertToContext from " + alertRID + " to "  + result[0]._rid + "set name = 'alertToContext';"
+            "commit;")
+        
+        
+        for i in range (10):
+            try:
+                self.client.batch(cmd)
+                break
+            except:
+                pass
+
+    def insertAlertPsql(alert):
+        
+
+    @timeout_decorator.timeout(1)
+    def getValue(self):
+        return self.subscribe.get()
+
+    def createAlerts(self, fileName):
+
+        start = time.time()
+
+        if self.backend == 'orient':
+            for alert in self.alertList[fileName]:
+                self.insertAlertOrient(alert)
+        elif self.backend == 'psql':
+            for alert in self.alertList[fileName]:
+                self.insertAlertPsql(alert)
+        else:
+            logger.error("Wrong Database Backend %s", self.backend)
+        
+            
+        while (True):
+            try:
+                changed = self.getValue()
+            except:
+                break
+
+        end = time.time()
+
+        duration = end - start
+
+        self.timeList[fileName].append(start)
+        self.timeList[fileName].append(end)
+        self.timeList[fileName].append(duration)
+        self.timeList[fileName].append(len(self.alertList[fileName]))
+
+    def readLLDOSFile(self, fileName):
+
+        tree = ET.parse(siMFolder+fileName)      
+        root = tree.getroot()
+
+        for idmefMsg in root:
+            for alert in idmefMsg:
+                alertElem = Alert(alert.get('alertid'))
+                alertElem.source = alert.findall(".//Source//address")[0].text
+                alertElem.target = alert.findall(".//Target//address")[0].text
+                try:
+                    alertClass = alert.findall(".//Service//name")[0].text + alert.findall(".//Service//dport")[0].text
+                except:
+                    alertClass = alert.findall(".//Service//name")[0].text
+                alertElem.classification = alertClass
+                creation = alert.findall(".//Time//date")[0].text + " " + alert.findall(".//Time//time")[0].text
+                formattedTime = time.strptime(creation, "%d/%m/%Y %H:%M:%S")
+                dt = datetime.datetime.fromtimestamp(time.mktime(formattedTime))
+                alertElem.dt = dt
+                self.alertList[fileName].append(alertElem)
+                self.sourceIP[alertElem.source] = True
+                self.targetIP[alertElem.target] = True
+                self.classification[alertElem.classification] = True
+
+        for entry in self.alertList.keys():
+            for elem in self.alertList[entry]:
+                logger.debug("File : %s has Alert =  %s", entry, elem.printAlert())   
+
+        logger.info("Source IPs found: %s", self.sourceIP.keys())
+        logger.info("Target IPs found: %s", self.targetIP.keys())
+        logger.info("Classifications found: %s", self.classification.keys())
+
+
+    def run(self):
+
+        logger.info( 'Start "{0}"'.format(self.__module__) )
+    
+        for fileName in os.listdir(siMFolder):
+            if fileName.endswith(".xml"):
+                self.alertList[fileName] = []
+                self.timeList[fileName] = []
+                self.readLLDOSFile(fileName)
+
+        print ("Read all files.")
+
+        self.createData()
+
+        print ("Created Data.")
+
+        logger.info("Update info for Source IPs : %s", self.sourceIP)
+        logger.info("Update info for Target IPs : %s", self.targetIP)
+        logger.info("Update info for Classifications : %s", self.classification)
+        
+        if cleanDBFromAlert:
+            logger.info("Clean database and reset RIDs for class alert and alertcontext.")
+            self.cleanDB()
+
+        print ("Cleaned Database")
+
+        for fileName in self.alertList.keys():
+            self.createAlerts(fileName)
+
+        print ("Inserted Alerts.")
+
+        print (self.timeList)
+
+        
+
