@@ -1,4 +1,0 @@
-class Server:
-    def __init__(self, name, uri):
-	self.id = name
-        self.uri = uri
