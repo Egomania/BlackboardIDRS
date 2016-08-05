@@ -269,6 +269,18 @@ class alertcontexthastarget(edge):
         edge.__init__(self, fromNode, toNode)
         self.createOrGet(client, batch)
 
+class alertcontexthasservicetarget(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'alertcontext', 'tonode': 'service'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
 class alertcontextisoftype(edge):
     cluster_id = None
     mapper = {'name': 'STRING'}

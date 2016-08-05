@@ -15,6 +15,9 @@ class Alert():
         self.creationDate = None
         self.creationTime = None
         self.dt = None
+        self.serviceID = None
+        self.service = None
+        self.port = None
 
     def printAlert(self):
         return ("Message ID = " + self.msgID + " Source = " + self.source + " Target = " + self.target + " Classification = " + self.classification)

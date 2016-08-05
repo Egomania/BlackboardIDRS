@@ -51,6 +51,7 @@ class PlugIn (Process):
     targetIP = {}
     classification = {}
     timeList = {}
+    service = {}
 
     def __init__(self, dbs, q):
         Process.__init__(self)
@@ -98,6 +99,9 @@ class PlugIn (Process):
         for classification in self.classification.keys():
             typeNode = nodes.attack(classification, client = client)
             self.classification[classification] = typeNode.rid
+        for service in self.service.keys():
+            serviceNode = nodes.service(service, client=client)
+            self.service[service] = serviceNode.rid
 
     def cleanDB(self):
         
@@ -119,6 +123,7 @@ class PlugIn (Process):
                     self.client.command("truncate class alert unsafe")
                     self.client.command("truncate class alertcontext unsafe")
                     self.client.command("truncate class alertcontexthassource unsafe")
+                    self.client.command("truncate class alertcontexthasservicetarget unsafe")
                     self.client.command("truncate class alertcontexthastarget unsafe")
                     self.client.command("truncate class alertcontextisoftype unsafe")
                     self.client.command("truncate class alerttocontext unsafe")
@@ -128,6 +133,7 @@ class PlugIn (Process):
                             self.client.command("update attack remove in_alertcontextisoftype")
                             self.client.command("update ip remove in_alertcontexthastarget")
                             self.client.command("update ip remove in_alertcontexthassource")
+                            self.client.command("update service remove in_alertcontexthasservicetarget")
                             break
                         except:
                             print ("so ein rotz")
@@ -255,7 +261,7 @@ class PlugIn (Process):
 
         for idmefMsg in root:
             for alert in idmefMsg:
-                alertElem = Alert(alert.get('alertid'))
+                alertElem = AP.Alert(alert.get('alertid'))
                 alertElem.source = alert.findall(".//Source//address")[0].text
                 alertElem.target = alert.findall(".//Target//address")[0].text
                 try:
@@ -280,6 +286,7 @@ class PlugIn (Process):
         logger.info("Source IPs found: %s", self.sourceIP.keys())
         logger.info("Target IPs found: %s", self.targetIP.keys())
         logger.info("Classifications found: %s", self.classification.keys())
+        logger.info("Services found: %s", self.service.keys())
 
 
     def readIDMEFFile(self, fileName):
@@ -293,6 +300,11 @@ class PlugIn (Process):
                 alertElem.source = alert.findall(".//Source//address")[0].text
                 alertElem.target = alert.findall(".//Target//address")[0].text
                 alertElem.classification = alert.findall(".//Classification")[0].get('text')
+                try:
+                    alertElem.port = alert.findall(".//Target//Service//port")[0].text
+                    alertElem.service = alert.findall(".//Target//Service//name")[0].text
+                except:
+                    pass
                 
                 creation = alert.findall(".//CreateTime")[0].text
                 formattedTime = time.strptime(creation, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -303,6 +315,7 @@ class PlugIn (Process):
                 self.sourceIP[alertElem.source] = True
                 self.targetIP[alertElem.target] = True
                 self.classification[alertElem.classification] = True
+                self.service[alertElem.service] = True
 
         for entry in self.alertList.keys():
             for elem in self.alertList[entry]:
@@ -337,6 +350,8 @@ class PlugIn (Process):
                 alertElem.sourceID = self.sourceIP[alertElem.source]
                 alertElem.targetID = self.targetIP[alertElem.target]
                 alertElem.classificationID = self.classification[alertElem.classification]
+                if alertElem.service != None:
+                    alertElem.serviceID = self.service[alertElem.service]
                 alertElem.creationDate = datetime.datetime.date(alertElem.dt)
                 alertElem.creationTime = datetime.datetime.time(alertElem.dt)
 

@@ -18,20 +18,31 @@ def insertAlertOrient(alert, session_id, client):
 
     if len(result) == 0:
 
+        if alert.serviceID != None:
+            servicestatement = "let $g = create edge alertcontexthasservicetarget from " + contextRID + " to "  + alert.serviceID + "set name = 'alertcontexthasservicetarget';"
+        else:
+            servicestatement = ""
+
         cmd = ("begin;"
         "let $a = create vertex alert set name = '" + alert.msgID + "', detectiontime = DATE('" + str(alert.dt) + "');"
         "let $b = create vertex alertcontext set name = '" + contextName + "', _solved = 'False' ;"
         "let $c = create edge alertContextIsOfType from " + contextRID + " to "  + alert.classificationID + " set name = 'alertContextIsOfType';"
         "let $d = create edge alertContextHasSource from " + contextRID + " to "  + alert.sourceID + " set name = 'alertContextHasSource';"
         "let $e = create edge alertContextHasTarget from " + contextRID + " to "  + alert.targetID + "set name = 'alertContextHasTarget';"
-        "let $f = create edge alertToContext from " + alertRID + " to "  + contextRID + "set name = 'alertToContext';"
+        "let $f = create edge alertToContext from " + alertRID + " to "  + contextRID + "set name = 'alertToContext';" + servicestatement +
         "commit;")
 
     else:
         
+        if alert.serviceID != None:
+            # todo check if exists
+            servicestatement = "let $g = create edge alertcontexthasservicetarget from " + result[0]._rid + " to "  + alert.serviceID + "set name = 'alertcontexthasservicetarget';"
+        else:
+            servicestatement = ""
+
         cmd = ("begin;" +
         "let $a = create vertex alert set name = '" + alert.msgID + "', detectiontime = DATE('" + str(alert.dt) + "');"
-        "let $f = create edge alertToContext from " + alertRID + " to "  + result[0]._rid + "set name = 'alertToContext';"
+        "let $f = create edge alertToContext from " + alertRID + " to "  + result[0]._rid + "set name = 'alertToContext';" + servicestatement +
         "commit;")
 
     for i in range (100):
@@ -82,11 +93,25 @@ def insertAlertPsql(alert, conn, cur):
         statement = 'insert into alertContexthasTarget (fromnode,tonode,name) VALUES(%s, %s,%s)'
         statement = cur.mogrify(statement, (alertContextID, alert.targetID, "alertcontexthastarget"))
         cur.execute(statement)
+        statement = 'insert into alertContexthasTarget (fromnode,tonode,name) VALUES(%s, %s,%s)'
+        statement = cur.mogrify(statement, (alertContextID, alert.targetID, "alertcontexthastarget"))
+        cur.execute(statement)
+       
     else:
         alertContextID = alertContextID[0]
                 
     statement = 'insert into alertToContext (fromnode,tonode,name) VALUES(%s,%s,%s)'
     statement = cur.mogrify(statement, (alertID, alertContextID, "alerttocontext"))
     cur.execute(statement)
+
+    if alert.serviceID != None:
+        statement = "select * from alertcontexthasservicetarget r where r.fromnode = %s and r.tonode = %s"
+        statement = cur.mogrify(statement, (alertContextID, alert.serviceID))
+        cur.execute(statement)
+        res = cur.fetchall()
+        if len(res) == 0:
+            statement = 'insert into alertcontexthasservicetarget (fromnode,tonode,name) VALUES(%s, %s,%s)'
+            statement = cur.mogrify(statement, (alertContextID, alert.serviceID, "alertcontexthasservicetarget", ))
+            cur.execute(statement)
 
     conn.commit()

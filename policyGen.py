@@ -2,8 +2,8 @@ import json
 import random
 import sys
 
-filenamePolicy = "configs/policyGenTest1.json"
-filenameInf = "configs/infGenTest1.json"
+filenamePolicy = "configs/policyGen.json"
+filenameInf = "configs/infGen.json"
 
 templates = ["router", "host", "service", "vm", "ids"]
 
@@ -23,7 +23,7 @@ services = [
     {"name": "s5", "dep" : ["s6"], "port" : 5432, "network" : ["s"], "host" : "sh4"},
     {"name": "s6", "dep" : [], "port" : 666, "network" : ["s"], "host" : "evil"}
 ]
-
+users = 100
 attacks = 100
 consequences = 300
 maxAttackCon = 5
@@ -170,6 +170,7 @@ serviceCounter = {}
 serviceHosts = []
 serviceHostsJSON = []
 serviceJSON = []
+serviceList = []
 for elem in services:
 
     name = elem['host']
@@ -179,7 +180,8 @@ for elem in services:
 
     serviceInst = {"service": {"name": service, "port": elem['port'], "servicedependsonservice" : elem['dep']}}
     serviceJSON.append(serviceInst)
-    
+    serviceList.append(service)    
+
     if name in serviceHosts:
         dev = getDevInfo(name, serviceHostsJSON)
         order = dev['order']
@@ -222,6 +224,22 @@ for elem in serviceHostsJSON:
 
 dataInf['devices'] = deviceJSON
 dataInf['services'] = serviceJSON
+
+usersJSON = []
+
+for i in range(users):
+    name = "u_" + str(i)
+    loggedOn = random.choice(deviceList)
+    usesServices = []
+    for j in range(random.randint(1,len(serviceList))):
+        service = random.choice(serviceList)
+        if service not in usesServices:
+            usesServices.append(service)
+    user = {"user" : {"name" : name, "loggedOn": loggedOn, "uses": usesServices}}
+    usersJSON.append(user)
+
+
+dataInf['users'] = usersJSON
 
 consJSON = []
 conseqList = []

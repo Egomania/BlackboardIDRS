@@ -95,7 +95,7 @@ def delElems(conn, client, dbs, values, allElems):
             listToDelete = ["response", "attack", "consequence", "userbased", "networkbased", "hostbased", "servicebased", "implementation", "metric"]
         elif values == "infrastructure":
             logger.info("Delete Infrastructure")
-            listToDelete = ["l3network","l2network", "device", "service", "interface", "ip", "mac", "template", "server"]
+            listToDelete = ["l3network","l2network", "device", "service", "interface", "ip", "mac", "template", "server", "users"]
         else:
             listToDelete = []
 
@@ -429,6 +429,7 @@ def readPolicy(dbs, connection, insert):
         services = dataInf['services']
         networks = dataInf['networks']
         templates = dataInf['templates']
+        users = dataInf['users']
       
     else:
         devices = []
@@ -440,7 +441,6 @@ def readPolicy(dbs, connection, insert):
         name = template['template']['name']
         templateNode = nodes.template(name)
         templateNodes.append(templateNode)
-    
 
     networkNodes = getAllNodes(dbs, insert, 'l3network')
     for network in networks:
@@ -529,6 +529,19 @@ def readPolicy(dbs, connection, insert):
                     serviceusesip = edges.serviceusesip(serviceOnIPNode, ipNode, serviceOnIPNode.port)
                 except:
                     pass
+
+    userNodes = getAllNodes(dbs, insert, 'users')
+    for user in users:
+        name = user['user']['name']
+        userNode = nodes.users(name)
+        userNodes.append(userNode)
+        loggedOn = user['user']['loggedOn']
+        hostNode = helper.getElem(deviceNodes, 'name', loggedOn)
+        userisloggedondevice = edges.userloggedondevice(userNode, hostNode)
+        usesService = user['user']['uses']
+        for elem in usesService:
+            servNode = helper.getElem(serviceNodes, 'name', elem)
+            userusesservice = edges.userusesservice(userNode, servNode)
 
     responseNodes = getAllNodes(dbs, insert, 'response')
     for response in responses:
