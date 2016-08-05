@@ -1,4 +1,0 @@
-class Config:
-    running = False
-    def __init__(self):
-        running = True
