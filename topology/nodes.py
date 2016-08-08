@@ -525,7 +525,7 @@ class bundle(node):
             client = self.client
         node.__init__(self, rid)
         self.name = name
-        self._executing = _executing
+        self._executing = executing
         self._active = active
         if self.rid == None:
             self.createOrGet(client, batch)

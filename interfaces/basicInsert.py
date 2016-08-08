@@ -104,7 +104,9 @@ def insertAlertPsql(alert, conn, cur):
     statement = cur.mogrify(statement, (alertID, alertContextID, "alerttocontext"))
     cur.execute(statement)
 
+    specialTarget = False
     if alert.serviceID != None:
+        specialTarget = True
         statement = "select * from alertcontexthasservicetarget r where r.fromnode = %s and r.tonode = %s"
         statement = cur.mogrify(statement, (alertContextID, alert.serviceID))
         cur.execute(statement)
@@ -112,6 +114,31 @@ def insertAlertPsql(alert, conn, cur):
         if len(res) == 0:
             statement = 'insert into alertcontexthasservicetarget (fromnode,tonode,name) VALUES(%s, %s,%s)'
             statement = cur.mogrify(statement, (alertContextID, alert.serviceID, "alertcontexthasservicetarget", ))
+            cur.execute(statement)
+
+    if alert.userID != None:
+        specialTarget = True
+        statement = "select * from alertcontexthasusertarget r where r.fromnode = %s and r.tonode = %s"
+        statement = cur.mogrify(statement, (alertContextID, alert.userID))
+        cur.execute(statement)
+        res = cur.fetchall()
+        if len(res) == 0:
+            statement = 'insert into alertcontexthasusertarget (fromnode,tonode,name) VALUES(%s, %s,%s)'
+            statement = cur.mogrify(statement, (alertContextID, alert.userID, "alertcontexthasusertarget", ))
+            cur.execute(statement)
+
+    if not specialTarget:
+        statement = "select d.id from device d, devicehasinterface dhasiface, mactointerface mactoiface, iptomac where dhasiface.fromnode = d.id and dhasiface.tonode = mactoiface.tonode and mactoiface.fromnode = iptomac.tonode and iptomac.fromnode = ip.id and ip.id = %s"
+        statement = cur.mogrify(statement, (alert.targetID))
+        cur.execute(statement)
+        deviceID = cur.fetchone()[0]
+        statement = "select * from alertcontexthashosttarget r where r.fromnode = %s and r.tonode = %s"
+        statement = cur.mogrify(statement, (alertContextID, deviceID))
+        cur.execute(statement)
+        res = cur.fetchall()
+        if len(res) == 0:
+            statement = 'insert into alertcontexthashosttarget (fromnode,tonode,name) VALUES(%s, %s,%s)'
+            statement = cur.mogrify(statement, (alertContextID, deviceID, "alertcontexthashosttarget", ))
             cur.execute(statement)
 
     conn.commit()

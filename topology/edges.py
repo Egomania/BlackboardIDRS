@@ -281,6 +281,30 @@ class alertcontexthasservicetarget(edge):
         edge.__init__(self, fromNode, toNode)
         self.createOrGet(client, batch)
 
+class alertcontexthasusertarget(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'alertcontext', 'tonode': 'users'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
+class alertcontexthashosttarget(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'alertcontext', 'tonode': 'device'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
 class alertcontextisoftype(edge):
     cluster_id = None
     mapper = {'name': 'STRING'}
@@ -358,6 +382,18 @@ class hostbasedisaresponse(edge):
     mapper = {'name': 'STRING'}
     __slots__ = list(mapper.keys())
     psql = {'fromnode': 'hostbased', 'tonode': 'response'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
+class responseconflictswithresponse(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'response', 'tonode': 'response'}
     
     def __init__ (self, fromNode, toNode, client=False, batch=False):
         if not client:

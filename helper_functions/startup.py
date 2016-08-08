@@ -10,7 +10,7 @@ from topology import edges as edges
 from helper_functions import helper
 
 logger = logging.getLogger('idrs')
-triggers = ['alert', 'alertcontext']
+triggers = ['alert', 'alertcontext', 'bundle']
 
 def setPropertiesPsql(newClass, setProperties, toUseProperties, cur, propertyMap):
     logger.info("Check for needed Properties in class '%s'.", newClass)
@@ -490,6 +490,7 @@ def readPolicy(dbs, connection, insert):
     deviceNodes = getAllNodes(dbs, insert, 'device')
     ipNodes = getAllNodes(dbs, insert, 'ip')
     for device in devices:
+        servicesOnDevice = {}
         name = device['device']['name']
         deviceNode = nodes.device(name)
         toNode = helper.getElem(templateNodes, 'name', device['device']['template'])
@@ -525,10 +526,14 @@ def readPolicy(dbs, connection, insert):
 
             for serviceOnIP in servicesOnIP:
                 serviceOnIPNode = helper.getElem(serviceNodes, 'name', serviceOnIP)
+                servicesOnDevice[serviceOnIP] = serviceOnIPNode
                 try:
                     serviceusesip = edges.serviceusesip(serviceOnIPNode, ipNode, serviceOnIPNode.port)
                 except:
                     pass
+
+        for servOnDev in servicesOnDevice.keys():
+            servicerunsondevice = edges.servicerunsondevice(servicesOnDevice[servOnDev], deviceNode)
 
     userNodes = getAllNodes(dbs, insert, 'users')
     for user in users:
