@@ -504,9 +504,9 @@ class implementation(node):
 
 class metric(node):
     cluster_id = None
-    mapper = {'name': 'STRING', 'value': 'INTEGER'}
+    mapper = {'name': 'STRING'}
     __slots__ = list(mapper.keys())
-    def __init__ (self, name = None, value = None, rid = None, client=False, batch=False):
+    def __init__ (self, name = None, rid = None, client=False, batch=False):
         if not client:
             client = self.client
         node.__init__(self, rid)

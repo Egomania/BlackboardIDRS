@@ -10,7 +10,7 @@ from topology import edges as edges
 from helper_functions import helper
 
 logger = logging.getLogger('idrs')
-triggers = ['alert', 'alertcontext', 'bundle']
+triggers = ['alert', 'alertcontext', 'bundle', 'implementationisinbundle']
 
 def setPropertiesPsql(newClass, setProperties, toUseProperties, cur, propertyMap):
     logger.info("Check for needed Properties in class '%s'.", newClass)
@@ -580,10 +580,18 @@ def readPolicy(dbs, connection, insert):
             impl = elem['implementation']
             implNode = nodes.implementation(impl['name'])
             responsehasimplementation = edges.responsehasimplementation(responseNode, implNode)
+            execNode = helper.getElem(deviceNodes, 'name', impl['executor'])
+            implementationisexecutedbydevice = edges.implementationisexecutedbydevice(implNode, execNode)
             for entry in impl['deployedOn']:
-                
                 deployedOn = helper.getElem(deviceNodes, 'name', entry)
                 implementationisdeployedondevice = edges.implementationisdeployedondevice(implNode, deployedOn)
+            for entry in impl['metrics'].keys():
+                metricNode = nodes.metric(entry)
+                implhasMetric = edges.implementationhasmetric(implNode, metricNode, value=impl['metrics'][entry])
             
-
+    for response in responses:
+        c1 = helper.getElem(responseNodes, 'name', response['response']['name'])
+        for entry in response['response']['conflicts']:
+            c2 = helper.getElem(responseNodes, 'name', entry)
+            conflictrel = edges.responseconflictswithresponse(c1, c2)
 

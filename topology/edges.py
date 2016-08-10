@@ -57,6 +57,8 @@ class edge (object):
                 values = values + str(getattr(self, elem)) + ","
             elif self.mapper[elem].lower() == "boolean":
                 values = values + str(getattr(self, elem)) +  ","
+            elif self.mapper[elem].lower() == "real":
+                values = values + str(getattr(self, elem)) +  ","
             else:
                 raise error.WrongPropertyType(self.mapper[elem] + " not supported or implemented.")
 
@@ -427,14 +429,15 @@ class responsehasimplementation(edge):
 
 class implementationhasmetric(edge):
     cluster_id = None
-    mapper = {'name': 'STRING'}
+    mapper = {'name': 'STRING', '_value' : 'REAL'}
     __slots__ = list(mapper.keys())
     psql = {'fromnode': 'implementation', 'tonode': 'metric'}
     
-    def __init__ (self, fromNode, toNode, client=False, batch=False):
+    def __init__ (self, fromNode, toNode, value=0, client=False, batch=False):
         if not client:
             client = self.client
         edge.__init__(self, fromNode, toNode)
+        self._value = value
         self.createOrGet(client, batch)
 
 class implementationisdeployedondevice(edge):
@@ -442,6 +445,30 @@ class implementationisdeployedondevice(edge):
     mapper = {'name': 'STRING'}
     __slots__ = list(mapper.keys())
     psql = {'fromnode': 'implementation', 'tonode': 'device'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
+class implementationisexecutedbydevice(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'implementation', 'tonode': 'device'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
+class bundlesolvesalertcontext(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'bundle', 'tonode': 'alertcontext'}
     
     def __init__ (self, fromNode, toNode, client=False, batch=False):
         if not client:

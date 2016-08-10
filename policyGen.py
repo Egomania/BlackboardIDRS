@@ -5,14 +5,14 @@ import sys
 filenamePolicy = "configs/policyGen.json"
 filenameInf = "configs/infGen.json"
 
-templates = ["router", "host", "service", "vm", "ids"]
+templates = ["router", "host", "service", "vm", "ids", "executor"]
 
 networks = [
-    {"name":"n1", "host": 100,  "router" : ["r1"], "ids": ["nids"], "ip": "172.16.0."},
-    {"name":"n2", "host": 100,  "router" : ["r2"], "ids": ["nids"], "ip": "172.16.1."},
-    {"name":"n3", "host": 100,  "router" : ["r3"], "ids": ["nids"], "ip": "172.16.2."},
-    {"name":"s", "host": 0, "router" : ["rs"], "ids": ["nids"], "ip": "172.17.0."},
-    {"name":"b",  "host": 0,   "router" : ["r1", "r2", "r3", "rs"], "ids": ["nids"], "ip": "172.20.0."}
+    {"name":"n1", "host": 100,  "router" : ["r1"], "ids": ["nids"], "ip": "172.16.0.", "executor" : 5},
+    {"name":"n2", "host": 100,  "router" : ["r2"], "ids": ["nids"], "ip": "172.16.1.", "executor" : 5},
+    {"name":"n3", "host": 100,  "router" : ["r3"], "ids": ["nids"], "ip": "172.16.2.", "executor" : 5},
+    {"name":"s", "host": 0, "router" : ["rs"], "ids": ["nids"], "ip": "172.17.0.", "executor" : 5},
+    {"name":"b",  "host": 0,   "router" : ["r1", "r2", "r3", "rs"], "ids": ["nids"], "ip": "172.20.0.", "executor" : 5}
 ]
 
 services = [
@@ -30,12 +30,14 @@ maxAttackCon = 5
 maxRespCon = 5
 maxDeployed = 10
 responses = [
- {"userbased": 100, "impl": 10, "router" : 0},
- {"hostbased": 100, "impl": 10, "router" : 0},
- {"networkbased": 300, "impl": 4, "router" : 0},
- {"servicebased": 200, "impl": 5, "router" : 4},
- {"passive":10, "impl":5, "router" : 4}
+ {"userbased": 100, "impl": 10},
+ {"hostbased": 100, "impl": 10},
+ {"networkbased": 100, "impl": 4},
+ {"servicebased": 200, "impl": 5},
+ {"passive":1, "impl":1}
 ]
+metrics = ['time', 'cost']
+conflicts = 100
 
 if consequences < maxAttackCon:
     maxAttackCon = consequences
@@ -99,7 +101,8 @@ deviceList = []
 routerList = []
 idsList = []
 ipList = {}
-
+executorList = []
+executorCounter = 0
 deviceCounter = 0
 routers = []
 idses = []
@@ -148,6 +151,7 @@ for elem in networks:
             idsList.append(name)
 
     start = len(elem['router']) + len(elem['ids']) + 1
+
     for i in range(0,elem['host']):
         name = "h_" + str(deviceCounter)
         deviceCounter = deviceCounter + 1
@@ -155,10 +159,19 @@ for elem in networks:
         ipList[netName].append(ip + str(start))
         start = start + 1
         device = {"device": {"name" : name, "template": "host", "interfaces": [ {"interface" : iface} ] }}
-
-
         deviceList.append(name)
         deviceJSON.append(device)
+
+    for i in range(0,elem['executor']):
+        name = "exec_" + str(executorCounter)
+        executorCounter = executorCounter + 1
+        iface = {"order" : 1, "l2" : name+"_eth0", "mac" : getMac(), "l3" : netName, "ip" : ip + str(start)}
+        ipList[netName].append(ip + str(start))
+        start = start + 1
+        device = {"device": {"name" : name, "template": "executor", "interfaces": [ {"interface" : iface} ] }}
+        executorList.append(name)
+        deviceJSON.append(device)
+
 
 for elem in routers:
     deviceJSON.append(elem)
@@ -286,6 +299,8 @@ responsesJSON = []
 respCounter = 1
 openCons = list(conseqList)
 allConAlloc = False
+responseList = []
+passiveList = []
 for elem in responses:
     try:
         num = elem['userbased']
@@ -308,9 +323,13 @@ for elem in responses:
     
     for i in range(num):
         name = "r" + str(respCounter)
+        responseList.append(name)
         respCounter = respCounter + 1
-        
-        lenConList = random.randint(1,maxRespCon)
+        if len(target) == 0:
+            passiveList.append(name)
+            lenConList = len(conseqList)
+        else:
+            lenConList = random.randint(1,maxRespCon)
         conList = []
         for j in range(lenConList):
             newCon = random.choice(openCons)
@@ -323,34 +342,53 @@ for elem in responses:
 
         impls = []
         implCounter = 1
-        candRoutersCount = elem['router']
         for i in range(elem['impl']):
             implName = name + "_" + str(implCounter)
             implCounter = implCounter + 1
             deployedOn = []
             lendeployList = random.randint(1,maxDeployed)
-            for j in range(lendeployList):
-                if candRoutersCount > 0:
-                    candDev = routerList
-                    candRoutersCount = candRoutersCount - 1
+            if len(target) == 0:
+                executingEntity = random.choice(idsList)
+                for pasEnt in deviceList:
+                    deployedOn.append(pasEnt)
+                for pasEnt in serviceHosts:
+                    deployedOn.append(pasEnt)
+                for pasEnt in routerList:
+                    deployedOn.append(pasEnt)
+            else:
+                if "network" in target:
+                    networktoProtect = random.choice(networkList)
+                    potentialRouterList = []
+                    for potentialDev in deviceJSON:
+                        for ifaceOfPotentialDev in potentialDev['device']['interfaces']:
+                            if ifaceOfPotentialDev['interface']['l3'] == networktoProtect:
+                                if potentialDev['device']['name'] not in routerList:
+                                    deployedOn.append(potentialDev['device']['name'])
+                                else:
+                                    potentialRouterList.append(potentialDev['device']['name'])
+                    executingEntity = random.choice(potentialRouterList)
                 else:
                     if "service" in target:
                         candDev = serviceHosts
                     else:
-                        if "network" in target:
-                            candDev = routerList
-                        if not target:
-                            candDev = idsList + deviceList
-                        else:
-                            candDev = deviceList
-                newDev = random.choice(candDev)
-                if newDev not in deployedOn:
-                    deployedOn.append(newDev)
-            impl = {"implementation" : {"name" : implName, "deployedOn" : deployedOn}}
+                        candDev = deviceList
+                    for j in range(lendeployList):
+                        newDev = random.choice(candDev)
+                        if newDev not in deployedOn:
+                            deployedOn.append(newDev)
+                    executingEntity = random.choice(executorList)
+
+            metricValues = {}
+            for metricName in metrics:
+                if len(target) == 0:
+                    metricValues[metricName] = 1
+                else:
+                    metricValues[metricName] = random.random()
+            impl = {"implementation" : {"name" : implName, "deployedOn" : deployedOn, "metrics" : metricValues, "executor" : executingEntity}}
 
             impls.append(impl)
 
-        respJSON = {"response" : {"name" : name, "target" : target, "responsemitigatesconsequences" : conList, "implementations" : impls}}
+        respJSON = {"response" : {"name" : name, "target" : target, "responsemitigatesconsequences" : conList, "implementations" : impls, "conflicts" : []}}
 
         responsesJSON.append(respJSON)
 
@@ -362,6 +400,33 @@ if not allConAlloc:
             openCons.remove(newCon)
             respCand['response']['responsemitigatesconsequences'].append(newCon)
 
+conflictMapper = {}
+i = 0
+while i < conflicts:
+    c1 = random.choice(responseList)
+    c2 = random.choice(responseList)
+    if c1 in passiveList:
+        continue
+    if c2 in passiveList:
+        continue
+    if c1 == c2:
+        continue
+    if (c1 in conflictMapper.keys() and c2 in conflictMapper[c1]) or (c2 in conflictMapper.keys() and c1 in conflictMapper[c2]):
+        continue
+    i = i + 1
+    if c1 not in conflictMapper.keys():
+        conflictMapper[c1] = []
+    if c2 not in conflictMapper.keys():
+        conflictMapper[c2] = []
+    conflictMapper[c1].append(c2)
+    conflictMapper[c2].append(c1)
+
+    
+for elem in responsesJSON:
+    name = elem['response']['name']
+    if name in conflictMapper.keys():
+        for entry in conflictMapper[name]:
+            elem['response']['conflicts'].append(entry)
 
 dataPolicy['responses'] = responsesJSON
 
