@@ -75,6 +75,7 @@ class PlugIn (Process):
         metrics_used = []
         damage_used = []
         conflictsList = []
+        preconditionsList = []
         responseList = {}
 
         functionName = 'getImplementationInformation' + self.dbs.backend.title()
@@ -94,6 +95,7 @@ class PlugIn (Process):
                             responseList[elem[2]] = {}
                             responseList[elem[2]]['metrics'] = []
                             responseList[elem[2]]['conflicts'] = []
+                            responseList[elem[2]]['preconditions'] = []
                             responseList[elem[2]]['src'] = elem[1]
                             responseList[elem[2]]['dst'] = []
 
@@ -102,15 +104,21 @@ class PlugIn (Process):
                         metric = rs.Metric(elem[3], elem[4])
                         responseList[elem[2]]['metrics'].append(metric)
  
-        functionName = 'getImplementationConflicts' + self.dbs.backend.title()
         for response in responseList.keys():
+            functionName = 'getImplementationConflicts' + self.dbs.backend.title()
             result = getattr(qh, functionName)(self.insert, response, responseList.keys())
             for elem in result:
                 conflictingResponse = rs.Response(name = elem[0])
                 responseList[response]['conflicts'].append(conflictingResponse)
                 conflictsList.append((response, elem[0]))
+            functionName = 'getImplementationPreconditions' + self.dbs.backend.title()
+            result = getattr(qh, functionName)(self.insert, response)
+            for elem in result:
+                responseElem = rs.Response(name = elem[0])
+                responseList[response]['preconditions'].append(responseElem)
+                preconditionsList.append((response, elem[0]))
 
-            responseElem = rs.Response(name=response, src=responseList[response]['src'], dest=responseList[response]['dst'], metrics=responseList[response]['metrics'], conflicts=responseList[response]['conflicts'])
+            responseElem = rs.Response(name=response, src=responseList[response]['src'], dest=responseList[response]['dst'], metrics=responseList[response]['metrics'], conflicts=responseList[response]['conflicts'], preconditions=responseList[response]['preconditions'])
 
             responses_used.append(responseElem)
 
@@ -120,6 +128,7 @@ class PlugIn (Process):
         data["metric"] = metrics_used
         data["damage"] = damage_used
         data["conflict"] = conflictsList
+        data["preconditions"] = preconditionsList
 
         return data
 

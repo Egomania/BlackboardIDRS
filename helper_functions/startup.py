@@ -594,4 +594,7 @@ def readPolicy(dbs, connection, insert):
         for entry in response['response']['conflicts']:
             c2 = helper.getElem(responseNodes, 'name', entry)
             conflictrel = edges.responseconflictswithresponse(c1, c2)
+        for entry in response['response']['preconditions']:
+            pre = helper.getElem(responseNodes, 'name', entry)
+            preconditionRel = edges.responseispreconditionofresponse(pre, c1)
 

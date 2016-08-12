@@ -1,6 +1,15 @@
 import json
 import random
 import sys
+import os
+from string import Template
+
+generateGPLMTscripts = True
+GPLMTFolder = "GPLMT"
+GPLMTdomain=".asgard.net.in.tum.de"
+GPLMTuser="surf"
+GPLMTTargetFile = "targetsGen.xml"
+GPLMTTasklistFile = "tasklistsGen.xml"
 
 filenamePolicy = "configs/policyGen.json"
 filenameInf = "configs/infGen.json"
@@ -38,6 +47,9 @@ responses = [
 ]
 metrics = ['time', 'cost']
 conflicts = 100
+preconditions = [1000,100,10]
+maxPreconditions = 5
+preconditionsImpls = 1
 
 if consequences < maxAttackCon:
     maxAttackCon = consequences
@@ -388,7 +400,7 @@ for elem in responses:
 
             impls.append(impl)
 
-        respJSON = {"response" : {"name" : name, "target" : target, "responsemitigatesconsequences" : conList, "implementations" : impls, "conflicts" : []}}
+        respJSON = {"response" : {"name" : name, "target" : target, "responsemitigatesconsequences" : conList, "implementations" : impls, "conflicts" : [], "preconditions" : []}}
 
         responsesJSON.append(respJSON)
 
@@ -428,6 +440,53 @@ for elem in responsesJSON:
         for entry in conflictMapper[name]:
             elem['response']['conflicts'].append(entry)
 
+preConditionsList = {}
+for elem in preconditions:
+    level = str(preconditions.index(elem))
+    preConditionsList[level] = []
+    for i in range(elem):
+        name = "p" + level + "_" + str(i)
+        target = []
+        conList = []
+        impls = []
+        implCounter = 1
+        for i in range(preconditionsImpls):
+            implName = name + "_" + str(implCounter)
+            implCounter = implCounter + 1
+            deployedOn = []
+            executingEntity = random.choice(executorList)
+            metricValues = {}
+            for metricName in metrics:
+                if len(target) == 0:
+                    metricValues[metricName] = 1
+                else:
+                    metricValues[metricName] = random.random()
+            impl = {"implementation" : {"name" : implName, "deployedOn" : deployedOn, "metrics" : metricValues, "executor" : executingEntity}}
+
+        impls.append(impl)
+
+
+        respJSON = {"response" : {"name" : name, "target" : target, "responsemitigatesconsequences" : conList, "implementations" : impls, "conflicts" : [], "preconditions" : []}}
+
+        responsesJSON.append(respJSON)
+        preConditionsList[level].append(name)
+
+for elem in responsesJSON:
+    lenPreconditionsList = random.randint(1,maxPreconditions)
+    selectionList = []
+    if "p" in elem['response']['name']:
+        num = elem['response']['name'].split("_")[0].split("p")[1]
+        if int(num) > len(preconditions) - 2:
+            continue
+        else:
+            selectionList = preConditionsList[str(int(num) + 1)]
+    else:
+        selectionList = preConditionsList['0']
+    for i in range(lenPreconditionsList):
+        preCon = random.choice(selectionList)
+        if preCon not in elem['response']['preconditions']:
+            elem['response']['preconditions'].append(preCon)
+
 dataPolicy['responses'] = responsesJSON
 
 
@@ -436,5 +495,57 @@ with open(filenamePolicy, 'w') as outfile:
 
 with open(filenameInf, 'w') as outfile:
     json.dump(dataInf, outfile, sort_keys=True, indent=2)
+
+if generateGPLMTscripts:
+
+    GPLMTTargetFolder = GPLMTFolder + "/targets"
+    GPLMTTasklistsFolder = GPLMTFolder + "/tasklists"
+    GPLMTExecutionPlansFolder = GPLMTFolder + "/executionplans"
+
+    for elem in [GPLMTFolder, GPLMTTargetFolder, GPLMTTasklistsFolder, GPLMTExecutionPlansFolder]:
+        if not os.path.exists(elem):
+            os.makedirs(elem)
+
+    GPLMTFile = Template(
+        "<?xml version='1.0' encoding='utf-8'?>"
+        "<experiment>"
+            "<targets> $target </targets>"
+            "<tasklists> $tasklist </tasklists>"
+            "<steps> </steps>"
+        "</experiment>"
+    )
+
+    target = Template(
+        "<target name='$name' type='ssh'>"
+            "<user>$user</user>"
+            "<host>$host</host>"
+        "</target>"
+    )
+
+    tasklist = Template(
+        "<tasklist name='$name'>"
+            "<seq>"
+                "<run> echo I am $hostCMD and executing tasklist $cmd </run>"
+            "</seq>"
+        "</tasklist>"
+    )
+
+    targetList = ""
+    # generate TargetFile
+    for elem in deviceJSON:
+        name = elem['device']['name']
+        targetList = targetList + target.substitute(name=name, host=name+GPLMTdomain, user=GPLMTuser) + "\n"
+
+    with open(GPLMTTargetFolder+"/"+GPLMTTargetFile, 'w') as outfile:
+        outfile.write(GPLMTFile.substitute(target=targetList, tasklist=""))
+
+    tasklistList = ""
+    # generate TargetFile
+    for elem in responsesJSON:
+        cmd = elem['response']['name']
+        tasklistList = tasklistList + tasklist.substitute(name=cmd, hostCMD="$HOSTNAME", cmd=cmd) + "\n"
+
+    with open(GPLMTTasklistsFolder+"/"+GPLMTTasklistFile, 'w') as outfile:
+        outfile.write(GPLMTFile.substitute(tasklist=tasklistList, target=""))
 
     

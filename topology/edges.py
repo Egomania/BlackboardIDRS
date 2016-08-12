@@ -403,6 +403,18 @@ class responseconflictswithresponse(edge):
         edge.__init__(self, fromNode, toNode)
         self.createOrGet(client, batch)
 
+class responseispreconditionofresponse(edge):
+    cluster_id = None
+    mapper = {'name': 'STRING'}
+    __slots__ = list(mapper.keys())
+    psql = {'fromnode': 'response', 'tonode': 'response'}
+    
+    def __init__ (self, fromNode, toNode, client=False, batch=False):
+        if not client:
+            client = self.client
+        edge.__init__(self, fromNode, toNode)
+        self.createOrGet(client, batch)
+
 class responsemitigatesconsequence(edge):
     cluster_id = None
     mapper = {'name': 'STRING'}

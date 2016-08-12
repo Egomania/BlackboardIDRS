@@ -9,7 +9,7 @@ class Response(object):
     metrics = None
     conflicting_responses = None
 
-    def __init__(self, name="undefined", src=None, dest=None, metrics=None, conflicts=None):
+    def __init__(self, name="undefined", src=None, dest=None, metrics=[], conflicts=[], preconditions=[]):
         '''
         Constructor
         '''
@@ -18,6 +18,7 @@ class Response(object):
         self.dest = dest
         self.metrics = metrics
         self.conflicting_responses = conflicts
+        self.precondition_responses = preconditions
     def get_cost (self, metric):
         for m in self.metrics:
             if (m.name == metric):

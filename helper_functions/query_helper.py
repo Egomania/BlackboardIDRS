@@ -210,6 +210,19 @@ def getNotYetSelectedImplementationsOrient(insert, bundleID):
     # todo : Orient
     return []
 
+def getLastSelectedImplementationsWithExecutorPsql(insert, bundleID):
+
+    query = "select i.name, d.name, iib.fromnode, ied.tonode from implementationisinbundle iib, implementationisexecutedbydevice ied, implementation i, device d WHERE iib.tonode = %s and iib._selected = %s and iib._iteration = (select max(_iteration) from implementationisinbundle where tonode = %s) and iib.fromnode = ied.fromnode and iib.fromnode = i.id and ied.tonode = d.id;"
+    query = insert.mogrify(query, (bundleID, True, bundleID, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
+def getLastSelectedImplementationsWithExecutorOrient(insert, bundleID):
+    # todo : Orient
+    return []
+
 def getImplementationInformationPsql(insert, impl):
 
     query = "select idd.tonode, ied.tonode, ihm.fromnode, m.name, ihm._value from implementationhasmetric ihm, metric m, implementationisexecutedbydevice ied, implementationisdeployedondevice idd where idd.fromnode = %s and ihm.fromnode = %s and m.id = ihm.tonode and ied.fromnode = %s;"
@@ -231,8 +244,31 @@ def getImplementationConflictsPsql(insert, response, respList):
 
     return result
 
-def getImplementationConflictsOrient(insert, response, respList):
+def getImplementationConflictsOrient(insert, response):
     # todo : Orient
     return []
-    
+
+def getImplementationPreconditionsPsql(insert, response):
+    query = "select distinct rhi2.tonode, ied.tonode from responsehasimplementation rhi, responseispreconditionofresponse rpr, responsehasimplementation rhi2, implementationisexecutedbydevice ied where rhi.tonode = %s and rpr.tonode = rhi.fromnode and rpr.fromnode = rhi2.fromnode and rhi2.fromnode = ied.fromnode;"
+    query = insert.mogrify(query, (response, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
+def getImplementationPreconditionsOrient(insert, response):
+    # todo : Orient
+    return []
+
+def getImplementationPreconditionsWithExecutorPsql(insert, response):
+    query = "select distinct i.name, d.name, rhi2.tonode, ied.tonode from responsehasimplementation rhi, responseispreconditionofresponse rpr, responsehasimplementation rhi2, implementationisexecutedbydevice ied, implementation i, device d where rhi.tonode = %s and rpr.tonode = rhi.fromnode and rpr.fromnode = rhi2.fromnode and rhi2.fromnode = ied.fromnode and i.id = rhi2.tonode and ied.tonode = d.id;"
+    query = insert.mogrify(query, (response, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
+def getImplementationPreconditionsWithExecutorOrient(insert, response):
+    # todo : Orient
+    return []
 
