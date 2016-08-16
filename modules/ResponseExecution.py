@@ -1,6 +1,7 @@
 import logging
 import datetime
 import time
+import threading
 
 from multiprocessing import Process, Queue
 from graph_tool.all import *
@@ -10,10 +11,11 @@ from helper_functions import query_helper as qh
 from helper_functions import dbConnector
 from topology import nodes, edges
 
-logger = logging.getLogger("idrs")
-
-listenTo = ['implementationisinbundle']
+listenTo = ['bundle', 'implementationisinbundle']
 name = 'ResonseExecution'
+
+logger = logging.getLogger("idrs."+name)
+logger.setLevel(20)
 
 GPLMTFolder = "GPLMT"
 GPLMTTargetFolder = GPLMTFolder + "/targets"
@@ -24,14 +26,65 @@ GPLMTTasklistFile = "tasklistsGen.xml"
 tarPre = "target"
 taskPre = "task"
 
-class PlugIn (Process):
-
-    def __init__(self, q, dbs):
-        Process.__init__(self)
-        self.subscribe = q[listenTo[0] + '_' + name]
+class executePlan(threading.Thread):
+    def __init__(self, executionPlan, bundle, current, dbs):
+        threading.Thread.__init__(self)
+        self.plan = executionPlan
+        self.bundle = bundle
         self.dbs = dbs
         dbConnector.connectToDB(self)
-        self.current = []
+        self.list = current
+
+    def run(self):
+        
+        functionName = 'updateNode' + self.dbs.backend.title()
+        logger.info('Start Execution for Bundle: %s' , self.bundle)
+        getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_executing": True}, True)
+        time.sleep(3)
+        getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_executing": False}, True)
+        logger.info('Finished Execution for Bundle: %s' , self.bundle)
+        self.list.remove(self.bundle)
+
+class listenToBundleQueue(threading.Thread):
+    def __init__(self, dbs, subscribe, current, loop):
+        threading.Thread.__init__(self)
+        self.alive = True
+        self.subscribe = subscribe
+        self.dbs = dbs
+        dbConnector.connectToDB(self)
+        self.current = current
+        self.loop = loop
+
+    def stop(self, commit=False):
+        logger.info( 'Stopped THREAD "{0}"'.format(self.__module__) )
+        self.alive = False
+        self.subscribe.put(None)
+        dbConnector.disconnectFromDB(self, commit)
+
+    def run(self):
+        logger.info( 'Start THREAD "{0}"'.format(self.__module__) )
+        while (self.alive):
+            changed = self.subscribe.get()
+            if changed == None:
+                continue
+            current = changed['new']['id']
+            ready = changed['new']['_ready']
+            
+            if ready and current in self.loop.keys():
+                executionThread = executePlan(self.loop[current],current, self.current, self.dbs)
+                executionThread.start()
+                del self.loop[current]
+                continue
+        
+class listenToBundleRelQueue(threading.Thread):
+    def __init__(self, dbs, subscribe, current, loop):
+        threading.Thread.__init__(self)
+        self.alive = True
+        self.subscribe = subscribe
+        self.dbs = dbs
+        dbConnector.connectToDB(self)
+        self.current = current
+        self.loop = loop
         self.executionPlan = Graph()
         self.v_prop_name = self.executionPlan.new_vertex_property("int")
         self.v_prop_exec = self.executionPlan.new_vertex_property("int")
@@ -49,11 +102,13 @@ class PlugIn (Process):
             "<steps> $steps </steps> \n"
         "</experiment>")
         self.stepDescription = Template("<step tasklist='$task' targets='$target' />")
-    
-
+        
     def stop(self, commit=False):
-        logger.info( 'Stopped "{0}"'.format(self.__module__) )
+        logger.info( 'Stopped THREAD "{0}"'.format(self.__module__) )
+        self.alive = False
+        self.subscribe.put(None)
         dbConnector.disconnectFromDB(self, commit)
+
 
     def getPreconditionsOfElem(self, elem, v):
         functionName = 'getImplementationPreconditionsWithExecutor' + self.dbs.backend.title()
@@ -95,15 +150,16 @@ class PlugIn (Process):
         return GPLMTPlanFile
 
     def run(self):
-
-        logger.info( 'Start "{0}"'.format(self.__module__) )
-        while (True):
+        logger.info( 'Start THREAD "{0}"'.format(self.__module__) )
+        while (self.alive):
             changed = self.subscribe.get()
-            current = changed['new']['tonode']
+            if changed == None:
+                continue
             selected = changed['new']['_selected']
+            current = changed['new']['tonode']
             if selected and current not in self.current:
                 self.current.append(current)
-                print ("Start Execution of bundle ", current)
+                logger.info("Start Execution of bundle: %s", current)
                 # get all selected implementations
                 functionName = 'getLastSelectedImplementationsWithExecutor' + self.dbs.backend.title()
                 result = getattr(qh, functionName)(self.insert, current)
@@ -117,5 +173,37 @@ class PlugIn (Process):
                     self.getPreconditionsOfElem(elem[2], v)
 
                 plan = self.createExecutionPlan()
-                print ("Ready to execute plan: ", plan)
+                logger.info("Prepared execution plan: %s", plan)
+                bundleToExecute = nodes.bundle(rid=current, client=self.insert)
+                self.loop[current] = plan
+                functionName = 'updateNode' + self.dbs.backend.title()
+                getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", bundleToExecute.rid, {"_prepared": True}, True)
+
+
+class PlugIn (Process):
+
+    def __init__(self, q, dbs):
+        Process.__init__(self)
+        self.alive = True
+        self.subscribe = q[listenTo[0] + '_' + name]
+        self.dbs = dbs
+        dbConnector.connectToDB(self)
+        self.current = []
+        self.loop = {}
+        self.bundleListener = listenToBundleQueue(self.dbs, q[listenTo[0] + '_' + name], self.current, self.loop)
+        self.bundleListener.start()
+        self.bundleRelListener = listenToBundleRelQueue(self.dbs, q[listenTo[1] + '_' + name], self.current, self.loop)
+        self.bundleRelListener.start()
+
+    def stop(self, commit=False):
+        logger.info( 'Stopped "{0}"'.format(self.__module__) )
+        dbConnector.disconnectFromDB(self, commit)
+        self.bundleListener.stop()
+        self.bundleRelListener.stop()
+        self.alive = False
+        self.bundleListener.join()
+        self.bundleRelListener.join()
+
+    def run(self):
+        pass
 

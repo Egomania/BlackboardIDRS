@@ -173,6 +173,9 @@ def getMaxIterationPsql(insert, bundleID):
 def updateEdgeOrient(connector, insert, edgeName, fromNode, toNode, updateValues, commit):
     pass
 
+def updateNodeOrient(connector, insert, tableName, ident, updateValues, commit):
+    pass
+
 def updateEdgePsql(connector, insert, edgeName, fromNode, toNode, updateValues, commit):
     for elem in updateValues.keys():
         query = "update " + edgeName + " set " + elem + " = %s where fromnode = %s and tonode = %s;"
@@ -181,10 +184,22 @@ def updateEdgePsql(connector, insert, edgeName, fromNode, toNode, updateValues, 
     if commit:
         connector.commit()
 
-def selectSingleValuePsql(insert, table, name, matchValue, matchCondition, fetchall = True):
+def updateNodePsql(connector, insert, tableName, ident, updateValues, commit):
+    for elem in updateValues.keys():
+        query = "update " + tableName + " set " + elem + " = %s where id = %s;"
+        query = insert.mogrify(query, (updateValues[elem], ident, ))
+        insert.execute(query)
+    if commit:
+        connector.commit()
 
-    query = "select " + name + " from " + table + " WHERE " + matchValue + " = %s;"
-    query = insert.mogrify(query, (matchCondition, ))
+def selectSingleValuePsql(insert, table, name, matchValue=None, matchCondition=None, fetchall=True):
+
+    if matchValue == None or matchCondition == None:
+        query = "select " + name + " from " + table + ";"
+        query = insert.mogrify(query, ( ))
+    else:
+        query = "select " + name + " from " + table + " WHERE " + matchValue + " = %s;"
+        query = insert.mogrify(query, (matchCondition, ))
     insert.execute(query)    
     if fetchall:
         result = insert.fetchall()
@@ -195,7 +210,23 @@ def selectSingleValuePsql(insert, table, name, matchValue, matchCondition, fetch
 
 def selectSingleValueOrient(insert, table, name, matchValue, matchCondition):
     # todo : Orient
-    return 0
+    return []
+
+def selectSingleEdgeValuePsql(insert, table, name, fromNode, toNode, fetchall = True):
+
+    query = "select " + name + " from " + table + " where fromnode = %s and tonode = %s;"
+    query = insert.mogrify(query, (fromNode, toNode, ))
+    insert.execute(query)    
+    if fetchall:
+        result = insert.fetchall()
+    else:
+        result = insert.fetchone()[0]
+
+    return result
+
+def selectSingleEdgeValueOrient(insert, table, name, fromNode, toNode, fetchall = True):
+    # todo : Orient
+    return []
 
 def getNotYetSelectedImplementationsPsql(insert, bundleID):
 

@@ -518,15 +518,17 @@ class metric(node):
 
 class bundle(node):
     cluster_id = None
-    mapper = {'name': 'STRING', '_executing': 'Boolean', '_active': 'Boolean'}
+    mapper = {'name': 'STRING', '_executing': 'Boolean', '_active': 'Boolean', '_prepared': 'Boolean', '_ready': 'Boolean'}
     __slots__ = list(mapper.keys())
-    def __init__ (self, name = None, rid = None, executing=False, active=True, client=False, batch=False):
+    def __init__ (self, name = None, rid = None, executing=False, active=True, prepared=False, ready=False, client=False, batch=False):
         if not client:
             client = self.client
         node.__init__(self, rid)
         self.name = name
         self._executing = executing
         self._active = active
+        self._prepared = prepared
+        self._ready = ready
         if self.rid == None:
             self.createOrGet(client, batch)
         else:

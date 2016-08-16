@@ -141,6 +141,9 @@ class PlugIn (Process):
                 data = {}
                 bundleID = changed['new']['id']
                 data = self.getListing(bundleID)
+                bundleToExecute = nodes.bundle(rid=bundleID, client=self.insert)
+                functionName = 'updateNode' + self.dbs.backend.title()
+                getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", bundleToExecute.rid, {"_active": False}, True)
                 functionName = 'getMaxIteration' + self.dbs.backend.title()
                 try:
                     iteration = getattr(qh, functionName)(self.insert, bundleID) + 1
