@@ -441,7 +441,7 @@ class responsehasimplementation(edge):
 
 class implementationhasmetric(edge):
     cluster_id = None
-    mapper = {'name': 'STRING', '_value' : 'REAL'}
+    mapper = {'name': 'STRING', '_value' : 'DOUBLE'}
     __slots__ = list(mapper.keys())
     psql = {'fromnode': 'implementation', 'tonode': 'metric'}
     

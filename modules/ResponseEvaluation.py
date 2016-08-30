@@ -56,7 +56,7 @@ class evaluateExecution(threading.Thread):
     def run(self):
         logger.info("Start THREAD evaluation for: %s", self.bundle)
         self.list.append(self.bundle)
-        
+        # do some measurements here
 
     def stop(self):
         logger.info("Stop THREAD evaluation for: %s", self.bundle)
@@ -66,6 +66,7 @@ class evaluateExecution(threading.Thread):
             value = random.random()
             getattr(qh, functionName)(self.DBconnect, self.insert, "implementationhasmetric", elem, {"_value": value}, True)
         del self.openEvals[self.bundle]
+        # todo set solved alert context
         dbConnector.disconnectFromDB(self, True)
 
 class PlugIn (Process):

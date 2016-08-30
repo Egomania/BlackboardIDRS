@@ -58,17 +58,18 @@ class PlugIn (Process):
         logger.info( 'Start "{0}"'.format(self.__module__) )
         while (True):
             changed = self.subscribe.get()
-            
             table = changed['table']
             operation = changed['operation'].lower()
             ident = changed['ident']
             logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
             if ident not in self.openIssues:
                 # todo : trigger conditions refinement
-                if (changed['new']['_prio'] != None and changed['new']['_prio'] > 0 and "sameClassification_a1" in changed['new']['name']):
+                if '_prio' in changed['new'].keys():
+                    if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
+                        if int(changed['new']['_prio']) > 0 and "sameClassification_a1" in changed['new']['name']:
                     
-                    self.openIssues[ident] = AP.Issue(os.path.realpath(__file__), self.__module__ , self, "callbackFKT", ident)
-                    logger.info("Schedule : %s", changed['new']['name'])
+                            self.openIssues[ident] = AP.Issue(os.path.realpath(__file__), self.__module__ , self, "callbackFKT", ident)
+                            logger.info("Schedule : %s", changed['new']['name'])
                    
                         
 
