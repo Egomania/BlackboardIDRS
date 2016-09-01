@@ -50,16 +50,16 @@ class PlugIn (Process):
 
         # get infos
         functionName = 'geteffectedEntities' + self.dbs.backend.title()
-        effectedEntities = getattr(qh, functionName)(insert, issueNode.rid)
+        effectedEntities = getattr(qh, functionName)(insert, issue.ident)
         functionName = 'getImplementations' + self.dbs.backend.title()
         implementationsOnEffected = getattr(qh, functionName)(insert, effectedEntities)
         functionName = 'getImplementationsAttack' + self.dbs.backend.title()
-        implementationsForAttack = getattr(qh, functionName)(insert, issueNode.rid)
+        implementationsForAttack = getattr(qh, functionName)(insert, issue.ident)
    
         # intersection between applicable and helpful responses
         implementations = list(set(implementationsOnEffected) & set(implementationsForAttack))
         
-        newBundle = nodes.bundle(name = issue.name, rid = None, client=insert)
+        newBundle = nodes.bundle(name = issueNode.name, rid = None, client=insert)
         bundlesolvesalertcontext = edges.bundlesolvesalertcontext(newBundle, issueNode, client=insert)
         for elem in implementations:
             implNode = nodes.implementation(rid = elem, client=insert)
@@ -87,7 +87,7 @@ class PlugIn (Process):
                 # todo : trigger conditions refinement
                 if '_prio' in changed['new'].keys():
                     if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
-                        if int(changed['new']['_prio']) > 80: # and "sameClassification_a1" in changed['new']['name']:
+                        if int(changed['new']['_prio']) > 80: 
                             #get super context = highest alert context in hierarchy
                             superContexts = getattr(qh, functionName)(self.insert, ident)
                             

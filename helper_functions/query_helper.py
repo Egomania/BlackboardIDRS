@@ -342,13 +342,22 @@ def getIssuePsql(insert, contextID):
     if len(subcontextList) == 0:
         return None
 
-    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id in %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.tonode FROM contexttocontext context, contextTree cTree WHERE context.fromnode = cTree.fromnode) SELECT distinct cT.tonode FROM contextTree cT, alertcontext ac WHERE ac.id = cT.tonode and ac.name like '%%issue%%'"
-
-    query = insert.mogrify(query, (tuple(subcontextList), ))
+    query = "select id from alertcontext where name like '%%issue%%'"
     insert.execute(query)
-    result = insert.fetchone()
+    result = insert.fetchall()
 
-    return result
+    for issue in result:
+
+        issueSubContext = getSubContextPsql(insert, issue[0])
+        issueSubContextList = []
+        for elem in issueSubContext:
+            issueSubContextList.append(elem[0])
+
+        intersect = list(set(issueSubContextList) & set(subcontextList))
+        if len(intersect) != 0:
+            return issue
+
+    return None
 
 def getIssueOrient(insert, contextID):
     # todo : Orient
