@@ -143,6 +143,7 @@ class PlugIn (Process):
                 try:
                     self.cur.execute("TRUNCATE TABLE alert RESTART IDENTITY CASCADE;")
                     self.cur.execute("TRUNCATE TABLE alertcontext RESTART IDENTITY CASCADE;")
+                    self.cur.execute("TRUNCATE TABLE bundle RESTART IDENTITY CASCADE;")
                     self.conn.commit()
                 except Exception as inst:
                     logger.error("Database locked in RUN %s : %s", i, inst)

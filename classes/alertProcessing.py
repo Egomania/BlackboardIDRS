@@ -29,7 +29,16 @@ class Issue():
 
     def __init__(self, callbackLocation, callbackModule, obj, callbackFKT,ident):
         self.ident = ident
-        self.name = str(ident) + "_" + str(datetime.datetime.now().isoformat())
+        self.name = "issue_" + str(ident) + "_" + str(datetime.datetime.now().isoformat())
         imp.load_source(callbackModule, callbackLocation)
-        self.t = threading.Timer(2,getattr(obj, callbackFKT), [self])
+        self.obj = obj
+        self.callbackFKT = callbackFKT
+        self.t = threading.Timer(10,getattr(self.obj, self.callbackFKT), [self])
         self.t.start()
+        self.sheduled = False
+
+    def restartTimer(self):
+        self.t.cancel()
+        self.t = threading.Timer(10,getattr(self.obj, self.callbackFKT), [self])
+        self.t.start()
+        print ("Restart Timer: ", self.ident)

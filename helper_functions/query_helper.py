@@ -303,3 +303,54 @@ def getImplementationPreconditionsWithExecutorOrient(insert, response):
     # todo : Orient
     return []
 
+
+def getSuperContextPsql(insert, contextID):
+
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.tonode FROM contexttocontext context, contextTree cTree WHERE context.fromnode = cTree.fromnode) SELECT distinct tonode FROM contextTree WHERE level = (select max(level) from contextTree);"
+
+    query = insert.mogrify(query, (contextID, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
+def getSuperContextOrient(insert, contextID):
+    # todo : Orient
+    return []
+
+def getSubContextPsql(insert, contextID):
+
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree WHERE context.tonode = cTree.fromnode) SELECT distinct tonode FROM contextTree WHERE level > 0;"
+
+    query = insert.mogrify(query, (contextID, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
+def getSubContextOrient(insert, contextID):
+    # todo : Orient
+    return []
+
+def getIssuePsql(insert, contextID):
+
+    subcontexts = getSubContextPsql(insert, contextID)
+    subcontextList = []
+    for elem in subcontexts:
+        subcontextList.append(elem[0])
+
+    if len(subcontextList) == 0:
+        return None
+
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id in %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.tonode FROM contexttocontext context, contextTree cTree WHERE context.fromnode = cTree.fromnode) SELECT distinct cT.tonode FROM contextTree cT, alertcontext ac WHERE ac.id = cT.tonode and ac.name like '%%issue%%'"
+
+    query = insert.mogrify(query, (tuple(subcontextList), ))
+    insert.execute(query)
+    result = insert.fetchone()
+
+    return result
+
+def getIssueOrient(insert, contextID):
+    # todo : Orient
+    return []
+

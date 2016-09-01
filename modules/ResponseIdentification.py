@@ -34,19 +34,33 @@ class PlugIn (Process):
         (DBConnect, insert) = dbConnector.connectToDBTemp(self)
 
         print ('Timer abgelaufen: ', issue.ident)
+        issue.sheduled = True
+        # create issue as alert context node, if no suitable candidate
+        functionName = 'getIssue' + self.dbs.backend.title()
+        issueID = getattr(qh, functionName)(insert, issue.ident)
+        if issueID == None:
+            issueNode = nodes.alertcontext(name=issue.name, rid=None, client=insert)
+            
+        else:
+            issueNode = nodes.alertcontext(rid=issueID[0], client=insert)
+            
+        alertContextNode = nodes.alertcontext(rid = issue.ident, client=insert)
+        contextTocontext = edges.contexttocontext(alertContextNode, issueNode, client=insert)
+
+
+        # get infos
         functionName = 'geteffectedEntities' + self.dbs.backend.title()
-        effectedEntities = getattr(qh, functionName)(insert, issue.ident)
+        effectedEntities = getattr(qh, functionName)(insert, issueNode.rid)
         functionName = 'getImplementations' + self.dbs.backend.title()
         implementationsOnEffected = getattr(qh, functionName)(insert, effectedEntities)
         functionName = 'getImplementationsAttack' + self.dbs.backend.title()
-        implementationsForAttack = getattr(qh, functionName)(insert, issue.ident)
+        implementationsForAttack = getattr(qh, functionName)(insert, issueNode.rid)
    
         # intersection between applicable and helpful responses
         implementations = list(set(implementationsOnEffected) & set(implementationsForAttack))
         
         newBundle = nodes.bundle(name = issue.name, rid = None, client=insert)
-        alertContextNode = nodes.alertcontext(rid = issue.ident, client=insert)
-        bundlesolvesalertcontext = edges.bundlesolvesalertcontext(newBundle, alertContextNode, client=insert)
+        bundlesolvesalertcontext = edges.bundlesolvesalertcontext(newBundle, issueNode, client=insert)
         for elem in implementations:
             implNode = nodes.implementation(rid = elem, client=insert)
             newedge = edges.implementationisinbundle(implNode, newBundle, client=insert)
@@ -56,20 +70,45 @@ class PlugIn (Process):
     def run(self):
 
         logger.info( 'Start "{0}"'.format(self.__module__) )
+        functionName = 'getSuperContext' + self.dbs.backend.title()
+        functionNameObs = 'getSubContext' + self.dbs.backend.title()
         while (True):
             changed = self.subscribe.get()
             table = changed['table']
             operation = changed['operation'].lower()
             ident = changed['ident']
             logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
+
+            # own context
+            if 'issue' in changed['new']['name']:
+                continue
+            
             if ident not in self.openIssues:
                 # todo : trigger conditions refinement
                 if '_prio' in changed['new'].keys():
                     if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
-                        if int(changed['new']['_prio']) > 0 and "sameClassification_a1" in changed['new']['name']:
-                    
-                            self.openIssues[ident] = AP.Issue(os.path.realpath(__file__), self.__module__ , self, "callbackFKT", ident)
-                            logger.info("Schedule : %s", changed['new']['name'])
+                        if int(changed['new']['_prio']) > 80: # and "sameClassification_a1" in changed['new']['name']:
+                            #get super context = highest alert context in hierarchy
+                            superContexts = getattr(qh, functionName)(self.insert, ident)
+                            
+                            for elem in superContexts:
+                                superContextIden = elem[0]
+                                if elem[0] not in self.openIssues:
+                                    self.openIssues[superContextIden] = AP.Issue(os.path.realpath(__file__), self.__module__ , self, "callbackFKT", superContextIden)
+                                    logger.info("Schedule : %s", changed['new']['name'])
+                                else:
+                                    if not self.openIssues[superContextIden].sheduled:
+                                        self.openIssues[superContextIden].restartTimer()
+                                # Check for obsolete issues 
+                                subContexts = getattr(qh, functionNameObs)(self.insert, superContextIden)
+                                
+                                for entry in subContexts:
+                                    subContextIdent = entry[0]
+                                    if subContextIdent in self.openIssues:
+                                        self.openIssues[subContextIdent].t.cancel()
+                                        del self.openIssues[subContextIdent]
+                                        
+                
                    
                         
 
