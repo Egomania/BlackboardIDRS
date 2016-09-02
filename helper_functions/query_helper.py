@@ -54,7 +54,7 @@ def geteffectedEntitiesPsql(insert, issue):
 
     effectedEntities = {}
 
-    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree WHERE context.tonode = cTree.fromnode) select distinct d.id from service d, alertcontexthasservicetarget aht where d.id = aht.tonode and (aht.fromnode = %s or aht.fromnode in (SELECT distinct tonode FROM contextTree WHERE level > 0));"
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree, alertcontext ac WHERE context.tonode = cTree.fromnode and ac.id = context.fromnode and ac._solved = False) select distinct d.id from service d, alertcontexthasservicetarget aht where d.id = aht.tonode and (aht.fromnode = %s or aht.fromnode in (SELECT distinct tonode FROM contextTree WHERE level > 0));"
     query = insert.mogrify(query, (issue, issue, ))
     insert.execute(query)
     result = insert.fetchall()
@@ -64,7 +64,7 @@ def geteffectedEntitiesPsql(insert, issue):
 
     effectedEntities['service'] = listing
 
-    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree WHERE context.tonode = cTree.fromnode) select distinct d.id from device d, alertcontexthashosttarget aht where d.id = aht.tonode and (aht.fromnode = %s or aht.fromnode in (SELECT distinct tonode FROM contextTree WHERE level > 0));"
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree, alertcontext ac WHERE context.tonode = cTree.fromnode and ac.id = context.fromnode and ac._solved = False) select distinct d.id from device d, alertcontexthashosttarget aht where d.id = aht.tonode and (aht.fromnode = %s or aht.fromnode in (SELECT distinct tonode FROM contextTree WHERE level > 0));"
     query = insert.mogrify(query, (issue, issue, ))
     insert.execute(query)
     result = insert.fetchall()
@@ -74,7 +74,7 @@ def geteffectedEntitiesPsql(insert, issue):
 
     effectedEntities['host'] = listing
 
-    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree WHERE context.tonode = cTree.fromnode) select distinct d.id from users d, alertcontexthasusertarget aht where d.id = aht.tonode and (aht.fromnode = %s or aht.fromnode in (SELECT distinct tonode FROM contextTree WHERE level > 0));"
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree, alertcontext ac WHERE context.tonode = cTree.fromnode and ac.id = context.fromnode and ac._solved = False) select distinct d.id from users d, alertcontexthasusertarget aht where d.id = aht.tonode and (aht.fromnode = %s or aht.fromnode in (SELECT distinct tonode FROM contextTree WHERE level > 0));"
     query = insert.mogrify(query, (issue, issue, ))
     insert.execute(query)
     result = insert.fetchall()

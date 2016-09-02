@@ -44,6 +44,7 @@ class executePlan(threading.Thread):
         getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_executing": False}, True)
         logger.info('Finished Execution for Bundle: %s' , self.bundle)
         self.list.remove(self.bundle)
+        dbConnector.disconnectFromDB(self, True)
 
 class listenToBundleQueue(threading.Thread):
     def __init__(self, dbs, subscribe, current, loop):
@@ -127,8 +128,8 @@ class listenToBundleRelQueue(threading.Thread):
             rel = self.executionPlan.add_edge(v_pre, v)
             self.getPreconditionsOfElem(preConID, v_pre)
 
-    def createExecutionPlan(self):
-        GPLMTPlanFile = "GPLMTExecutionPlan_" + str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H:%M:%S'))
+    def createExecutionPlan(self, ident):
+        GPLMTPlanFile = "GPLMTExecutionPlan_" + str(ident) + "_" + str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H:%M:%S'))
         stepsToDo = ""
         vertexToDelete = []
         while self.executionPlan.num_vertices() != 0:
@@ -172,7 +173,7 @@ class listenToBundleRelQueue(threading.Thread):
                     self.v_prop_exec[v] = elem[3]
                     self.getPreconditionsOfElem(elem[2], v)
 
-                plan = self.createExecutionPlan()
+                plan = self.createExecutionPlan(current)
                 logger.info("Prepared execution plan: %s", plan)
                 bundleToExecute = nodes.bundle(rid=current, client=self.insert)
                 self.loop[current] = plan

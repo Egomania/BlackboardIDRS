@@ -11,10 +11,11 @@ from multiprocessing import Process, Queue
 from helper_functions import dbConnector
 from helper_functions import query_helper as qh
 
-logger = logging.getLogger("idrs")
-
 listenTo = ['alertcontext']
 name = 'ResponseIdentification'
+
+logger = logging.getLogger("idrs."+name)
+logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -24,14 +25,23 @@ class PlugIn (Process):
         self.dbs = dbs
         dbConnector.connectToDB(self)
         self.openIssues = {}
+        self.openConnections = {}
 
     def stop(self, commit=False):
         logger.info( 'Stopped "{0}"'.format(self.__module__) )
+
+        for elem in self.openConnections.keys():
+            (DBConnect, insert) = self.openConnections.keys[elem]
+            DBConnect.cancel()
+            dbConnector.disconnectFromDBTemp(self, DBConnect, insert, commit = False)
+
         dbConnector.disconnectFromDB(self, commit)
 
     def callbackFKT (self, issue):
 
         (DBConnect, insert) = dbConnector.connectToDBTemp(self)
+
+        self.openConnections[issue.ident] = (DBConnect, insert)
 
         print ('Timer abgelaufen: ', issue.ident)
         issue.sheduled = True
@@ -66,6 +76,7 @@ class PlugIn (Process):
             newedge = edges.implementationisinbundle(implNode, newBundle, client=insert)
 
         dbConnector.disconnectFromDBTemp(self, DBConnect, insert, commit = True)
+        del self.openConnections[issue.ident]
 
     def run(self):
 
@@ -79,8 +90,21 @@ class PlugIn (Process):
             ident = changed['ident']
             logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
 
-            # own context
+
+            # continue after delete and skip operation
+            if  '_solved' in changed['new'].keys():
+                if changed['new']['_solved'] != None and changed['new']['_solved'] != 'None':
+                    if changed['new']['_solved']:
+                        if ident in self.openIssues.keys():
+                            del self.openIssues[ident]
+                            logger.info( 'Deleted Issue %s', ident)
+                            print (self.openIssues.keys())
+                            continue
+                
+
+            # own context --> skip operation
             if 'issue' in changed['new']['name']:
+                print ('Own')
                 continue
             
             if ident not in self.openIssues:

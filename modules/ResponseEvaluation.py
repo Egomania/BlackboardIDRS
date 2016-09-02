@@ -44,6 +44,11 @@ class prepareEvaluation(threading.Thread):
         self.list.remove(self.bundle)
         dbConnector.disconnectFromDB(self, True)
 
+    def stopThread(self):
+        self.DBconnect.cancel()
+        dbConnector.disconnectFromDB(self, False)
+        
+
 class evaluateExecution(threading.Thread):
     def __init__(self, dbs, bundle, listing, openEvals):
         threading.Thread.__init__(self)
@@ -66,8 +71,30 @@ class evaluateExecution(threading.Thread):
             value = random.random()
             getattr(qh, functionName)(self.DBconnect, self.insert, "implementationhasmetric", elem, {"_value": value}, True)
         del self.openEvals[self.bundle]
-        # todo set solved alert context
+        success = random.randint(1, 10)
+
+        #failed response
+        if success == 1:
+            logger.info("Response Operation Failed for: %s", self.bundle)
+        else:
+            contextList = []
+            logger.info("Response Operation Successful for: %s", self.bundle)
+            functionName = 'selectSingleValue' + self.dbs.backend.title()
+            contextID = getattr(qh, functionName)(self.insert, "bundlesolvesalertcontext", "tonode", "fromnode", self.bundle , fetchall=True)
+            contextList.append(contextID[0])
+            functionName = 'getSubContext' + self.dbs.backend.title()
+            subContext = getattr(qh, functionName)(self.insert, contextID[0])
+            for elem in subContext:
+                contextList.append(elem[0])
+            functionName = 'updateNode' + self.dbs.backend.title()
+            for elem in contextList:
+                getattr(qh, functionName)(self.DBconnect, self.insert, "alertcontext", elem, {"_solved": True}, True)
+
         dbConnector.disconnectFromDB(self, True)
+
+    def stopThread(self):
+        self.DBconnect.cancel()
+        dbConnector.disconnectFromDB(self, False)
 
 class PlugIn (Process):
 
@@ -83,6 +110,9 @@ class PlugIn (Process):
 
     def stop(self):
         logger.info( 'Stopped "{0}"'.format(self.__module__) )
+        for elem in self.executorThreads:
+            logger.info("Stop Execution THREAD")
+            elem.stopThread()
         dbConnector.disconnectFromDB(self, True)
 
     def run(self):
