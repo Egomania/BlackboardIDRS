@@ -13,7 +13,7 @@ listenTo = ['bundle']
 name = 'ResponseEvaluation'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 class prepareEvaluation(threading.Thread):
     def __init__(self, dbs, bundle, listing, openEvals):
@@ -76,6 +76,7 @@ class evaluateExecution(threading.Thread):
         #failed response
         if success == 1:
             logger.info("Response Operation Failed for: %s", self.bundle)
+            getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_active": True}, True)
         else:
             contextList = []
             logger.info("Response Operation Successful for: %s", self.bundle)

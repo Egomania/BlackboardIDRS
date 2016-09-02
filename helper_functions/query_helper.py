@@ -168,6 +168,8 @@ def getMaxIterationPsql(insert, bundleID):
     query = insert.mogrify(query, (bundleID, ))
     insert.execute(query)
     iteration = insert.fetchone()[0]
+    if iteration == None:
+        return 0
     return iteration
 
 def updateEdgeOrient(connector, insert, edgeName, fromNode, toNode, updateValues, commit):
@@ -318,6 +320,20 @@ def getSuperContextOrient(insert, contextID):
     # todo : Orient
     return []
 
+def getSuperContextWithoutIssuePsql(insert, contextID):
+
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.tonode FROM contexttocontext context, contextTree cTree WHERE context.fromnode = cTree.fromnode) SELECT distinct ct.tonode, ct.level FROM contextTree ct, alertcontext ac WHERE level = (select max(level) from contextTree) and ac.id = ct.tonode and ac.name not like '%%issue%%' order by level desc;"
+
+    query = insert.mogrify(query, (contextID, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
+def getSuperContextWithoutIssueOrient(insert, contextID):
+    # todo : Orient
+    return []
+
 def getSubContextPsql(insert, contextID):
 
     query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree WHERE context.tonode = cTree.fromnode) SELECT distinct tonode FROM contextTree WHERE level > 0;"
@@ -360,6 +376,39 @@ def getIssuePsql(insert, contextID):
     return None
 
 def getIssueOrient(insert, contextID):
+    # todo : Orient
+    return []
+
+
+def getIssueNotSolvedPsql(insert, contextID):
+
+    subcontexts = getSubContextPsql(insert, contextID)
+    subcontextList = []
+    for elem in subcontexts:
+        subcontextList.append(elem[0])
+
+    if len(subcontextList) == 0:
+        return None
+
+    query = "select id from alertcontext where name like '%%issue%%' and _solved = %s"
+    query = insert.mogrify(query, (False, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    for issue in result:
+
+        issueSubContext = getSubContextPsql(insert, issue[0])
+        issueSubContextList = []
+        for elem in issueSubContext:
+            issueSubContextList.append(elem[0])
+
+        intersect = list(set(issueSubContextList) & set(subcontextList))
+        if len(intersect) != 0:
+            return issue
+
+    return None
+
+def getIssueNotSolvedOrient(insert, contextID):
     # todo : Orient
     return []
 

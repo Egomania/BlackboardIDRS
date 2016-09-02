@@ -128,12 +128,12 @@ def insertAlertPsql(alert, conn, cur):
             cur.execute(statement)
 
     if not specialTarget:
-        statement = "select d.id from device d, devicehasinterface dhasiface, mactointerface mactoiface, iptomac where dhasiface.fromnode = d.id and dhasiface.tonode = mactoiface.tonode and mactoiface.fromnode = iptomac.tonode and iptomac.fromnode = ip.id and ip.id = %s"
-        statement = cur.mogrify(statement, (alert.targetID))
+        statement = "select d.id from device d, devicehasinterface dhasiface, mactointerface mactoiface, iptomac, ip where dhasiface.fromnode = d.id and dhasiface.tonode = mactoiface.tonode and mactoiface.fromnode = iptomac.tonode and iptomac.fromnode = ip.id and ip.id = %s"
+        statement = cur.mogrify(statement, (alert.targetID, ))
         cur.execute(statement)
         deviceID = cur.fetchone()[0]
         statement = "select * from alertcontexthashosttarget r where r.fromnode = %s and r.tonode = %s"
-        statement = cur.mogrify(statement, (alertContextID, deviceID))
+        statement = cur.mogrify(statement, (alertContextID, deviceID, ))
         cur.execute(statement)
         res = cur.fetchall()
         if len(res) == 0:

@@ -15,7 +15,7 @@ listenTo = ['bundle', 'implementationisinbundle']
 name = 'ResonseExecution'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 GPLMTFolder = "GPLMT"
 GPLMTTargetFolder = GPLMTFolder + "/targets"
@@ -40,7 +40,7 @@ class executePlan(threading.Thread):
         functionName = 'updateNode' + self.dbs.backend.title()
         logger.info('Start Execution for Bundle: %s' , self.bundle)
         getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_executing": True}, True)
-        time.sleep(3)
+        time.sleep(1)
         getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_executing": False}, True)
         logger.info('Finished Execution for Bundle: %s' , self.bundle)
         self.list.remove(self.bundle)
@@ -72,6 +72,10 @@ class listenToBundleQueue(threading.Thread):
             ready = changed['new']['_ready']
             
             if ready and current in self.loop.keys():
+
+                functionName = 'updateNode' + self.dbs.backend.title()
+                getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", current, {"_ready": False}, True)
+
                 executionThread = executePlan(self.loop[current],current, self.current, self.dbs)
                 executionThread.start()
                 del self.loop[current]

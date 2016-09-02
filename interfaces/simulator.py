@@ -100,6 +100,8 @@ class PlugIn (Process):
             typeNode = nodes.attack(classification, client = client)
             self.classification[classification] = typeNode.rid
         for service in self.service.keys():
+            if service == None:
+                continue
             serviceNode = nodes.service(service, client=client)
             self.service[service] = serviceNode.rid
 

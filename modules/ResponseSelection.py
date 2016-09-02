@@ -61,7 +61,7 @@ class PlugIn (Process):
         for victim in effectedEntities['host']:
             if victim not in devMapper.keys():
                 devMapper[victim] = []
-            devMapper[elem[0]].append(str(victim))
+            devMapper[victim].append(str(victim))
         
         functionName = 'getNotYetSelectedImplementations' + self.dbs.backend.title()
         result = getattr(qh, functionName)(self.insert, bundleID)
@@ -151,7 +151,7 @@ class PlugIn (Process):
                     logger.error("No function %s found for backend: %s", functionName, self.dbs.backend)
                     continue
 
-                print ('Start Solver for bundle ', bundleID)
+                logger.info ('Start Solver for bundle %s', bundleID)
                 
                 # todo : option to include multiple Solvers
 

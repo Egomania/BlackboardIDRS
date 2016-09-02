@@ -4,10 +4,12 @@ import psycopg2.extensions
 import pyorient
 import os
 
+from operator import itemgetter
+from multiprocessing import Process, Queue
+
 from topology import nodes, edges
 from classes import alertProcessing as AP
 
-from multiprocessing import Process, Queue
 from helper_functions import dbConnector
 from helper_functions import query_helper as qh
 
@@ -15,7 +17,7 @@ listenTo = ['alertcontext']
 name = 'ResponseIdentification'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -43,10 +45,10 @@ class PlugIn (Process):
 
         self.openConnections[issue.ident] = (DBConnect, insert)
 
-        print ('Timer abgelaufen: ', issue.ident)
+        logger.info('Timer abgelaufen: %s', issue.ident)
         issue.sheduled = True
         # create issue as alert context node, if no suitable candidate
-        functionName = 'getIssue' + self.dbs.backend.title()
+        functionName = 'getIssueNotSolved' + self.dbs.backend.title()
         issueID = getattr(qh, functionName)(insert, issue.ident)
         if issueID == None:
             issueNode = nodes.alertcontext(name=issue.name, rid=None, client=insert)
@@ -81,15 +83,15 @@ class PlugIn (Process):
     def run(self):
 
         logger.info( 'Start "{0}"'.format(self.__module__) )
-        functionName = 'getSuperContext' + self.dbs.backend.title()
+        functionName = 'getSuperContextWithoutIssue' + self.dbs.backend.title()
         functionNameObs = 'getSubContext' + self.dbs.backend.title()
         while (True):
             changed = self.subscribe.get()
             table = changed['table']
             operation = changed['operation'].lower()
             ident = changed['ident']
-            logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
-
+            #logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
+            
 
             # continue after delete and skip operation
             if  '_solved' in changed['new'].keys():
@@ -97,40 +99,47 @@ class PlugIn (Process):
                     if changed['new']['_solved']:
                         if ident in self.openIssues.keys():
                             del self.openIssues[ident]
-                            logger.info( 'Deleted Issue %s', ident)
-                            print (self.openIssues.keys())
+                            logger.info( 'Deleted Issue %s -- Remaining Issues: %s', ident, self.openIssues.keys())
                             continue
                 
 
             # own context --> skip operation
             if 'issue' in changed['new']['name']:
-                print ('Own')
+                logger.info ('Issue Alert (OWN) : (%s) %s -- Skip Operation', ident, changed['new']['name'])
                 continue
             
             if ident not in self.openIssues:
                 # todo : trigger conditions refinement
                 if '_prio' in changed['new'].keys():
                     if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
-                        if int(changed['new']['_prio']) > 80: 
+                        if int(changed['new']['_prio']) > 0: 
                             #get super context = highest alert context in hierarchy
                             superContexts = getattr(qh, functionName)(self.insert, ident)
                             
+                            if len(superContexts) > 0:
+                                maxVal = max(superContexts,key=itemgetter(1))[1]
+                            
                             for elem in superContexts:
                                 superContextIden = elem[0]
-                                if elem[0] not in self.openIssues:
-                                    self.openIssues[superContextIden] = AP.Issue(os.path.realpath(__file__), self.__module__ , self, "callbackFKT", superContextIden)
-                                    logger.info("Schedule : %s", changed['new']['name'])
+                                if superContextIden not in self.openIssues:
+                                    if elem[1] == maxVal:
+                                        self.openIssues[superContextIden] = AP.Issue(os.path.realpath(__file__), self.__module__ , self, "callbackFKT", superContextIden)
+                                        logger.info("Schedule (%s) : %s", superContextIden, changed['new']['name'])
+                                    else:
+                                        self.openIssues[superContextIden] = None
+                                        logger.info("Insert Empty (%s) : %s", superContextIden, changed['new']['name'])
                                 else:
-                                    if not self.openIssues[superContextIden].sheduled:
-                                        self.openIssues[superContextIden].restartTimer()
+                                    if self.openIssues[superContextIden] != None:
+                                        if not self.openIssues[superContextIden].sheduled:
+                                            self.openIssues[superContextIden].restartTimer()
                                 # Check for obsolete issues 
                                 subContexts = getattr(qh, functionNameObs)(self.insert, superContextIden)
                                 
                                 for entry in subContexts:
                                     subContextIdent = entry[0]
-                                    if subContextIdent in self.openIssues:
+                                    if subContextIdent in self.openIssues and self.openIssues[subContextIdent] != None:
                                         self.openIssues[subContextIdent].t.cancel()
-                                        del self.openIssues[subContextIdent]
+                                        self.openIssues[subContextIdent] = None
                                         
                 
                    

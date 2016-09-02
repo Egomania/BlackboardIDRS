@@ -92,7 +92,7 @@ if __name__ == "__main__":
     logger.setLevel(numeric_level)
 
     ch = logging.StreamHandler()    
-    formatter = logging.Formatter('%(asctime)s - %(filename)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(filename)s (%(process)d) - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     logger.info("Log-Level set to: '%s' (%s).", args.log, numeric_level)
