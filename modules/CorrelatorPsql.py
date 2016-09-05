@@ -6,10 +6,11 @@ import psycopg2.extensions
 from multiprocessing import Process, Queue
 from topology import nodes
 
-logger = logging.getLogger("idrs")
-
 listenTo = ['alertcontext']
 name = 'CorrelatorPsql'
+
+logger = logging.getLogger("idrs."+name)
+#logger.setLevel(20)
 
 class PlugIn (Process):
     def __init__(self, q, dbs):

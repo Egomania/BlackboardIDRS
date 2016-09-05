@@ -4,11 +4,14 @@ import psycopg2
 import psycopg2.extensions
 
 from multiprocessing import Process, Queue
-
-logger = logging.getLogger("idrs")
+from topology import nodes as nodes
+from topology import edges as edges
 
 listenTo = ['alertcontext']
 name = 'AggregatorPsql'
+
+logger = logging.getLogger("idrs."+name)
+#logger.setLevel(20)
 
 class PlugIn (Process):
     def __init__(self, q, dbs):
@@ -148,9 +151,9 @@ def same(self, alertContext, table, attacktype, name):
         statement = self.cur.mogrify(statement, (tuple(result),self.rulesToId[attacktype] , ))
         
         self.cur.execute(statement)
-        superset = self.cur.fetchall()
+        superset = self.cur.fetchone()
         
-        if len(superset) == 0:
+        if superset == None:
             
             statement = 'INSERT INTO alertcontext (name, _solved) VALUES (%s,%s) RETURNING id;'
             statement = self.cur.mogrify(statement, (contextName, False, ))
@@ -161,12 +164,14 @@ def same(self, alertContext, table, attacktype, name):
             self.cur.execute(statement)
             
                 
-        superset = superset[0]
+        supernode = nodes.node()
+        supernode.rid = superset[0]
+        subnode = nodes.node()
+        
         for elem in result:
             try:
-                statement = "INSERT INTO contexttocontext (name, fromnode, tonode) VALUES (%s, %s, %s)"
-                statement = self.cur.mogrify(statement, ("contexttocontext", elem[0], superset ))
-                self.cur.execute(statement)
+                subnode.rid = elem[0]
+                contexttocontext = edges.contexttocontext(fromNode = subnode, toNode = supernode, client=self.cur)
                 
             except Exception as e:
                 logger.info( 'Error in "{0}": "{1}"'.format(self.__module__, e) ) 

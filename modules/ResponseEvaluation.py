@@ -13,7 +13,7 @@ listenTo = ['bundle']
 name = 'ResponseEvaluation'
 
 logger = logging.getLogger("idrs."+name)
-#logger.setLevel(20)
+logger.setLevel(20)
 
 class prepareEvaluation(threading.Thread):
     def __init__(self, dbs, bundle, listing, openEvals):
@@ -71,7 +71,7 @@ class evaluateExecution(threading.Thread):
             value = random.random()
             getattr(qh, functionName)(self.DBconnect, self.insert, "implementationhasmetric", elem, {"_value": value}, True)
         del self.openEvals[self.bundle]
-        success = random.randint(1, 10)
+        success = random.randint(2, 10)
 
         #failed response
         if success == 1:

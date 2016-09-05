@@ -41,4 +41,3 @@ class Issue():
         self.t.cancel()
         self.t = threading.Timer(3,getattr(self.obj, self.callbackFKT), [self])
         self.t.start()
-        print ("Restart Timer: ", self.ident)

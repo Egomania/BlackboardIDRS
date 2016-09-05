@@ -13,10 +13,11 @@ from topology import nodes, edges
 from classes import ResponseSelection as rs
 from modules.solvers import greedyCost as solver
 
-logger = logging.getLogger("idrs")
-
 listenTo = ['bundle']
 name = 'ResponseSelection'
+
+logger = logging.getLogger("idrs."+name)
+logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -103,6 +104,21 @@ class PlugIn (Process):
 
                         metric = rs.Metric(elem[3], elem[4])
                         responseList[elem[2]]['metrics'].append(metric)
+
+        if len(host_attacked) == 0:
+            contextList = []
+            logger.info(" No effected Targets -- Skip Operation: %s", bundleID)
+            functionName = 'selectSingleValue' + self.dbs.backend.title()
+            contextID = getattr(qh, functionName)(self.insert, "bundlesolvesalertcontext", "tonode", "fromnode", bundleID , fetchall=True)
+            contextList.append(contextID[0])
+            functionName = 'getSubContext' + self.dbs.backend.title()
+            subContext = getattr(qh, functionName)(self.insert, contextID[0])
+            for elem in subContext:
+                contextList.append(elem[0])
+            functionName = 'updateNode' + self.dbs.backend.title()
+            for elem in contextList:
+                getattr(qh, functionName)(self.DBconnect, self.insert, "alertcontext", elem, {"_solved": True}, True)
+            return None
  
         for response in responseList.keys():
             functionName = 'getImplementationConflicts' + self.dbs.backend.title()
@@ -129,7 +145,7 @@ class PlugIn (Process):
         data["damage"] = damage_used
         data["conflict"] = conflictsList
         data["preconditions"] = preconditionsList
-
+        
         return data
 
     def run(self):
@@ -141,6 +157,8 @@ class PlugIn (Process):
                 data = {}
                 bundleID = changed['new']['id']
                 data = self.getListing(bundleID)
+                if data == None:
+                    continue
                 bundleToExecute = nodes.bundle(rid=bundleID, client=self.insert)
                 functionName = 'updateNode' + self.dbs.backend.title()
                 getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", bundleToExecute.rid, {"_active": False}, True)

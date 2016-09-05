@@ -17,7 +17,7 @@ listenTo = ['alertcontext']
 name = 'ResponseIdentification'
 
 logger = logging.getLogger("idrs."+name)
-#logger.setLevel(20)
+logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -132,6 +132,7 @@ class PlugIn (Process):
                                     if self.openIssues[superContextIden] != None:
                                         if not self.openIssues[superContextIden].sheduled:
                                             self.openIssues[superContextIden].restartTimer()
+                                            logger.info("Restart Timer (%s) : %s", superContextIden, changed['new']['name'])
                                 # Check for obsolete issues 
                                 subContexts = getattr(qh, functionNameObs)(self.insert, superContextIden)
                                 
@@ -140,6 +141,7 @@ class PlugIn (Process):
                                     if subContextIdent in self.openIssues and self.openIssues[subContextIdent] != None:
                                         self.openIssues[subContextIdent].t.cancel()
                                         self.openIssues[subContextIdent] = None
+                                        logger.info("Obsolete Entry (%s) : %s", superContextIden, changed['new']['name'])
                                         
                 
                    

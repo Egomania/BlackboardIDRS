@@ -21,7 +21,6 @@ from topology import edges, nodes
 from classes import alertProcessing as AP
 from interfaces import basicInsert
 
-logger = logging.getLogger("idrs")
 Config = configparser.ConfigParser()
 Config.read('configs/simulator.ini')
 repeats = int(Config.getint('Times','repeats'))
@@ -43,6 +42,9 @@ if EVAL:
 else:
     name = 'simulatorSilent'
     listenTo = []
+
+logger = logging.getLogger("idrs."+name)
+#logger.setLevel(20)
 
 class PlugIn (Process):
 
