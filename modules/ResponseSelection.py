@@ -17,7 +17,7 @@ listenTo = ['bundle']
 name = 'ResponseSelection'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -106,6 +106,8 @@ class PlugIn (Process):
                         responseList[elem[2]]['metrics'].append(metric)
 
         if len(host_attacked) == 0:
+            functionName = 'updateNode' + self.dbs.backend.title()
+            getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", bundleID, {"_active": False}, True)
             contextList = []
             logger.info(" No effected Targets -- Skip Operation: %s", bundleID)
             functionName = 'selectSingleValue' + self.dbs.backend.title()

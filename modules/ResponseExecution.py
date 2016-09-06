@@ -43,6 +43,7 @@ class executePlan(threading.Thread):
         time.sleep(1)
         getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", self.bundle, {"_executing": False}, True)
         logger.info('Finished Execution for Bundle: %s' , self.bundle)
+
         self.list.remove(self.bundle)
         dbConnector.disconnectFromDB(self, True)
 
@@ -162,7 +163,8 @@ class listenToBundleRelQueue(threading.Thread):
                 continue
             selected = changed['new']['_selected']
             current = changed['new']['tonode']
-            if selected and current not in self.current:
+            executed = changed['new']['_executed']
+            if selected and not executed and current not in self.current:
                 self.current.append(current)
                 logger.info("Start Execution of bundle: %s", current)
                 # get all selected implementations
@@ -211,4 +213,5 @@ class PlugIn (Process):
 
     def run(self):
         pass
+
 

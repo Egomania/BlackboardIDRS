@@ -17,7 +17,7 @@ listenTo = ['alertcontext']
 name = 'ResponseIdentification'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -90,7 +90,6 @@ class PlugIn (Process):
             table = changed['table']
             operation = changed['operation'].lower()
             ident = changed['ident']
-            #logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
             
 
             # continue after delete and skip operation
@@ -99,7 +98,7 @@ class PlugIn (Process):
                     if changed['new']['_solved']:
                         if ident in self.openIssues.keys():
                             del self.openIssues[ident]
-                            logger.info( 'Deleted Issue %s -- Remaining Issues: %s', ident, self.openIssues.keys())
+                            logger.error( 'Deleted Issue %s -- Remaining Issues: %s', ident, self.openIssues.keys())
                             continue
                 
 
