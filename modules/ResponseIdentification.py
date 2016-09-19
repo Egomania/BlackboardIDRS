@@ -87,10 +87,10 @@ class PlugIn (Process):
         functionNameObs = 'getSubContext' + self.dbs.backend.title()
         while (True):
             changed = self.subscribe.get()
-            table = changed['table']
-            operation = changed['operation'].lower()
             ident = changed['ident']
             
+            if changed['operation'].lower() == "delete":
+                continue
 
             # continue after delete and skip operation
             if  '_solved' in changed['new'].keys():
@@ -98,13 +98,13 @@ class PlugIn (Process):
                     if changed['new']['_solved']:
                         if ident in self.openIssues.keys():
                             del self.openIssues[ident]
-                            logger.error( 'Deleted Issue %s -- Remaining Issues: %s', ident, self.openIssues.keys())
+                            logger.info( 'Deleted Issue %s -- Remaining Issues: %s', ident, self.openIssues.keys())
                             continue
                 
 
             # own context --> skip operation
             if 'issue' in changed['new']['name']:
-                logger.info ('Issue Alert (OWN) : (%s) %s -- Skip Operation', ident, changed['new']['name'])
+                logger.debug ('Issue Alert (OWN) : (%s) %s -- Skip Operation', ident, changed['new']['name'])
                 continue
             
             if ident not in self.openIssues:

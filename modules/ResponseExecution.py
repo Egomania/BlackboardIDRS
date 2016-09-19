@@ -15,7 +15,7 @@ listenTo = ['bundle', 'implementationisinbundle']
 name = 'ResonseExecution'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 GPLMTFolder = "GPLMT"
 GPLMTTargetFolder = GPLMTFolder + "/targets"
@@ -69,6 +69,10 @@ class listenToBundleQueue(threading.Thread):
             changed = self.subscribe.get()
             if changed == None:
                 continue
+
+            if changed['operation'].lower() == "delete":
+                continue
+
             current = changed['new']['id']
             ready = changed['new']['_ready']
             
@@ -161,12 +165,16 @@ class listenToBundleRelQueue(threading.Thread):
             changed = self.subscribe.get()
             if changed == None:
                 continue
+
+            if changed['operation'].lower() == "delete":
+                continue
+
             selected = changed['new']['_selected']
             current = changed['new']['tonode']
             executed = changed['new']['_executed']
             if selected and not executed and current not in self.current:
                 self.current.append(current)
-                logger.info("Start Execution of bundle: %s", current)
+                logger.info("Start Preparation to execute bundle: %s", current)
                 # get all selected implementations
                 functionName = 'getLastSelectedImplementationsWithExecutor' + self.dbs.backend.title()
                 result = getattr(qh, functionName)(self.insert, current)
@@ -213,5 +221,6 @@ class PlugIn (Process):
 
     def run(self):
         pass
+
 
 

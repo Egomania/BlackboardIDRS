@@ -8,8 +8,11 @@ import logging
 import argparse
 import pyorient
 import psycopg2
+import threading
+import gc
 
 from multiprocessing import Process, Queue
+from queue import Empty
 
 from helper_functions import helper
 from helper_functions import startup
@@ -20,6 +23,16 @@ from topology import nodes
 from topology import edges
 
 from classes import MetaData as meta
+
+class inputThread(threading.Thread):
+    def __init__(self, q):
+        threading.Thread.__init__(self)
+        self.q = q
+
+    def run(self):
+        input('Press Enter to Stop.\n')
+        self.q.put("stop")
+        
 
 def loadModules(modulesToUse, path):
     """ 
@@ -37,7 +50,7 @@ def loadModules(modulesToUse, path):
 
     return modules
 
-def stop(backend):
+def stop(backend, threads):
     print('You stopped Progamm!')
 
     if backend == 'orient':
@@ -57,7 +70,6 @@ def stop(backend):
     for thread in threads:
         thread.join()
             
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
@@ -118,7 +130,6 @@ if __name__ == "__main__":
         delInf = bool(Config.getboolean('Database','deleteInfrastructure'))
     except:
         logger.error("Errors in config file - cannot parse")
-        print ("Errors in config file - cannot parse")
         sys.exit(0)
 
     dbs = meta.DatabaseSettings(server, port, user, pwd, database, EXAMPLE_DATA, backend, index, policy, delPol, inf, delInf)
@@ -152,15 +163,22 @@ if __name__ == "__main__":
             cur = conn.cursor()
     else:
         logging.error("Unknown Backend %s. Stop Execution.", backend)
-        stop()
+        stop(backend, [])
 
     logger.info("Successfully checked Database with following nodes and edges: %s", classes)
     
     print ("Start modules ... ")
 
     q = {}
-    listenQueue = {}
     threads = []
+    modules = []
+    moduleList = []
+    qList = []
+    q["main"] = Queue()
+    q["feedback"] = Queue()
+    ownQueue = q["main"]
+    feedbackQueue = q["feedback"]
+    listenQueue = {}
     listenQueue['eval'] = []
 
     # setup controller
@@ -179,8 +197,11 @@ if __name__ == "__main__":
                 qName = str(elem) + "_" + str(module.name)
                 q[qName] = Queue()
                 listenQueue[elem].append(q[qName])
+                qList.append(qName)
             thread = module.PlugIn(q, dbs)
             threads.append(thread)
+            modules.append(thread)
+            moduleList.append(module)
 
 
     if Config['Modules']['interfaces']:
@@ -203,7 +224,7 @@ if __name__ == "__main__":
         controller = ControllerPsql.Controller(listenQueue, dbs)
     else:
         logger.error("Unknown Backend %s. Stop Execution.", backend)
-        stop()
+        stop(backend, [])
     
     controller.start()
 
@@ -212,14 +233,113 @@ if __name__ == "__main__":
 
     threads.append(controller)
 
-    input('Press Enter to Stop.\n')
-    if backend == 'orient':
-        logger.info("Start Orient Controller ... ")
-    elif backend == 'psql':
-        logger.info("Start Postgres Controller ... ")
-    else:
-        logger.error("Unknown Backend %s. Stop Execution.", backend)
+    inputListener = inputThread(ownQueue)
+    inputListener.start()
+
+    print ("All Modules and Interfaces up")
+
+    while (True):
+        value = ownQueue.get()
+
+        if value == "stop":
+
+            print ("User Input Stopped Programm ...")
+
+            if backend == 'orient':
+                client.db_close()
+            elif backend == 'psql':
+                cur.close()
+                conn.close()
+            else:
+                pass
+
+            for thread in threads:
+                thread.stop()
+
+            for thread in threads:
+                thread.terminate()
+
+            for thread in threads:
+                thread.join()
+
+            break
+
+        elif value == "cancel":
+   
+            print ("Got Cancel Request ...")
+
+            logger.info("Stop Controller")
+            controller.stop()
+    
+            logger.info("Running threads: %s", threads)
+            logger.info("Stop Modules: %s", modules)
+            for module in modules:
+                module.stop()
+                print ("Stopped Module: ", module)
+            for module in modules:
+                module.terminate()
+                print ("Terminated Module: ", module)
+            for module in modules:
+                module.join()
+                print ("Joined Module: ", module)
+            modules = []
+
+            threads = [t for t in threads if t.is_alive()]
+            logger.info("Running threads: %s", threads)
+
+            gc.collect()
+
+            feedbackQueue.put("cancelSuccess")
+
+
+        elif value == "restart":
+            
+            print ("Got Restart Request ... ")
+            
+            logger.info("Flush queues ... ")
+
+            for elem in qList:
+                queue = q[elem]
+                tableName = str(elem.split("_")[0])
+                listenQueue[tableName].remove(queue)
+                q[elem] = Queue()
+                listenQueue[tableName].append(q[elem])
+
+            if backend == 'orient':
+                logger.info("Start Orient Controller ... ")
+                controller = ControllerOrient.Controller(listenQueue, dbs)
+            elif backend == 'psql':
+                logger.info("Start Postgres Controller ... ")
+                controller = ControllerPsql.Controller(listenQueue, dbs)
+            else:
+                logger.error("Unknown Backend %s. Stop Execution.", backend)
+                stop(backend, [])
+            
+            controller.start()
+            threads.append(controller)
+
+            logger.info("Restart modules: %s", moduleList)
+
+            for module in moduleList:
+                logger.info("Restart module: %s", module.name)
+                thread = module.PlugIn(q, dbs)
+                threads.append(thread)
+                modules.append(thread)
+            
+            for module in modules:
+                module.start()
+
+            threads = [t for t in threads if t.is_alive()]
+            logger.info("Running Threads: %s", threads)
+
+            gc.collect()
+
+            feedbackQueue.put("restartSuccess")
+
+        else:
+            logger.error("Error unknown Value in Queue: ", value)
+    
         
     
-    stop(backend)
+    
 

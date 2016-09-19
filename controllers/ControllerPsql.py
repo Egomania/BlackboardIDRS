@@ -9,12 +9,13 @@ import psycopg2.extensions
 
 from multiprocessing import Process, Queue
 
-logger = logging.getLogger('idrs')
+logger = logging.getLogger("idrs.controller")
+#logger.setLevel(20)
 EVAL = True
 
 def transform(request):
 
-    #logger.info('Got NOTIFY: "{0}","{1}","{2}"'.format(request.pid, request.channel, request.payload) )
+    logger.debug('Got NOTIFY: "{0}","{1}","{2}"'.format(request.pid, request.channel, request.payload) )
     s = request.payload
     payload = json.loads(s)
     
@@ -40,7 +41,7 @@ def transform(request):
     ret['original'] = original
     ret['new'] = new
 
-    logger.info('New incomming request - %s in %s was %s ', ret['ident'], ret['table'], ret['operation'])
+    logger.debug('New incomming request - %s in %s was %s ', ret['ident'], ret['table'], ret['operation'])
 
     return (ret)
     
@@ -56,13 +57,15 @@ class Controller (Process):
 
     def stop(self, timeout=None):
         logger.info( 'Stopping "{0}"'.format(self.__module__) )
+        self.terminate()
 
     def putInQ(self, ret):
         for elem in self.q[ret['table'].lower()]:
+            logger.debug("Put %s in Queue %s (%s)", ret, elem, ret['table'])
             elem.put(ret)
         if EVAL:
             for elem in self.q['eval']:
-                #print('listener', ret['table'], ret['operation'], ret['ident'])
+                logger.debug("Put %s in Queue %s (eval)", ret, elem)
                 elem.put(ret)
 
     def run(self):

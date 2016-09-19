@@ -6,13 +6,13 @@ import psycopg2
 import os
 
 StartSize = 1000
-StopSize = 1000
+StopSize = 5000
 StepSize = 500
 startTime = time.time()
 timestamp = startTime
 # random, dos, path, flooding
-profile = 'dos'
-folder = './interfaces/simTest/'
+profile = 'random'
+folder = './interfaces/simDiss/random/'
 
 initSourceIPs = None
 initTargetIPs = None
@@ -243,7 +243,7 @@ for size in range(StartSize, StopSize + 1, StepSize):
             attackType = random.choice(attacks)
 
             if profile == 'path':
-                if attackType in attackInt and len(targetIPs) > 1:
+                if attackType in attackInf and len(targetIPs) > 1:
                     prob = random.randrange(1,infectProb)
                     if prob == 1:
                         sourceIPs = list(set(sourceIPs) - set([source]))
@@ -254,7 +254,7 @@ for size in range(StartSize, StopSize + 1, StepSize):
                             newSources = []
 
             elif profile == 'random':
-                if attackType in attackInt and len(targetIPs) > 1:
+                if attackType in attackInf and len(targetIPs) > 1:
                     prob = random.randrange(1,infectProb)
                     if prob == 1:
                         sourceIPs.append(target)

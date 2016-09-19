@@ -5,6 +5,14 @@ import pyorient
 
 logger = logging.getLogger("idrs")
 
+def cancelQuery(module):
+    if module.dbs.backend == 'psql':
+        module.DBconnect.cancel()
+    elif module.dbs.backend == 'orient':
+        pass
+    else:
+        logger.error("Unknown Backend: %s", module.dbs.backend)
+
 def connectToDB(module):
     if module.dbs.backend == 'psql':
         module.DBconnect = psycopg2.connect(database=module.dbs.database, user=module.dbs.user, password=module.dbs.pwd, port=module.dbs.port, host=module.dbs.server)

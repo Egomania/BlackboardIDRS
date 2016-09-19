@@ -39,5 +39,5 @@ class Issue():
 
     def restartTimer(self):
         self.t.cancel()
-        self.t = threading.Timer(3,getattr(self.obj, self.callbackFKT), [self])
+        self.t = threading.Timer(10,getattr(self.obj, self.callbackFKT), [self])
         self.t.start()

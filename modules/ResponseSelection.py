@@ -109,7 +109,7 @@ class PlugIn (Process):
             functionName = 'updateNode' + self.dbs.backend.title()
             getattr(qh, functionName)(self.DBconnect, self.insert, "bundle", bundleID, {"_active": False}, True)
             contextList = []
-            logger.info(" No effected Targets -- Skip Operation: %s", bundleID)
+            logger.info(" No effected Targets -- Skip Operation and set _solved: %s", bundleID)
             functionName = 'selectSingleValue' + self.dbs.backend.title()
             contextID = getattr(qh, functionName)(self.insert, "bundlesolvesalertcontext", "tonode", "fromnode", bundleID , fetchall=True)
             contextList.append(contextID[0])
@@ -120,6 +120,7 @@ class PlugIn (Process):
             functionName = 'updateNode' + self.dbs.backend.title()
             for elem in contextList:
                 getattr(qh, functionName)(self.DBconnect, self.insert, "alertcontext", elem, {"_solved": True}, True)
+                logger.debug("Set Alert Context _solved: %s", elem)
             return None
  
         for response in responseList.keys():
@@ -155,6 +156,10 @@ class PlugIn (Process):
         logger.info( 'Start "{0}"'.format(self.__module__) )
         while (True):
             changed = self.subscribe.get()
+
+            if changed['operation'].lower() == "delete":
+                continue
+
             if (changed['new']['_active'] != None) and (changed['new']['_active']):
                 data = {}
                 bundleID = changed['new']['id']

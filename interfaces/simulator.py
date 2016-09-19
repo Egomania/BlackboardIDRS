@@ -38,7 +38,7 @@ if EVAL:
     if not os.path.exists(resultsPath):
         with open(resultsPath,"w+") as f:
             fileWriter = csv.writer(f, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            fileWriter.writerow(['Filename','Duration', 'FileSize', 'NumberAlerts', 'NumberContext','UniqueContext','Backend','attackPath', 'sameSource', 'sameTarget', 'sameClass'])
+            fileWriter.writerow(['Filename','Duration', 'FileSize', 'NumberAlerts', 'NumberContext', 'NumberContextNonIssue','UniqueContext','Backend','attackPath', 'sameSource', 'sameTarget', 'sameClass', 'bundle'])
 else:
     name = 'simulatorSilent'
     listenTo = []
@@ -58,7 +58,6 @@ class PlugIn (Process):
     def __init__(self, dbs, q):
         Process.__init__(self)
         self.backend = dbs.backend
-
         if self.backend == 'orient':
             self.client = pyorient.OrientDB(dbs.server, dbs.port)
             self.session_id = self.client.connect(dbs.user, dbs.pwd)
@@ -70,6 +69,9 @@ class PlugIn (Process):
             logger.error("Wrong Database Backend %s", self.backend)
             sys.exit()
         
+        self.cancel = q['main']
+        self.feedback = q['feedback']
+
         if EVAL:
             self.subscribe = q[listenTo[0] + '_' + name]
 
@@ -161,7 +163,7 @@ class PlugIn (Process):
         return self.subscribe.get()
 
     def writeResults(self, fileName, duration):
-        # ['Filename','Duration', 'FileSize', 'NumberAlerts', 'NumberContext','UniqueContext','Backend','attackPath', 'sameSource', 'sameTarget', 'sameClass']
+        # ['Filename','Duration', 'FileSize', 'NumberAlerts', 'NumberContext','NumberContextNonIssue','UniqueContext','Backend','attackPath', 'sameSource', 'sameTarget', 'sameClass', 'bundle']
 
         row = []
         row.append(fileName)
@@ -194,10 +196,18 @@ class PlugIn (Process):
                 statement = "SELECT count(*) from alertcontext where name like '%" + elem + "%';"
                 self.cur.execute(statement)
                 sames[elem] = int(self.cur.fetchone()[0])
+            statement = "SELECT count(*) from bundle;"
+            self.cur.execute(statement)
+            bundleCount = int(self.cur.fetchone()[0])
+            statement = "SELECT count(*) from alertcontext where name not like '%issue%';"
+            self.cur.execute(statement)
+            numberContextNonIssue = int(self.cur.fetchone()[0])
             self.conn.commit()
         else:
             numberContext = None
             uniqueCon = None
+            bundle = None
+            numberContextNonIssue = None
             sames['attackPath'] = None
             sames['sameSource'] = None
             sames['sameTarget'] = None
@@ -205,19 +215,18 @@ class PlugIn (Process):
             logger.error("Wrong Database Backend %s", self.backend)
 
         row.append(numberContext)
+        row.append(numberContextNonIssue)
         row.append(uniqueCon)
         row.append(self.backend)
         row.append(sames['attackPath'])
         row.append(sames['sameSource'])
         row.append(sames['sameTarget'])
         row.append(sames['sameClass'])
+        row.append(bundleCount)
 
         with open(resultsPath,"a+") as f:
             fileWriter = csv.writer(f, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
             fileWriter.writerow(row)
-
-        if cleanDBFromAlert:
-            self.cleanDB()
 
     def createAlerts(self, fileName):
 
@@ -253,9 +262,28 @@ class PlugIn (Process):
         self.timeList[fileName].append(end)
         self.timeList[fileName].append(duration)
         self.timeList[fileName].append(len(self.alertList[fileName]))
-
+     
         if EVAL:
+            print ("Send Cancel Request")
+            self.cancel.put("cancel")
+            while (True):
+                feedbackValue = self.feedback.get()
+                if feedbackValue == "cancelSuccess":
+                    break
+            print ("Write Results and Flush DB...")
+            self.conn.commit()
             self.writeResults(fileName, duration)
+
+            if cleanDBFromAlert:
+                self.cleanDB()
+
+            print ("Send Restart Request")
+            self.cancel.put("restart")
+            while (True):
+                feedbackValue = self.feedback.get()
+                if feedbackValue == "restartSuccess":
+                    break
+            print ("Go ahead with evaluation ...")
 
         print ("Next File")
 

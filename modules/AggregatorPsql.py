@@ -34,7 +34,6 @@ class PlugIn (Process):
                 self.conn.commit()
             else:
                 self.rulesToId[elem] = ident[0]
-                
 
     def connectToDB(self):
         self.conn = psycopg2.connect(database=self.dbs.database, user=self.dbs.user, password=self.dbs.pwd, port=self.dbs.port, host=self.dbs.server)
@@ -64,9 +63,9 @@ class PlugIn (Process):
                 table = changed['table']
                 operation = changed['operation']
                 ident = changed['ident']
-                logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, ident, table) )
+                logger.debug( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, ident, table) )
                 if operation == 'delete' or operation == 'update':
-                    logger.info("Skip Aggregation. Operation is set to %s.", operation)
+                    logger.debug("Skip Aggregation. Operation is set to %s.", operation)
                     self.conn.commit()
                     continue
 
@@ -76,7 +75,7 @@ class PlugIn (Process):
                     if elem in name:
                         cont = False
                 if not cont:
-                    logger.warning("Own aggregated alert context. Skip aggregation.")
+                    logger.debug("Own aggregated alert context. Skip aggregation.")
                     self.conn.commit()
                     continue
 
@@ -88,13 +87,13 @@ class PlugIn (Process):
                     test = self.cur.fetchall()
                     
                     if len(test) != 0:
-                        logger.warning("Elem already in %s. Skip aggregation.", elem)
+                        logger.debug("Elem already in %s. Skip aggregation.", elem)
                         contAggregation.append(False)
                     else:
                         contAggregation.append(True)
 
                 if True not in contAggregation:
-                    logger.warning("Elem already completely aggregated. Skip aggregation.")
+                    logger.debug("Elem already completely aggregated. Skip aggregation.")
                     self.conn.commit()
                     continue
 
@@ -104,7 +103,7 @@ class PlugIn (Process):
                     self.cur.execute(statement)
                     test = self.cur.fetchall()
                     if len(test) == 0:
-                        logger.warning("No information given in table %s. Skip aggregation.", elem)
+                        logger.debug("No information given in table %s. Skip aggregation.", elem)
                         cont = False
                     
                 if not cont:
@@ -162,6 +161,7 @@ def same(self, alertContext, table, attacktype, name):
             statement = 'INSERT INTO alertcontextisoftype (name, fromnode, tonode) VALUES (%s,%s, %s) RETURNING id;'
             statement = self.cur.mogrify(statement, ("alertcontextisoftype",superset[0] ,self.rulesToId[attacktype],  ))
             self.cur.execute(statement)
+            logger.info("Aggregated: %s into %s", alertContext, table)
             
                 
         supernode = nodes.node()
@@ -174,7 +174,7 @@ def same(self, alertContext, table, attacktype, name):
                 contexttocontext = edges.contexttocontext(fromNode = subnode, toNode = supernode, client=self.cur)
                 
             except Exception as e:
-                logger.info( 'Error in "{0}": "{1}"'.format(self.__module__, e) ) 
+                logger.error( 'Error in "{0}": "{1}"'.format(self.__module__, e) ) 
                 self.conn.rollback()   
 
     self.conn.commit()

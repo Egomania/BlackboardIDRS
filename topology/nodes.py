@@ -143,6 +143,8 @@ class node (object):
                 values = values + "'" + getattr(self, elem) + "',"
             elif (self.mapper[elem].lower() == "integer"):
                 values = values + str(getattr(self, elem)) + ","
+            elif (self.mapper[elem].lower() == "double"):
+                values = values + str(getattr(self, elem)) + ","
             elif self.mapper[elem].lower() == "boolean":
                 values = values + str(getattr(self, elem)) +  ","
             else:

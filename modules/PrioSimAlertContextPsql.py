@@ -9,10 +9,11 @@ from topology import nodes, edges
 
 from multiprocessing import Process, Queue
 
-logger = logging.getLogger("idrs")
-
 listenTo = ['alertcontext']
 name = 'PrioSimAlertContextPsql'
+
+logger = logging.getLogger("idrs."+name)
+#logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -82,11 +83,11 @@ class PlugIn (Process):
             table = changed['table']
             operation = changed['operation'].lower()
             ident = changed['ident']
-            logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
+            logger.debug( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
             
 
             if operation == 'update':
-                logger.info("Skip Operation (%s). - No Update Operation on AlertContext (%s).", operation, ident)
+                logger.debug("Skip Operation (%s). - No Update Operation on AlertContext (%s).", operation, ident)
                 self.conn.commit()
                 continue
 
@@ -97,7 +98,7 @@ class PlugIn (Process):
                 self.cur.execute(statement)
                 result = self.cur.fetchall()
                 if len(result) != 0:
-                    logger.info("Not my departement....")
+                    logger.debug("Not my departement....")
                     self.conn.commit()
                     continue
                 alertContextPrio = self.getPrioVal(alertContextID)
@@ -110,7 +111,7 @@ class PlugIn (Process):
             try:
                 prioNew = changed['new']['_prio']
             except:
-                logger.info("No new Prio update for %s. Skip Priorisation.", ident)
+                logger.debug("No new Prio update for %s. Skip Priorisation.", ident)
                 self.conn.commit()
                 continue
 
@@ -120,11 +121,11 @@ class PlugIn (Process):
                 prioOld = None
 
             if prioNew == None or prioNew == prioOld:
-                logger.info("No new Prio update for %s. Skip Priorisation.", ident)
+                logger.debug("No new Prio update for %s. Skip Priorisation.", ident)
                 self.conn.commit()
                 continue
 
-            logger.info("create Resulting Prios starting from : %s", ident)
+            logger.debug("create Resulting Prios starting from : %s", ident)
 
                     
             statement = "select a.tonode from alerttocontext a where a.fromnode = %s"

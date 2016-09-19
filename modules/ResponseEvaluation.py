@@ -14,7 +14,7 @@ listenTo = ['bundle']
 name = 'ResponseEvaluation'
 
 logger = logging.getLogger("idrs."+name)
-logger.setLevel(20)
+#logger.setLevel(20)
 
 class prepareEvaluation(threading.Thread):
     def __init__(self, dbs, bundle, listing, openEvals, openImpls):
@@ -166,6 +166,10 @@ class PlugIn (Process):
         logger.info( 'Start "{0}"'.format(self.__module__) )
         while (True):
             changed = self.subscribe.get()
+
+            if changed['operation'].lower() == "delete":
+                continue
+
             bundle = changed['new']['id']
             prepared = changed['new']['_prepared']
             executing = changed['new']['_executing']
@@ -178,6 +182,7 @@ class PlugIn (Process):
                 evalThread.start()
                 self.executorThreads[bundle] = evalThread
                 continue
-            if (executing != None) and not (executing) and bundle in self.executing:
+            if (executing != None) and not (executing) and bundle in self.executing and bundle in self.executorThreads.keys():
                 self.executorThreads[bundle].stop()
+                del self.executorThreads[bundle]
 

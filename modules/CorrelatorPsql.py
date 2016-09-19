@@ -63,9 +63,9 @@ class PlugIn (Process):
                 table = changed['table']
                 operation = changed['operation']
                 ident = changed['ident']
-                logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, ident, table) )
+                logger.debug( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, ident, table) )
                 if operation == 'delete' or operation == 'update':
-                    logger.info("Skip Aggregation. Operation is set to %s.", operation)
+                    logger.debug("Skip Aggregation. Operation is set to %s.", operation)
                     self.conn.commit()
                     continue
                 
@@ -75,7 +75,7 @@ class PlugIn (Process):
                     if name in elem:
                         cont = False
                 if not cont:
-                    logger.warning("Own aggregated alert context. Skip aggregation.")
+                    logger.debug("Own aggregated alert context. Skip aggregation.")
                     self.conn.commit()
                     continue
 
@@ -87,13 +87,13 @@ class PlugIn (Process):
                     test = self.cur.fetchall()
                     
                     if len(test) != 0:
-                        logger.warning("Elem already in %s. Skip correlation.", elem)
+                        logger.debug("Elem already in %s. Skip correlation.", elem)
                         contAggregation.append(False)
                     else:
                         contAggregation.append(True)
 
                 if True not in contAggregation:
-                    logger.warning("Elem already completely aggregated. Skip aggregation.")
+                    logger.debug("Elem already completely aggregated. Skip aggregation.")
                     self.conn.commit()
                     continue
 
@@ -104,7 +104,7 @@ class PlugIn (Process):
                     self.cur.execute(statement)
                     test = self.cur.fetchall()
                     if len(test) == 0:
-                        logger.warning("No information given in table %s. Skip aggregation.", elem)
+                        logger.debug("No information given in table %s. Skip aggregation.", elem)
                         cont = False
                     else:
                         meta[elem] = test[0]
@@ -131,7 +131,7 @@ class PlugIn (Process):
 
         if len(result) == 0:
             
-            logger.info("No candidate context.")
+            logger.debug("No candidate context.")
             self.conn.commit()
             return
 
@@ -153,9 +153,8 @@ class PlugIn (Process):
                 pathSRC = self.cur.fetchone()[0]
                 attackPathName = "attackPath_" + pathSRC
                 
-                #statement = 'INSERT INTO alertcontext (name, _solved) VALUES (%s,%s) RETURNING id;'
-                #statement = self.cur.mogrify(statement, (attackPathName, False, ))
-                #self.cur.execute(statement)
+                logger.info("Insert Attack Path: %s", attackPathName)
+
                 attackPathEntry = nodes.alertcontext(attackPathName, client=self.cur)
                 attackPathNode = attackPathEntry.rid
                 statement = 'INSERT INTO alertcontextisoftype (name, fromnode, tonode) VALUES (%s,%s, %s) RETURNING id;'

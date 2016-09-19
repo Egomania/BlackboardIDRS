@@ -11,8 +11,8 @@ GPLMTuser="surf"
 GPLMTTargetFile = "targetsGen.xml"
 GPLMTTasklistFile = "tasklistsGen.xml"
 
-filenamePolicy = "configs/policyGen.json"
-filenameInf = "configs/infGen.json"
+filenamePolicy = "configs/policyGenDiss1.json"
+filenameInf = "configs/infGenDiss1.json"
 
 templates = ["router", "host", "service", "vm", "ids", "executor"]
 
@@ -30,7 +30,11 @@ services = [
     {"name": "s2", "dep" : ["s5"], "port" : 587, "network" : ["s"], "host" : "sh3"},
     {"name": "s4", "dep" : ["s6"], "port" : 2424, "network" : ["s"], "host" : "sh4"},
     {"name": "s5", "dep" : ["s6"], "port" : 5432, "network" : ["s"], "host" : "sh4"},
-    {"name": "s6", "dep" : [], "port" : 666, "network" : ["s"], "host" : "evil"}
+    {"name": "s6", "dep" : [], "port" : 666, "network" : ["s"], "host" : "evil"},
+    {"name": "s7", "dep" : [], "port" : 1, "network" : ["s"], "host" : "sh5"},
+    {"name": "s8", "dep" : [], "port" : 2, "network" : ["s"], "host" : "sh5"},
+    {"name": "s9", "dep" : [], "port" : 3, "network" : ["s"], "host" : "sh5"},
+    {"name": "s10", "dep" : ["s7", "s8", "s9"], "port" : 4, "network" : ["s"], "host" : "sh6"}
 ]
 users = 100
 attacks = 100
@@ -41,11 +45,11 @@ maxDeployed = 10
 responses = [
  {"userbased": 100, "impl": 10},
  {"hostbased": 100, "impl": 10},
- {"networkbased": 100, "impl": 4},
- {"servicebased": 200, "impl": 5},
+ {"networkbased": 100, "impl": 10},
+ {"servicebased": 100, "impl": 10},
  {"passive":1, "impl":1}
 ]
-metrics = ['time', 'cost']
+metrics = ['cost']
 conflicts = 100
 preconditions = [1000,100,10]
 maxPreconditions = 5

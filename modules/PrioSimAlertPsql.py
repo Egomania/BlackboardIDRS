@@ -2,6 +2,7 @@ import logging
 import select
 import psycopg2
 import psycopg2.extensions
+import queue
 
 import time
 import random
@@ -11,10 +12,11 @@ from topology import nodes, edges
 
 from multiprocessing import Process, Queue
 
-logger = logging.getLogger("idrs")
-
 listenTo = ['alert']
 name = 'PrioSimAlertPsql'
+
+logger = logging.getLogger("idrs."+name)
+#logger.setLevel(20)
 
 class PlugIn (Process):
 
@@ -83,13 +85,14 @@ class PlugIn (Process):
 
         while (True):
             changed = self.subscribe.get()
+            
             table = changed['table']
             operation = changed['operation'].lower()
             ident = changed['ident']
-            logger.info( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
+            logger.debug( '"{0}" got incomming change ("{1}") "{2}" in "{3}"'.format(self.__module__, operation, changed['ident'], table) )
 
             if operation != 'insert':
-                logger.info("Skip Operation.")
+                logger.debug("Skip Operation. Operation done was: %s", operation)
                 self.conn.commit()
                 continue
 
