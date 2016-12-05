@@ -25,7 +25,16 @@ class Alert():
     def printAlert(self):
         return ("Message ID = " + self.msgID + " Source = " + self.source + " Target = " + self.target + " Classification = " + self.classification)
 
+class IssueMin():
+
+    def __init__(self, issue):
+            self.ident = issue.ident
+            self.name = issue.name
+            self.sheduled = issue.sheduled
+
 class Issue():
+
+    timeoutValue = 10
 
     def __init__(self, callbackLocation, callbackModule, obj, callbackFKT,ident):
         self.ident = ident
@@ -33,11 +42,12 @@ class Issue():
         imp.load_source(callbackModule, callbackLocation)
         self.obj = obj
         self.callbackFKT = callbackFKT
-        self.t = threading.Timer(10,getattr(self.obj, self.callbackFKT), [self])
+        self.t = threading.Timer(self.timeoutValue,getattr(self.obj, self.callbackFKT), [self])
         self.t.start()
         self.sheduled = False
 
     def restartTimer(self):
         self.t.cancel()
-        self.t = threading.Timer(10,getattr(self.obj, self.callbackFKT), [self])
+        self.t = threading.Timer(self.timeoutValue,getattr(self.obj, self.callbackFKT), [self])
         self.t.start()
+        

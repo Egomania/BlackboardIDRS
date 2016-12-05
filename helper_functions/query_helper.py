@@ -354,6 +354,16 @@ def getSubContextOrderPsql(insert, contextID):
 
     return result
 
+def getSubContextOrderUnsolvedPsql(insert, contextID):
+
+    query = "WITH RECURSIVE contextTree (fromnode, level, tonode) AS ( SELECT id, 0, id FROM alertcontext WHERE id = %s UNION ALL SELECT cTree.tonode, cTree.level + 1, context.fromnode FROM contexttocontext context, contextTree cTree WHERE context.tonode = cTree.fromnode) SELECT distinct ct.tonode, ct.level, ct.fromnode FROM contextTree ct, alertcontext ac where ac.id = ct.tonode and ac._solved = False order by ct.level desc;"
+
+    query = insert.mogrify(query, (contextID, ))
+    insert.execute(query)
+    result = insert.fetchall()
+
+    return result
+
 def getSubContextOrient(insert, contextID):
     # todo : Orient
     return []

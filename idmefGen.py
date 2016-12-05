@@ -11,8 +11,8 @@ StepSize = 500
 startTime = time.time()
 timestamp = startTime
 # random, dos, path, flooding
-profile = 'random'
-folder = './interfaces/simDiss/random/'
+profile = 'path'
+folder = './interfaces/simDiss/pathNew/'
 
 initSourceIPs = None
 initTargetIPs = None
@@ -28,15 +28,15 @@ pwd="ansii"
 database="responsetest"
 
 internalNets = ["172.16.","172.17.","172.20.1."]
-externalNets = ["2.160.", "8."]
+externalNets = ["10.0.0."]
 
 serviceMapper = {}
 
-numTargets = 10
+numTargets = 345
 numSourcesInside = 10
-numSourcesOutside = 10
-numAttacksInt = 2
-numAttacks = 8
+numSourcesOutside = 0
+numAttacksInt = 10
+numAttacks = 10
 infectProb = 100
 
 templateList = ['service']

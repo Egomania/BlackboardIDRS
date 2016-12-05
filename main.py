@@ -192,7 +192,7 @@ if __name__ == "__main__":
         processorToUse = [elem.strip() for elem in Config['Modules']['modules'].split(',')]
         processorModules = loadModules(processorToUse, 'modules')   
         for module in processorModules:
-            print ("Start module: " + module.name)
+            #print ("Start module: " + module.name)
             for elem in module.listenTo:
                 qName = str(elem) + "_" + str(module.name)
                 q[qName] = Queue()
@@ -208,7 +208,7 @@ if __name__ == "__main__":
         producersToUse = [elem.strip() for elem in Config['Modules']['interfaces'].split(',')]
         producerModules = loadModules(producersToUse, 'interfaces')
         for module in producerModules:
-            print ("Start module: " + module.name)
+            #print ("Start module: " + module.name)
             for elem in module.listenTo:
                 qName = str(elem) + "_" + str(module.name)
                 q[qName] = Queue()
@@ -275,13 +275,13 @@ if __name__ == "__main__":
             logger.info("Stop Modules: %s", modules)
             for module in modules:
                 module.stop()
-                print ("Stopped Module: ", module)
+                #print ("Stopped Module: ", module)
             for module in modules:
                 module.terminate()
-                print ("Terminated Module: ", module)
+                #print ("Terminated Module: ", module)
             for module in modules:
                 module.join()
-                print ("Joined Module: ", module)
+                #print ("Joined Module: ", module)
             modules = []
 
             threads = [t for t in threads if t.is_alive()]

@@ -3,6 +3,8 @@ import psycopg2
 import psycopg2.extensions
 import pyorient
 import os
+import gc
+import threading
 
 from operator import itemgetter
 from multiprocessing import Process, Queue
@@ -19,6 +21,58 @@ name = 'ResponseIdentification'
 logger = logging.getLogger("idrs."+name)
 #logger.setLevel(20)
 
+class callbackQueueOperator(threading.Thread):
+    def __init__(self, q, dbs):
+        threading.Thread.__init__(self)
+        self.dbs = dbs
+        self.q = q
+        self.alive = True
+        dbConnector.connectToDB(self)
+
+    def stop(self):
+        self.alive = False
+        dbConnector.disconnectFromDB(self, True)
+
+    def run(self):
+        while (self.alive):
+            issue = self.q.get()
+            if issue == None:
+                self.stop()
+                break
+            logger.info('Timer abgelaufen: %s', issue.ident)
+            issue.sheduled = True
+            # create issue as alert context node, if no suitable candidate
+            functionName = 'getIssueNotSolved' + self.dbs.backend.title()
+            issueID = getattr(qh, functionName)(self.insert, issue.ident)
+            if issueID == None:
+                issueNode = nodes.alertcontext(name=issue.name, rid=None, client=self.insert)
+                
+            else:
+                issueNode = nodes.alertcontext(rid=issueID[0], client=self.insert)
+                
+            alertContextNode = nodes.alertcontext(rid = issue.ident, client=self.insert)
+            contextTocontext = edges.contexttocontext(alertContextNode, issueNode, client=self.insert)
+
+
+            # get infos
+            functionName = 'geteffectedEntities' + self.dbs.backend.title()
+            effectedEntities = getattr(qh, functionName)(self.insert, issue.ident)
+            functionName = 'getImplementations' + self.dbs.backend.title()
+            implementationsOnEffected = getattr(qh, functionName)(self.insert, effectedEntities)
+            functionName = 'getImplementationsAttack' + self.dbs.backend.title()
+            implementationsForAttack = getattr(qh, functionName)(self.insert, issue.ident)
+       
+            # intersection between applicable and helpful responses
+            implementations = list(set(implementationsOnEffected) & set(implementationsForAttack))
+            
+            newBundle = nodes.bundle(name = issueNode.name, rid = None, client=self.insert)
+            bundlesolvesalertcontext = edges.bundlesolvesalertcontext(newBundle, issueNode, client=self.insert)
+            for elem in implementations:
+                implNode = nodes.implementation(rid = elem, client=self.insert)
+                newedge = edges.implementationisinbundle(implNode, newBundle, client=self.insert)
+            
+            self.DBconnect.commit()
+
 class PlugIn (Process):
 
     def __init__(self, q, dbs):
@@ -27,62 +81,23 @@ class PlugIn (Process):
         self.dbs = dbs
         dbConnector.connectToDB(self)
         self.openIssues = {}
-        self.openConnections = {}
+        self.callbackQueue = Queue()
 
     def stop(self, commit=False):
         logger.info( 'Stopped "{0}"'.format(self.__module__) )
-
-        for elem in self.openConnections.keys():
-            (DBConnect, insert) = self.openConnections.keys[elem]
-            DBConnect.cancel()
-            dbConnector.disconnectFromDBTemp(self, DBConnect, insert, commit = False)
-
         dbConnector.disconnectFromDB(self, commit)
+        self.callbackQueue.put(None)
 
     def callbackFKT (self, issue):
-
-        (DBConnect, insert) = dbConnector.connectToDBTemp(self)
-
-        self.openConnections[issue.ident] = (DBConnect, insert)
-
-        logger.info('Timer abgelaufen: %s', issue.ident)
-        issue.sheduled = True
-        # create issue as alert context node, if no suitable candidate
-        functionName = 'getIssueNotSolved' + self.dbs.backend.title()
-        issueID = getattr(qh, functionName)(insert, issue.ident)
-        if issueID == None:
-            issueNode = nodes.alertcontext(name=issue.name, rid=None, client=insert)
-            
-        else:
-            issueNode = nodes.alertcontext(rid=issueID[0], client=insert)
-            
-        alertContextNode = nodes.alertcontext(rid = issue.ident, client=insert)
-        contextTocontext = edges.contexttocontext(alertContextNode, issueNode, client=insert)
-
-
-        # get infos
-        functionName = 'geteffectedEntities' + self.dbs.backend.title()
-        effectedEntities = getattr(qh, functionName)(insert, issue.ident)
-        functionName = 'getImplementations' + self.dbs.backend.title()
-        implementationsOnEffected = getattr(qh, functionName)(insert, effectedEntities)
-        functionName = 'getImplementationsAttack' + self.dbs.backend.title()
-        implementationsForAttack = getattr(qh, functionName)(insert, issue.ident)
-   
-        # intersection between applicable and helpful responses
-        implementations = list(set(implementationsOnEffected) & set(implementationsForAttack))
-        
-        newBundle = nodes.bundle(name = issueNode.name, rid = None, client=insert)
-        bundlesolvesalertcontext = edges.bundlesolvesalertcontext(newBundle, issueNode, client=insert)
-        for elem in implementations:
-            implNode = nodes.implementation(rid = elem, client=insert)
-            newedge = edges.implementationisinbundle(implNode, newBundle, client=insert)
-
-        dbConnector.disconnectFromDBTemp(self, DBConnect, insert, commit = True)
-        del self.openConnections[issue.ident]
+        self.callbackQueue.put(AP.IssueMin(issue))
 
     def run(self):
 
         logger.info( 'Start "{0}"'.format(self.__module__) )
+        
+        callbackOperator = callbackQueueOperator(self.callbackQueue, self.dbs)
+        callbackOperator.start()
+
         functionName = 'getSuperContextWithoutIssue' + self.dbs.backend.title()
         functionNameObs = 'getSubContext' + self.dbs.backend.title()
         while (True):
@@ -111,7 +126,9 @@ class PlugIn (Process):
                 # todo : trigger conditions refinement
                 if '_prio' in changed['new'].keys():
                     if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
-                        if int(changed['new']['_prio']) > 0: 
+                        #if int(changed['new']['_prio']) > 0: 
+                        if ("sameT" in changed['new']['name']):
+                           
                             #get super context = highest alert context in hierarchy
                             superContexts = getattr(qh, functionName)(self.insert, ident)
                             

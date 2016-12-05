@@ -199,7 +199,7 @@ def createPsql(dbs, conn, cur):
                 prop = propertiesTMP[key]
                 if prop == 'STRING':
                     properties[key.lower()] = 'TEXT'
-                if prop == 'DOUBLE':
+                elif prop == 'DOUBLE':
                     properties[key.lower()] = 'REAL'
                 elif prop == 'DATETIME':
                     properties[key.lower()+"_date"] = 'DATE'

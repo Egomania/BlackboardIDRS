@@ -11,49 +11,67 @@ GPLMTuser="surf"
 GPLMTTargetFile = "targetsGen.xml"
 GPLMTTasklistFile = "tasklistsGen.xml"
 
-filenamePolicy = "configs/policyGenDiss1.json"
-filenameInf = "configs/infGenDiss1.json"
+filenamePolicy = "configs/policyGenAGI.json"
+filenameInf = "configs/infGenAGI.json"
 
 templates = ["router", "host", "service", "vm", "ids", "executor"]
 
 networks = [
-    {"name":"n1", "host": 100,  "router" : ["r1"], "ids": ["nids"], "ip": "172.16.0.", "executor" : 5},
-    {"name":"n2", "host": 100,  "router" : ["r2"], "ids": ["nids"], "ip": "172.16.1.", "executor" : 5},
-    {"name":"n3", "host": 100,  "router" : ["r3"], "ids": ["nids"], "ip": "172.16.2.", "executor" : 5},
-    {"name":"s", "host": 0, "router" : ["rs"], "ids": ["nids"], "ip": "172.17.0.", "executor" : 5},
-    {"name":"b",  "host": 0,   "router" : ["r1", "r2", "r3", "rs"], "ids": ["nids"], "ip": "172.20.0.", "executor" : 5}
+    {"name":"serviceNetwork", "host": 0,  "router" : ["MainCabinSwitch"], "ids": ["nids"], "ip": "10.0.1.", "executor" : 0},
+    {"name":"cabinNetwork", "host": 200,  "router" : ["MainCabinSwitch"], "ids": ["nids"], "ip": "10.0.0.", "executor" : 0}
+#    {"name":"n1", "host": 100,  "router" : ["r1"], "ids": ["nids"], "ip": "172.16.0.", "executor" : 5},
+#    {"name":"n2", "host": 100,  "router" : ["r2"], "ids": ["nids"], "ip": "172.16.1.", "executor" : 5},
+#    {"name":"n3", "host": 100,  "router" : ["r3"], "ids": ["nids"], "ip": "172.16.2.", "executor" : 5},
+#    {"name":"s", "host": 0, "router" : ["rs"], "ids": ["nids"], "ip": "172.17.0.", "executor" : 5},
+#    {"name":"b",  "host": 0,   "router" : ["r1", "r2", "r3", "rs"], "ids": ["nids"], "ip": "172.20.0.", "executor" : 5}
 ]
 
 services = [
-    {"name": "s1", "dep" : ["s2","s3"], "port" : 443, "network" : ["s"], "host" : "sh1"},
-    {"name": "s3", "dep" : ["s4"], "port" : 88, "network" : ["s"], "host" : "sh2"},
-    {"name": "s2", "dep" : ["s5"], "port" : 587, "network" : ["s"], "host" : "sh3"},
-    {"name": "s4", "dep" : ["s6"], "port" : 2424, "network" : ["s"], "host" : "sh4"},
-    {"name": "s5", "dep" : ["s6"], "port" : 5432, "network" : ["s"], "host" : "sh4"},
-    {"name": "s6", "dep" : [], "port" : 666, "network" : ["s"], "host" : "evil"},
-    {"name": "s7", "dep" : [], "port" : 1, "network" : ["s"], "host" : "sh5"},
-    {"name": "s8", "dep" : [], "port" : 2, "network" : ["s"], "host" : "sh5"},
-    {"name": "s9", "dep" : [], "port" : 3, "network" : ["s"], "host" : "sh5"},
-    {"name": "s10", "dep" : ["s7", "s8", "s9"], "port" : 4, "network" : ["s"], "host" : "sh6"}
+{"name": "pa", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "pa"},
+{"name": "icc", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "icc"},
+{"name": "signs", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "signs"},
+{"name": "infoDisplay", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "infoDisplay"},
+{"name": "readingLights", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "readingLights"},
+{"name": "pax", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "pax"},
+{"name": "music", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "music"},
+{"name": "pram", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "pram"},
+{"name": "chime", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "chime"},
+{"name": "seatNo", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "seatNo"},
+{"name": "mMode", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "mMode"},
+{"name": "light", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "light"},
+{"name": "bite", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "bite"},
+{"name": "cvms", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "cvms"},
+{"name": "coas", "dep" : [], "port" : 30501, "network" : ["serviceNetwork"], "host" : "coas"}
+
+#    {"name": "s1", "dep" : ["s2","s3"], "port" : 443, "network" : ["s"], "host" : "sh1"},
+#    {"name": "s3", "dep" : ["s4"], "port" : 88, "network" : ["s"], "host" : "sh2"},
+#    {"name": "s2", "dep" : ["s5"], "port" : 587, "network" : ["s"], "host" : "sh3"},
+#    {"name": "s4", "dep" : ["s6"], "port" : 2424, "network" : ["s"], "host" : "sh4"},
+#    {"name": "s5", "dep" : ["s6"], "port" : 5432, "network" : ["s"], "host" : "sh4"},
+#    {"name": "s6", "dep" : [], "port" : 666, "network" : ["s"], "host" : "evil"},
+#    {"name": "s7", "dep" : [], "port" : 1, "network" : ["s"], "host" : "sh5"},
+#    {"name": "s8", "dep" : [], "port" : 2, "network" : ["s"], "host" : "sh5"},
+#    {"name": "s9", "dep" : [], "port" : 3, "network" : ["s"], "host" : "sh5"},
+#    {"name": "s10", "dep" : ["s7", "s8", "s9"], "port" : 4, "network" : ["s"], "host" : "sh6"}
 ]
-users = 100
-attacks = 100
-consequences = 300
-maxAttackCon = 5
-maxRespCon = 5
-maxDeployed = 10
+users = 0
+attacks = 0
+consequences = 0
+maxAttackCon = 0
+maxRespCon = 0
+maxDeployed = 0
 responses = [
- {"userbased": 100, "impl": 10},
- {"hostbased": 100, "impl": 10},
- {"networkbased": 100, "impl": 10},
- {"servicebased": 100, "impl": 10},
- {"passive":1, "impl":1}
+ {"userbased": 0, "impl": 0},
+ {"hostbased": 0, "impl": 0},
+ {"networkbased": 0, "impl": 0},
+ {"servicebased": 0, "impl": 0},
+ {"passive":0, "impl":0}
 ]
 metrics = ['cost']
-conflicts = 100
-preconditions = [1000,100,10]
-maxPreconditions = 5
-preconditionsImpls = 1
+conflicts = 0
+preconditions = [0,0,0]
+maxPreconditions = 0
+preconditionsImpls = 0
 
 if consequences < maxAttackCon:
     maxAttackCon = consequences

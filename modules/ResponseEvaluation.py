@@ -73,6 +73,19 @@ class evaluateExecution(threading.Thread):
         logger.info("Stop THREAD evaluation for: %s", self.bundle)
         self.list.remove(self.bundle)
         functionName = 'updateNode' + self.dbs.backend.title()
+        
+        if (self.bundle not in self.openEvals.keys()) or (self.bundle not in self.openImpls.keys()):
+            dbConnector.disconnectFromDB(self, True)
+            try:
+                del self.openEvals[self.bundle]
+            except:
+                pass
+            try:
+                del self.openImpls[self.bundle]
+            except:
+                pass
+            return
+
         for elem in self.openEvals[self.bundle]:
             value = random.random()
             getattr(qh, functionName)(self.DBconnect, self.insert, "implementationhasmetric", elem, {"_value": value}, True)
@@ -93,37 +106,38 @@ class evaluateExecution(threading.Thread):
             logger.info("Response Operation Successful for: %s", self.bundle)
             functionName = 'selectSingleValue' + self.dbs.backend.title()
             contextID = getattr(qh, functionName)(self.insert, "bundlesolvesalertcontext", "tonode", "fromnode", self.bundle , fetchall=True)
-            functionName = 'getSubContextOrder' + self.dbs.backend.title()
+            functionName = 'getSubContextOrderUnsolved' + self.dbs.backend.title()
             subContext = getattr(qh, functionName)(self.insert, contextID[0])
             restart = False
             if len(subContext) != 0:
                 maxVal = subContext[0][1]
+            
             for elem in subContext:
-
-                if elem[1] == maxVal:
+                contextList.append(elem[0])
+                #if elem[1] == maxVal:
                     # get infos
-                    functionName = 'geteffectedEntities' + self.dbs.backend.title()
-                    effectedEntities = getattr(qh, functionName)(self.insert, elem[0])
-                    functionName = 'getImplementations' + self.dbs.backend.title()
-                    implementationsOnEffected = getattr(qh, functionName)(self.insert, effectedEntities)
-                    functionName = 'getImplementationsAttack' + self.dbs.backend.title()
-                    implementationsForAttack = getattr(qh, functionName)(self.insert, elem[0])
+                    #functionName = 'geteffectedEntities' + self.dbs.backend.title()
+                    #effectedEntities = getattr(qh, functionName)(self.insert, elem[0])
+                    #functionName = 'getImplementations' + self.dbs.backend.title()
+                    #implementationsOnEffected = getattr(qh, functionName)(self.insert, effectedEntities)
+                    #functionName = 'getImplementationsAttack' + self.dbs.backend.title()
+                    #implementationsForAttack = getattr(qh, functionName)(self.insert, elem[0])
            
                     # intersection between applicable and helpful responses
-                    implementations = list(set(implementationsOnEffected) & set(implementationsForAttack))
+                    #implementations = list(set(implementationsOnEffected) & set(implementationsForAttack))
 
-                    intersectList = list(set(implementations) & set(self.openImpls[self.bundle]))
+                    #intersectList = list(set(implementations) & set(self.openImpls[self.bundle]))
 
-                    if len(intersectList) != 0 and elem[0] not in contextList:
-                        contextList.append(elem[0])
-                    if len(intersectList) == 0:
-                        restart = True
+                    #if len(intersectList) != 0 and elem[0] not in contextList:
+                    #    contextList.append(elem[0])
+                    #if len(intersectList) == 0:
+                    #    restart = True
 
-                else:
-                    if elem[2] in contextList and elem[0] not in contextList:
-                        contextList.append(elem[0])
-                    if elem[2] not in contextList:
-                        restart = True
+                #else:
+                    #if elem[2] in contextList and elem[0] not in contextList:
+                    #    contextList.append(elem[0])
+                    #if elem[2] not in contextList:
+                    #    restart = True
             
             functionName = 'updateNode' + self.dbs.backend.title()
             for elem in contextList:
@@ -177,12 +191,14 @@ class PlugIn (Process):
                 prepareThread = prepareEvaluation(self.dbs, bundle, self.prepared, self.openEvals, self.openImpls)
                 prepareThread.start()
                 continue
-            if (executing != None) and (executing):
+            if (executing != None) and (executing) and bundle not in self.executing:
                 evalThread = evaluateExecution(self.dbs, bundle, self.executing, self.openEvals, self.openImpls)
                 evalThread.start()
                 self.executorThreads[bundle] = evalThread
+                self.executing.append(bundle)
                 continue
             if (executing != None) and not (executing) and bundle in self.executing and bundle in self.executorThreads.keys():
                 self.executorThreads[bundle].stop()
                 del self.executorThreads[bundle]
+                self.executing.remove(bundle)
 

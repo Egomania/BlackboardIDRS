@@ -38,7 +38,7 @@ if EVAL:
     if not os.path.exists(resultsPath):
         with open(resultsPath,"w+") as f:
             fileWriter = csv.writer(f, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            fileWriter.writerow(['Filename','Duration', 'FileSize', 'NumberAlerts', 'NumberContext', 'NumberContextNonIssue','UniqueContext','Backend','attackPath', 'sameSource', 'sameTarget', 'sameClass', 'bundle'])
+            fileWriter.writerow(['Filename','Duration', 'FileSize', 'NumberAlerts', 'NumberContext', 'NumberContextNonIssue','UniqueContext','Backend','attackPath', 'sameSource', 'sameTarget', 'sameClass', 'bundle','selected','nonselected','executed','nonexecuted'])
 else:
     name = 'simulatorSilent'
     listenTo = []
@@ -202,6 +202,18 @@ class PlugIn (Process):
             statement = "SELECT count(*) from alertcontext where name not like '%issue%';"
             self.cur.execute(statement)
             numberContextNonIssue = int(self.cur.fetchone()[0])
+            statement = "select count(*) from implementationisinbundle where _selected = True;"
+            self.cur.execute(statement)
+            selectedCount = int(self.cur.fetchone()[0])
+            statement = "select count(*) from implementationisinbundle where _selected = False;"
+            self.cur.execute(statement)
+            NonselectedCount = int(self.cur.fetchone()[0])
+            statement = "select count(*) from implementationisinbundle where _executed = True;"
+            self.cur.execute(statement)
+            execCount = int(self.cur.fetchone()[0])
+            statement = "select count(*) from implementationisinbundle where _executed = False;"
+            self.cur.execute(statement)
+            NonexecCount = int(self.cur.fetchone()[0])
             self.conn.commit()
         else:
             numberContext = None
@@ -223,6 +235,10 @@ class PlugIn (Process):
         row.append(sames['sameTarget'])
         row.append(sames['sameClass'])
         row.append(bundleCount)
+        row.append(selectedCount)
+        row.append(NonselectedCount)
+        row.append(execCount)
+        row.append(NonexecCount)
 
         with open(resultsPath,"a+") as f:
             fileWriter = csv.writer(f, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -230,7 +246,7 @@ class PlugIn (Process):
 
     def createAlerts(self, fileName):
 
-        print ("start with ", fileName)
+        #print ("start with ", fileName)
 
         start = time.time()
 
@@ -270,7 +286,7 @@ class PlugIn (Process):
                 feedbackValue = self.feedback.get()
                 if feedbackValue == "cancelSuccess":
                     break
-            print ("Write Results and Flush DB...")
+            #print ("Write Results and Flush DB...")
             self.conn.commit()
             self.writeResults(fileName, duration)
 
@@ -283,9 +299,9 @@ class PlugIn (Process):
                 feedbackValue = self.feedback.get()
                 if feedbackValue == "restartSuccess":
                     break
-            print ("Go ahead with evaluation ...")
+            #print ("Go ahead with evaluation ...")
 
-        print ("Next File")
+        #print ("Next File")
 
     def readIDMEFv1File(fileName):
 
@@ -407,7 +423,7 @@ class PlugIn (Process):
 
         print ("Inserted Alerts.")
 
-        print (self.timeList)
+        #print (self.timeList)
 
         
 
