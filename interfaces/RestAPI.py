@@ -83,8 +83,8 @@ class PlugIn (Process):
         Process.__init__(self)
         self.app = Flask(__name__)
         self.log = logging.getLogger('werkzeug')
-        self.log.disabled = True
-        self.app.logger.disabled = True
+        #self.log.disabled = True
+        #self.app.logger.disabled = True
         self.api = Api(self.app)
         self.dbs = dbs
         dbConnector.connectToDB(self)

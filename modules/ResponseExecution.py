@@ -15,7 +15,7 @@ listenTo = ['bundle', 'implementationisinbundle']
 name = 'ResonseExecution'
 
 logger = logging.getLogger("idrs."+name)
-#logger.setLevel(20)
+logger.setLevel(20)
 
 GPLMTFolder = "GPLMT"
 GPLMTTargetFolder = GPLMTFolder + "/targets"

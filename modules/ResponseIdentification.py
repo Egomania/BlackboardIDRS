@@ -19,7 +19,7 @@ listenTo = ['alertcontext']
 name = 'ResponseIdentification'
 
 logger = logging.getLogger("idrs."+name)
-#logger.setLevel(20)
+logger.setLevel(20)
 
 class callbackQueueOperator(threading.Thread):
     def __init__(self, q, dbs):
@@ -124,10 +124,12 @@ class PlugIn (Process):
             
             if ident not in self.openIssues:
                 # todo : trigger conditions refinement
-                if '_prio' in changed['new'].keys():
-                    if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
+                #if '_prio' in changed['new'].keys():
+                if True:
+                    #if changed['new']['_prio'] != None and changed['new']['_prio'] != 'None': 
+                    if True:
                         #if int(changed['new']['_prio']) > 0: 
-                        if ("sameT" in changed['new']['name']):
+                        if ("sameC" in changed['new']['name']):
                            
                             #get super context = highest alert context in hierarchy
                             superContexts = getattr(qh, functionName)(self.insert, ident)

@@ -17,7 +17,7 @@ listenTo = ['bundle']
 name = 'ResponseSelection'
 
 logger = logging.getLogger("idrs."+name)
-#logger.setLevel(20)
+logger.setLevel(20)
 
 class PlugIn (Process):
 
